@@ -1,14 +1,13 @@
-function net = build_network(n_inputs, lr, f_activation_name, slope)
-    slope
+function net = build_network(n_inputs, n_outputs, lr, f_activation_name, slope)
     switch (f_activation_name)
     case 'step'
-        net = network(n_inputs, lr, @sign, @(gh) 1);
+        net = network(n_inputs, n_outputs, lr, @sign, @(gh) 1);
     case 'linear'
-        net = network(n_inputs, lr, @(h) slope * h, @(gh) 1);
+        net = network(n_inputs, n_outputs, lr, @(h) slope * h, @(gh) 1);
     case 'tanh'
-        net = network(n_inputs, lr, @(h) tanh(slope * h), @(gh) slope * (1 - gh^2));
+        net = network(n_inputs, n_outputs, lr, @(h) tanh(slope * h), @(gh) slope * (1 - gh.^2));
     case 'sigmoid'
-        net = network(n_inputs, lr, @(h) 1 / (1 + exp(-2 * slope * h)), @(gh) 2 * slope * gh * (1 - gh));
+        net = network(n_inputs, n_outputs, lr, @(h) 1 ./ (1 + exp(-2 * slope * h)), @(gh) 2 * slope * gh .* (1 - gh));
     otherwise
         error('build_network: Unsupported activation function %s', f_activation_name);
     endswitch

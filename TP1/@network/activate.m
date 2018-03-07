@@ -8,5 +8,5 @@ function output = activate(net, input_pattern)
     end
 
     input_pattern = [-1 input_pattern]'; % revisar performance de crear nuevo arreglo
-    output = net.f_activation(net.weights * input_pattern);
+    output = net.f_activation(net.weights * input_pattern)';
 endfunction
