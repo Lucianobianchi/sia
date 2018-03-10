@@ -13,6 +13,10 @@ function net = network(n_inputs, n_outputs, lr, f_activation, df_activation)
         error('@network/network: Learning rate must be between 0 and 1. Received %d', lr);
     end
 
+    if (!exist('df_activation', 'var'))
+        df_activation = @(gh) 1;
+    end
+
     net.f_activation = f_activation;
     net.df_activation = df_activation;
     net.weights = rand(n_outputs, n_inputs + 1) * 2 - 1;
@@ -21,7 +25,7 @@ function net = network(n_inputs, n_outputs, lr, f_activation, df_activation)
 endfunction
 
 %!test
-%!  net = network(3, 2, 0.5, @sign, @(gh) 1);
+%!  net = network(3, 2, 0.5, @sign);
 %!  input_pattern_set = [1 1 1; 1 -1 1; -1 1 1; 1 1 -1; 1 -1 -1; -1 1 -1; -1 -1 1; -1 -1 -1];
 %!  expected_set = [1 1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; -1 -1];
 %!  for i = 1:20
