@@ -7,6 +7,6 @@ function output = activate(net, input_pattern)
         error('@network/get: Input pattern length (%d) and input neurons length (%d) do not match', ipl, inl);
     end
 
-    input_pattern = [-1 input_pattern]'; % revisar performance de crear nuevo arreglo
+    input_pattern = [-1 input_pattern]';
     output = net.f_activation(net.weights * input_pattern)';
 endfunction

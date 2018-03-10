@@ -34,6 +34,7 @@ endfunction
 %!  for i = 1:length(expected_set)
 %!      assert(activate(net, input_pattern_set(i, :)), expected_set(i, :));
 %!  end
+%!  assert(cost(net, input_pattern_set, expected_set), 0);
 
 %!error network();
 %!error network(1);
