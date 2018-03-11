@@ -1,5 +1,5 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {} refine(@var{net}, @var{input_pattern}, @var{expected})
+%% @deftypefn {} {} refine (@var{net}, @var{input_pattern}, @var{expected})
 %% Adjusts the weights of the network according to the
 %% @var{input_pattern} and @var{expected} values given.
 %%

@@ -1,5 +1,5 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {} train(@var{net}, @var{input_pattern_set}, @var{expected_set})
+%% @deftypefn {} {} train (@var{net}, @var{input_pattern_set}, @var{expected_set})
 %% Adjusts the weights of the network @var{net} given an @var{input_pattern_set}
 %% and an @var{expected_set}.
 %% 

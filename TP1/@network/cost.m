@@ -1,5 +1,5 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {} cost(@var{net}, @var{input_pattern_set}, @var{expected_set})
+%% @deftypefn {} {} cost (@var{net}, @var{input_pattern_set}, @var{expected_set})
 %% Calculates the cost of the network @var{net} given an @var{input_pattern_set}
 %% and an @var{expected_set}.
 %% 

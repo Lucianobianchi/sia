@@ -1,6 +1,6 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {} build_network(@var{n_inputs}, @var{n_outputs}, @var{lr}, @var{f_activation_name}, @var{slope})
-%% @deftypefnx {} {} build_network(@var{n_inputs}, @var{n_outputs}, @var{lr}, 'step')
+%% @deftypefn {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{lr}, @var{f_activation_name}, @var{slope})
+%% @deftypefnx {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{lr}, 'step')
 %% Builds a neural network.
 %%
 %% @var{lr} corresponds to the network learning rate.

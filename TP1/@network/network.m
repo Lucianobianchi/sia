@@ -1,6 +1,6 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {} network(@var{n_inputs}, @var{n_outputs}, @var{lr}, @var{f_activation}, @var{df_activation})
-%% @deftypefnx {} {} network(@var{n_inputs}, @var{n_outputs}, @var{lr}, @var{f_activation})
+%% @deftypefn {} {} network (@var{n_inputs}, @var{n_outputs}, @var{lr}, @var{f_activation}, @var{df_activation})
+%% @deftypefnx {} {} network (@var{n_inputs}, @var{n_outputs}, @var{lr}, @var{f_activation})
 %% Builds a neural network.
 %%
 %% @var{lr} corresponds to the network learning rate.

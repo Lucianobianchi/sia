@@ -1,5 +1,5 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {} activate(@var{net}, @var{input_pattern})
+%% @deftypefn {} {} activate (@var{net}, @var{input_pattern})
 %% Calculates the output of the network @var{net} given an @var{input_pattern}
 %%
 %% For example, if calculating the OR function:

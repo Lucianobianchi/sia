@@ -1,6 +1,6 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {@var{net} =} train_n_epochs(@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{n})
-%% @deftypefnx {} {[@var{net}, @var{costs}] =} train_n_epochs(@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{n})
+%% @deftypefn {} {@var{net} =} train_n_epochs (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{n})
+%% @deftypefnx {} {[@var{net}, @var{costs}] =} train_n_epochs (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{n})
 %% Adjusts the weights of the network @var{net} given an @var{input_pattern_set}
 %% and an @var{expected_set} @var{n} times.
 %%
