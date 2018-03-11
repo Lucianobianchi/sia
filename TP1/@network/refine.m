@@ -1,9 +1,19 @@
-function net = refine(net, input_pattern, expected)
-    % Returns a network with the weights adjusted according to 
-    % the input_pattern and expected values given
-    % input_pattern: vector of values given to the input neurons
-    % expected: expected output given the input_pattern
+%% -*- texinfo -*-
+%% @deftypefn {} {} refine(@var{net}, @var{input_pattern}, @var{expected})
+%% Adjusts the weights of the network according to the
+%% @var{input_pattern} and @var{expected} values given.
+%%
+%% Note that Octave does not implement pass by reference,
+%% then the modified net is the return value of the refine method:
+%%
+%% @example
+%% net = refine(net, input_pattern, expected)
+%% @end example
+%%
+%% @seealso{@@network/network, @@network/train, @@network/cost}
+%% @end deftypefn
 
+function net = refine(net, input_pattern, expected)
     l = length(expected);
     r = rows(net.weights);
     if (length(expected) != rows(net.weights))

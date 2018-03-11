@@ -1,6 +1,4 @@
 function display(net)
-    printf('%s = ', inputname(1));
-    printf('[');
-    printf('%.2d ', net.weights);
-    printf('\b]\n');
+    printf('%s = \n', inputname(1));
+    display(net.weights);
 endfunction
