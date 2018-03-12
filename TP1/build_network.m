@@ -1,6 +1,6 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{lr}, @var{f_activation_name}, @var{slope})
-%% @deftypefnx {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{lr}, 'step')
+%% @deftypefn {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{hidden_layers}, @var{lr}, @var{f_activation_name}, @var{slope})
+%% @deftypefnx {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{hidden_layers}, @var{lr}, 'step')
 %% Builds a neural network.
 %%
 %% @var{lr} corresponds to the network learning rate.
@@ -23,7 +23,7 @@
 %% @end deftypefn
 
 function net = build_network(n_inputs, n_outputs, hidden_layers, lr, f_activation_name, slope)
-    if (f_activation_name != 'step' && !exist('slope', 'var'))
+    if (strcmp(f_activation_name, 'step') != 1 && !exist('slope', 'var'))
         error('build_network: Missing slope input variable for the activation function "%s"', f_activation_name);
     end
 
@@ -42,7 +42,7 @@ function net = build_network(n_inputs, n_outputs, hidden_layers, lr, f_activatio
 endfunction
 
 %!test
-%!  net = build_network(3, 2, 0.5, 'tanh', 1);
+%!  net = build_network(3, 2, [2], 0.5, 'tanh', 1);
 %!  input_pattern_set = [1 1 1; 1 -1 1; -1 1 1; 1 1 -1; 1 -1 -1; -1 1 -1; -1 -1 1; -1 -1 -1];
 %!  expected_set = [1 1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; -1 -1];
 %!  for i = 1:300
@@ -53,7 +53,7 @@ endfunction
 %!  end
 
 %!test
-%!  net = build_network(3, 2, 0.5, 'step');
+%!  net = build_network(3, 2, [], 0.5, 'step');
 %!  input_pattern_set = [1 1 1; 1 -1 1; -1 1 1; 1 1 -1; 1 -1 -1; -1 1 -1; -1 -1 1; -1 -1 -1];
 %!  expected_set = [1 1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; -1 -1];
 %!  for i = 1:15
