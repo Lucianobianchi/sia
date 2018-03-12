@@ -8,7 +8,7 @@
 %% Supported @var{f_activation_name} are: 'step', 'linear', 'tanh' and 'logistic'.
 %%
 %% No @var{slope} is required for the 'step' function.
-%% 
+%%
 %% For example, for a network with 3 inputs, 2 outputs, a learning
 %% rate of 0.1 and 'tanh' as its activation function with slope 0.5:
 %%
@@ -22,20 +22,20 @@
 %% @seealso{@@network/network}
 %% @end deftypefn
 
-function net = build_network(n_inputs, n_outputs, lr, f_activation_name, slope)
+function net = build_network(n_inputs, n_outputs, hidden_layers, lr, f_activation_name, slope)
     if (f_activation_name != 'step' && !exist('slope', 'var'))
         error('build_network: Missing slope input variable for the activation function "%s"', f_activation_name);
     end
 
     switch (f_activation_name)
     case 'step'
-        net = network(n_inputs, n_outputs, lr, @sign);
+        net = network(n_inputs, n_outputs, hidden_layers, lr, @sign);
     case 'linear'
-        net = network(n_inputs, n_outputs, lr, @(h) slope * h);
+        net = network(n_inputs, n_outputs, hidden_layers, lr, @(h) slope * h);
     case 'tanh'
-        net = network(n_inputs, n_outputs, lr, @(h) tanh(slope * h), @(gh) slope * (1 - gh .^ 2));
+        net = network(n_inputs, n_outputs, hidden_layers, lr, @(h) tanh(slope * h), @(gh) slope * (1 - gh .^ 2));
     case 'logistic'
-        net = network(n_inputs, n_outputs, lr, @(h) 1 ./ (1 + exp(-2 * slope * h)), @(gh) 2 * slope * gh .* (1 - gh));
+        net = network(n_inputs, n_outputs, hidden_layers, lr, @(h) 1 ./ (1 + exp(-2 * slope * h)), @(gh) 2 * slope * gh .* (1 - gh));
     otherwise
         error('build_network: Unsupported activation function %s', f_activation_name);
     endswitch

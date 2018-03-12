@@ -14,12 +14,9 @@
 %% @end deftypefn
 
 function output = activate(net, input_pattern)
-    ipl = length(input_pattern);
-    inl = length(net.weights) - 1;
-    if (ipl != inl)
-        error('@network/get: Input pattern length (%d) and input neurons length (%d) do not match', ipl, inl);
+    layer_output = input_pattern;
+    for i = 1:length(net.weights)
+        layer_output = activate_layer(net, i, layer_output);
     end
-
-    input_pattern = [-1 input_pattern]';
-    output = net.f_activation(net.weights * input_pattern)';
+    output = layer_output;
 endfunction
