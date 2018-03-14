@@ -4,7 +4,7 @@
 %% Adjusts the weights of the network @var{net} given an @var{input_pattern_set}
 %% and an @var{expected_set} @var{n} times.
 %%
-%% The @var{costs}(@var{i}) element corresponds to the cost after @var{i-1} epochs.
+%% The @var{costs}(@var{i}) element corresponds to the cost after each iteration.
 %%
 %% The argument @var{input_pattern_set} corresponds to a matrix in which
 %% each row defines an input pattern.
@@ -22,11 +22,23 @@
 %% @seealso{@@network/network, @@network/train, @@network/cost}
 %% @end deftypefn
 
-function [net costs] = train_n_epochs(net, input_training_set, expected_set, n)
-    costs = zeros(1, n + 1);
-    for i = 1:n
-        costs(i) = cost(net, input_training_set, expected_set);
-        net = train(net, input_training_set, expected_set);
+function [net costs] = train_n_epochs(net, input_pattern_set, expected_set, n)
+    r = rows(input_pattern_set);
+    l = rows(expected_set);
+    if (r != l)
+        error('@network/train: Input pattern set rows (%d) do not match expected set rows (%d)', r, l);
     end
-    costs(end) = cost(net, input_training_set, expected_set);
+
+    costs = zeros(1, n * rows(input_pattern_set) + 1);
+    costs(1) = cost(net, input_pattern_set, expected_set);
+
+    for j = 1:n
+        for i = 1:r
+            input_pattern = input_pattern_set(i, :);
+            expected = expected_set(i, :);
+            net = refine(net, input_pattern, expected);
+            costs((j - 1) * r + i + 1) = cost(net, input_pattern_set, expected_set);
+        end
+    end
+
 endfunction
