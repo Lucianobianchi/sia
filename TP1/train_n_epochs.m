@@ -1,6 +1,6 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {@var{net} =} train_n_epochs (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{n})
-%% @deftypefnx {} {[@var{net}, @var{costs}] =} train_n_epochs (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{n})
+%% @deftypefn {} {@var{net} =} train_n_epochs (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{n}, @var{cb})
+%% @deftypefnx {} {[@var{net}, @var{costs}] =} train_n_epochs (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{n}, @var{cb})
 %% Adjusts the weights of the network @var{net} given an @var{input_pattern_set}
 %% and an @var{expected_set} @var{n} times.
 %%
@@ -22,7 +22,7 @@
 %% @seealso{@@network/network, @@network/train, @@network/cost}
 %% @end deftypefn
 
-function [net costs] = train_n_epochs(net, input_pattern_set, expected_set, n)
+function [net costs] = train_n_epochs(net, input_pattern_set, expected_set, n, cb)
     r = rows(input_pattern_set);
     l = rows(expected_set);
     if (r != l)
@@ -37,7 +37,12 @@ function [net costs] = train_n_epochs(net, input_pattern_set, expected_set, n)
             input_pattern = input_pattern_set(i, :);
             expected = expected_set(i, :);
             net = refine(net, input_pattern, expected);
-            costs((j - 1) * r + i + 1) = cost(net, input_pattern_set, expected_set);
+            cost_len = (j - 1) * r + i + 1;
+            costs(cost_len) = cost(net, input_pattern_set, expected_set);
+
+            if (exist('cb', 'var'))
+                cb(costs, cost_len);
+            end
         end
     end
 
