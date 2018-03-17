@@ -3,6 +3,9 @@
 %% @deftypefnx {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{hidden_layers}, @var{lr}, 'step')
 %% Builds a neural network.
 %%
+%% @var{hidden_layers} is represented by a vector in which each
+%% value represents the amount of neurons in each layer.
+%%
 %% @var{lr} corresponds to the network learning rate.
 %%
 %% Supported @var{f_activation_name} are: 'step', 'linear', 'tanh' and 'logistic'.
@@ -29,16 +32,22 @@ function net = build_network(n_inputs, n_outputs, hidden_layers, lr, f_activatio
 
     switch (f_activation_name)
     case 'step'
-        net = network(n_inputs, n_outputs, hidden_layers, lr, @sign);
+        f_activation = @sign;
+        df_activation = @(gh) 1;
     case 'linear'
-        net = network(n_inputs, n_outputs, hidden_layers, lr, @(h) slope * h);
+        f_activation = @(h) slope * h;
+        df_activation = @(gh) 1;
     case 'tanh'
-        net = network(n_inputs, n_outputs, hidden_layers, lr, @(h) tanh(slope * h), @(gh) slope * (1 - gh .^ 2));
+        f_activation = @(h) tanh(slope * h);
+        df_activation = @(gh) slope * (1 - gh .^ 2);
     case 'logistic'
-        net = network(n_inputs, n_outputs, hidden_layers, lr, @(h) 1 ./ (1 + exp(-2 * slope * h)), @(gh) 2 * slope * gh .* (1 - gh));
+        f_activation = @(h) 1 ./ (1 + exp(-2 * slope * h));
+        df_activation = @(gh) 2 * slope * gh .* (1 - gh);
     otherwise
         error('build_network: Unsupported activation function %s', f_activation_name);
     endswitch
+
+    net = network(n_inputs, n_outputs, hidden_layers, lr, f_activation, df_activation);
 endfunction
 
 %!test

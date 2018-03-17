@@ -22,5 +22,5 @@ function err = cost(net, input_pattern_set, expected_set)
     actual_set = activate(net, input_pattern_set);
     distance_set = sqrt(sum((expected_set - actual_set) .^ 2, 2));
 
-    err = 1/(2*r) * sum(distance_set .^ 2);
+    err = sum(distance_set .^ 2) / (2 * r);
 endfunction

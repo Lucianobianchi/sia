@@ -16,6 +16,7 @@
 function net = refine(net, input_pattern, expected)
     l = length(expected);
     r = rows(net.weights{end});
+
     if (length(expected) != rows(net.weights{end}))
         error('@network/refine: length of expected values vector (%s) does not match the number of output neurons (%s)', l, r);
     end
@@ -40,11 +41,14 @@ function outputs = layer_outputs(net, input_pattern)
 endfunction
 
 function deltas = layer_deltas(net, outputs, input_pattern, expected)
-    output_delta = (expected - outputs{end}) .* net.df_activation(outputs{end});
+    actual = outputs{end};
+    output_delta = (expected - actual) .* net.df_activation(actual);
 
     deltas = cell(1, length(net.weights));
     deltas{end} = output_delta;
+
     for i = length(net.weights):-1:2
-        deltas{i-1} = (deltas{i} * net.weights{i}(:, 2:end)) .* net.df_activation(outputs{i-1});
+        weights = net.weights{i}(:, 2:end); % exclude bias weights
+        deltas{i-1} = (deltas{i} * weights) .* net.df_activation(outputs{i-1});
     end
 endfunction

@@ -27,7 +27,7 @@ function net = train(net, input_pattern_set, expected_set)
     end
 
     for i = 1:r
-        input_pattern = input_pattern_set(i, :); % ojo con la eficiencia, copia la fila
+        input_pattern = input_pattern_set(i, :);
         expected = expected_set(i, :);
         net = refine(net, input_pattern, expected);
     end

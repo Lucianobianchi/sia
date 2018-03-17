@@ -3,6 +3,9 @@
 %% @deftypefnx {} {} network (@var{n_inputs}, @var{n_outputs}, @var{hidden_layers}, @var{lr}, @var{f_activation})
 %% Builds a neural network.
 %%
+%% @var{hidden_layers} is represented by a vector in which each
+%% value represents the amount of neurons in each layer.
+%%
 %% @var{lr} corresponds to the network learning rate.
 %%
 %% No argument @var{df_activation} is required for linear or
@@ -23,24 +26,29 @@
 
 function net = network(n_inputs, n_outputs, hidden_layers, lr, f_activation, df_activation)
     if (n_inputs < 1)
-        error('@network/network: Number of input neurons must be higher than 0. Received %d', n_inputs);
+        error('@network/network: Number of input neurons must be positive. Received %d', n_inputs);
     end
 
     if (n_outputs < 1)
-        error('@network/network: Number of output neurons must be higher than 0. Received %d', n_outputs);
+        error('@network/network: Number of output neurons must be positive. Received %d', n_outputs);
     end
 
     if (lr <= 0 )
         error('@network/network: Learning rate must be positive. Received %d', lr);
     end
 
+    if (sum(hidden_layers < 1) > 0)
+        error('@network/network: amount of neurons in hidden layer must be positive');
+    end
+
     if (!exist('df_activation', 'var'))
         df_activation = @(gh) 1;
     end
-    %TODO: validaciones
+
     net.layers = [n_inputs, hidden_layers, n_outputs];
 
     net.weights = cell(1, length(net.layers) - 1);
+    
     for i = 1:(length(net.layers) - 1)
         net.weights{i} = rand(net.layers(i+1), net.layers(i) + 1) * 2 - 1;
     end

@@ -12,6 +12,9 @@
 %% The argument @var{expected_set} corresponds to a matrix in which each
 %% row defines the expected output for the input pattern of that row.
 %%
+%% The argument @var{cb} corresponds to an optional callback which is 
+%% invoked after calculating the cost after each epoch. 
+%%
 %% Note that Octave does not implement pass by reference,
 %% then the modified net is the return value of the train_n_epochs method:
 %%
@@ -41,7 +44,7 @@ function [net costs] = train_n_epochs(net, input_pattern_set, expected_set, n, c
             costs(cost_len) = cost(net, input_pattern_set, expected_set);
 
             if (exist('cb', 'var'))
-                cb(costs, cost_len);
+                cb(costs(1:cost_len));
             end
         end
     end
