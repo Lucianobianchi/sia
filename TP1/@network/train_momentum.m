@@ -25,48 +25,38 @@
 %% @end example
 %%
 %%
-%% @seealso{@@network/network, @@network/backpropagation, @@network/cost}
+%% @seealso{@@network/network, @@network/train_skeleton, @@network/backpropagation, @@network/cost}
 %% @end deftypefn
 
 function [net, costs] = train_momentum(net, input_pattern_set, expected_set, epochs, alfa)
-    r = rows(input_pattern_set);
-    l = rows(expected_set);
-    if (r != l)
-        error('@network/train_momentum: Input pattern set rows (%d) do not match expected set rows (%d)', r, l);
-    end
-
-    if (epochs < 0)
-        error('@network/train_momentum: Number of epochs (%d) must be non negative', epochs);
-    end
-
-    costs_required = nargout == 2;
-
-    if (costs_required)
-        costs = zeros(1, epochs * rows(input_pattern_set));
-        costs_len = 0;
-    end
-
-    prev_delta = cell(1, length(net.weights));
+    % global variable since nested function handles are not yet supported
+    % desired behaviour would be a closure like approach
+    global prev_delta = cell(1, length(net.weights));
+    global global_alfa = alfa;
 
     for i = 1:length(net.weights)
         prev_delta{i} = zeros(size(net.weights{i}));
     end
 
-    for j = 1:epochs
-        for i = 1:r
-            input_pattern = input_pattern_set(i, :);
-            expected = expected_set(i, :);
-            backprop = backpropagation(net, input_pattern, expected);
+    [net, costs] = train_skeleton(net, input_pattern_set, expected_set, epochs, @train_callback);
+endfunction
 
-            for k = 1:length(net.weights)
-                delta = net.lr * backprop{k};
-                net.weights{k} = net.weights{k} + delta + prev_delta{k} * alfa;
-                prev_delta{k} = net.lr * backprop{k};
-            end
-
-            if (costs_required)
-                costs(++costs_len) = cost(net, input_pattern_set, expected_set);
-            end
-        end
+function net = train_callback(net, backprop)
+    global prev_delta;
+    global global_alfa;
+    for k = 1:length(net.weights)
+        delta = net.lr * backprop{k};
+        net.weights{k} = net.weights{k} + delta + prev_delta{k} * global_alfa;
+        prev_delta{k} = net.lr * backprop{k};
     end
 endfunction
+
+%!test
+%!  net = network(2, 1, [3], 0.1, @tanh, @(gh) (1 - gh .^ 2));
+%!  input_pattern_set = [1 1; 1 -1; -1 1; -1 -1];
+%!  expected_set = [-1; 1; 1; -1];
+%!  net = train_momentum(net, input_pattern_set, expected_set, 500, 0.9);
+%!  for i = 1:length(expected_set)
+%!      assert(activate(net, input_pattern_set(i, :)), expected_set(i, :), 0.05);
+%!  end
+%!  assert(cost(net, input_pattern_set, expected_set), 0, 0.001);

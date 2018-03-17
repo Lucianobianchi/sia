@@ -63,25 +63,21 @@ endfunction
 %!  net = network(3, 2, [], 0.5, @sign);
 %!  input_pattern_set = [1 1 1; 1 -1 1; -1 1 1; 1 1 -1; 1 -1 -1; -1 1 -1; -1 -1 1; -1 -1 -1];
 %!  expected_set = [1 1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; -1 -1];
-%!  for i = 1:20
-%!      net = train(net, input_pattern_set, expected_set);
-%!  end
+%!  net = train(net, input_pattern_set, expected_set, 20);
 %!  for i = 1:length(expected_set)
 %!      assert(activate(net, input_pattern_set(i, :)), expected_set(i, :));
 %!  end
 %!  assert(cost(net, input_pattern_set, expected_set), 0);
 
 %!test
-%!  net = network(2, 1, [3], 0.5, @tanh, @(gh) (1 - gh .^ 2));
+%!  net = network(2, 1, [5], 0.1, @tanh, @(gh) (1 - gh .^ 2));
 %!  input_pattern_set = [1 1; 1 -1; -1 1; -1 -1];
 %!  expected_set = [-1; 1; 1; -1];
-%!  for i = 1:1000
-%!      net = train(net, input_pattern_set, expected_set);
-%!  end
+%!  net = train(net, input_pattern_set, expected_set, 1000);
 %!  for i = 1:length(expected_set)
-%!      assert(activate(net, input_pattern_set(i, :)), expected_set(i, :), 0.03);
+%!      assert(activate(net, input_pattern_set(i, :)), expected_set(i, :), 0.04);
 %!  end
-%!  assert(cost(net, input_pattern_set, expected_set), 0, 0.03);
+%!  assert(cost(net, input_pattern_set, expected_set), 0, 0.001);
 
 %!error network();
 %!error network(1);
