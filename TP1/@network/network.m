@@ -21,7 +21,7 @@
 %% @end group
 %% @end example
 %%
-%% @seealso{@@network/activate, @@network/refine, @@network/train, @@network/cost}
+%% @seealso{@@network/activate, @@network/backpropagation, @@network/train, @@network/cost}
 %% @end deftypefn
 
 function net = network(n_inputs, n_outputs, hidden_layers, lr, f_activation, df_activation)

@@ -1,4 +1,4 @@
-function [normalized factor] = normalize(vector)
-    factor = norm(vector, Inf);
-    normalize = double(vector) / factor;
+function [normalized factor] = normalize(A)
+    factor = max(max(abs(A)));
+    normalized = double(A) / factor;
 endfunction
