@@ -1,6 +1,6 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {@var{net} =} train (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs})
-%% @deftypefnx {} {[@var{net}, @var{costs}] =} train (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs})
+%% @deftypefn {} {@var{net} =} train_momentum (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs}, @var{alfa})
+%% @deftypefnx {} {[@var{net}, @var{costs}] =} train_momentum (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs}, @var{alfa})
 %% Adjusts the weights of the network @var{net} given an @var{input_pattern_set}
 %% and an @var{expected_set}. Calculates cost after each iteration.
 %% 
@@ -18,29 +18,25 @@
 %% The argument @var{epochs} corresponds to the number of epochs to train.
 %%
 %% Note that Octave does not implement pass by reference,
-%% then the modified net is the return value of the train method:
+%% then the modified net is the return value of the train_momentum method:
 %%
 %% @example
-%% [net, costs] = train(net, input_pattern, expected)
+%% [net, costs] = train_momentum(net, input_pattern, expected)
 %% @end example
 %%
 %%
 %% @seealso{@@network/network, @@network/backpropagation, @@network/cost}
 %% @end deftypefn
 
-function [net, costs] = train(net, input_pattern_set, expected_set, epochs)
+function [net, costs] = train_momentum(net, input_pattern_set, expected_set, epochs, alfa)
     r = rows(input_pattern_set);
     l = rows(expected_set);
     if (r != l)
-        error('@network/train: Input pattern set rows (%d) do not match expected set rows (%d)', r, l);
-    end
-
-    if (!exist('epochs', 'var'))
-        epochs = 1;
+        error('@network/train_momentum: Input pattern set rows (%d) do not match expected set rows (%d)', r, l);
     end
 
     if (epochs < 0)
-        error('@network/train: Number of epochs (%d) must be non negative', epochs);
+        error('@network/train_momentum: Number of epochs (%d) must be non negative', epochs);
     end
 
     costs_required = nargout == 2;
@@ -50,6 +46,12 @@ function [net, costs] = train(net, input_pattern_set, expected_set, epochs)
         costs_len = 0;
     end
 
+    prev_delta = cell(1, length(net.weights));
+
+    for i = 1:length(net.weights)
+        prev_delta{i} = zeros(size(net.weights{i}));
+    end
+
     for j = 1:epochs
         for i = 1:r
             input_pattern = input_pattern_set(i, :);
@@ -57,7 +59,9 @@ function [net, costs] = train(net, input_pattern_set, expected_set, epochs)
             backprop = backpropagation(net, input_pattern, expected);
 
             for k = 1:length(net.weights)
-                net.weights{k} = net.weights{k} + net.lr * backprop{k};
+                delta = net.lr * backprop{k};
+                net.weights{k} = net.weights{k} + delta + prev_delta{k} * alfa;
+                prev_delta{k} = net.lr * backprop{k};
             end
 
             if (costs_required)
