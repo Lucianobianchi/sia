@@ -29,25 +29,34 @@
 %% @end deftypefn
 
 function [net, costs] = train_momentum(net, input_pattern_set, expected_set, epochs, alfa)
-    % global variable since nested function handles are not yet supported
-    % desired behaviour would be a closure like approach
-    global prev_delta = cell(1, length(net.weights));
-    global global_alfa = alfa;
-
-    for i = 1:length(net.weights)
-        prev_delta{i} = zeros(size(net.weights{i}));
-    end
-
+    %% global variables for shairng variables between function since
+    %% nested function handles are not yet supported in Octave
+    %% desired behaviour would be a closure like approach
+    init_globals(net, alfa);
     [net, costs] = train_skeleton(net, input_pattern_set, expected_set, epochs, @train_callback);
 endfunction
 
 function net = train_callback(net, backprop)
     global prev_delta;
-    global global_alfa;
+    global g_alfa;
     for k = 1:length(net.weights)
         delta = net.lr * backprop{k};
-        net.weights{k} = net.weights{k} + delta + prev_delta{k} * global_alfa;
+        net.weights{k} = net.weights{k} + delta + prev_delta{k} * g_alfa;
         prev_delta{k} = net.lr * backprop{k};
+    end
+endfunction
+
+function init_globals(net, alfa)
+    global prev_delta;
+    global g_alfa;
+
+    prev_delta = cell(1, length(net.weights));
+    g_alfa = alfa;
+
+    prev_delta
+
+    for i = 1:length(net.weights)
+        prev_delta{i} = zeros(size(net.weights{i}));
     end
 endfunction
 

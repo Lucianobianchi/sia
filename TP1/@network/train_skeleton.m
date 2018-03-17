@@ -37,7 +37,7 @@ function [net, costs] = train_skeleton(net, input_pattern_set, expected_set, epo
             expected = expected_set(i, :);
             backprop = backpropagation(net, input_pattern, expected);
 
-            net = cb(net, backprop);
+            net = cb(net, backprop, input_pattern, expected);
 
             if (costs_required)
                 costs(++costs_len) = cost(net, input_pattern_set, expected_set);
