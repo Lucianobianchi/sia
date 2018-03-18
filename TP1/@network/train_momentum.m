@@ -21,7 +21,7 @@
 %% then the modified net is the return value of the train_momentum method:
 %%
 %% @example
-%% [net, costs] = train_momentum(net, input_pattern, expected)
+%% [net, costs] = train_momentum(net, input_pattern, expected, epochs, alfa)
 %% @end example
 %%
 %%
@@ -52,8 +52,6 @@ function init_globals(net, alfa)
 
     prev_delta = cell(1, length(net.weights));
     g_alfa = alfa;
-
-    prev_delta
 
     for i = 1:length(net.weights)
         prev_delta{i} = zeros(size(net.weights{i}));

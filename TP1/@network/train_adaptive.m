@@ -25,7 +25,7 @@
 %% then the modified net is the return value of the train_adaptive method:
 %%
 %% @example
-%% [net, costs] = train_adaptive(net, input_pattern, expected)
+%% [net, costs] = train_adaptive(net, input_pattern, expected, epochs, lr_increase, lr_decrease_factor)
 %% @end example
 %%
 %%
