@@ -31,20 +31,20 @@ function net = build_network(n_inputs, n_outputs, hidden_layers, lr, f_activatio
     end
 
     switch (f_activation_name)
-    case 'step'
-        f_activation = @sign;
-        df_activation = @(gh) 1;
-    case 'linear'
-        f_activation = @(h) slope * h;
-        df_activation = @(gh) 1;
-    case 'tanh'
-        f_activation = @(h) tanh(slope * h);
-        df_activation = @(gh) slope * (1 - gh .^ 2);
-    case 'logistic'
-        f_activation = @(h) 1 ./ (1 + exp(-2 * slope * h));
-        df_activation = @(gh) 2 * slope * gh .* (1 - gh);
-    otherwise
-        error('build_network: Unsupported activation function %s', f_activation_name);
+        case 'step'
+            f_activation = @sign;
+            df_activation = @(gh) 1;
+        case 'linear'
+            f_activation = @(h) slope * h;
+            df_activation = @(gh) 1;
+        case 'tanh'
+            f_activation = @(h) tanh(slope * h);
+            df_activation = @(gh) slope * (1 - gh .^ 2);
+        case 'logistic'
+            f_activation = @(h) 1 ./ (1 + exp(-2 * slope * h));
+            df_activation = @(gh) 2 * slope * gh .* (1 - gh);
+        otherwise
+            error('build_network: Unsupported activation function %s', f_activation_name);
     endswitch
 
     net = network(n_inputs, n_outputs, hidden_layers, lr, f_activation, df_activation);
