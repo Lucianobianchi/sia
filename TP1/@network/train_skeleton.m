@@ -28,15 +28,21 @@ function [net, costs] = train_skeleton(net, input_pattern_set, expected_set, bat
         error('@network/train: Batch size (%d) must be non negative', batch_size);
     end
 
+    if (batch_size > r)
+        batch_size = r;
+    end
+
     costs_required = nargout == 2;
 
+    batch_vec = 1:batch_size:r;
+
     if (costs_required)
-        costs = zeros(1, epochs * rows(input_pattern_set));
+        costs = zeros(1, epochs * length(batch_vec));
         costs_len = 0;
     end
 
     for j = 1:epochs
-        for i = 1:batch_size:r
+        for i = batch_vec
             input_pattern = input_pattern_set(i:(batch_size + i - 1), :);
             expected = expected_set(i:(batch_size + i - 1), :);
             backprop = backpropagation(net, input_pattern, expected);
