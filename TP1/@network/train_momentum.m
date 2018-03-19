@@ -1,6 +1,6 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {@var{net} =} train_momentum (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs}, @var{alfa})
-%% @deftypefnx {} {[@var{net}, @var{costs}] =} train_momentum (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs}, @var{alfa})
+%% @deftypefn {} {@var{net} =} train_momentum (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{batch_size}, @var{epochs}, @var{alfa})
+%% @deftypefnx {} {[@var{net}, @var{costs}] =} train_momentum (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{batch_size}, @var{epochs}, @var{alfa})
 %% Adjusts the weights of the network @var{net} given an @var{input_pattern_set}
 %% and an @var{expected_set}. Calculates cost after each iteration.
 %% 
@@ -12,8 +12,10 @@
 %% The argument @var{expected_set} corresponds to a matrix in which each
 %% row defines the expected output for the input pattern of that row.
 %%
-%% The argument @var{cb} corresponds to an optional callback which is 
-%% invoked after each iteration with the @var{net} as argument. 
+%% The argument @var{batch_size} corresponds to the size of the batch
+%% of each training iteration. Use 1 for online training and
+%% rows(@var{input_pattern_set}) for batch training. Anything in
+%% between correspond to mini-batch training.
 %%
 %% The argument @var{epochs} corresponds to the number of epochs to train.
 %%
@@ -28,12 +30,12 @@
 %% @seealso{@@network/network, @@network/train_skeleton, @@network/backpropagation, @@network/cost}
 %% @end deftypefn
 
-function [net, costs] = train_momentum(net, input_pattern_set, expected_set, epochs, alfa)
+function [net, costs] = train_momentum(net, input_pattern_set, expected_set, batch_size, epochs, alfa)
     %% global variables for shairng variables between function since
     %% nested function handles are not yet supported in Octave
     %% desired behaviour would be a closure like approach
     init_globals(net, alfa);
-    [net, costs] = train_skeleton(net, input_pattern_set, expected_set, epochs, @train_callback);
+    [net, costs] = train_skeleton(net, input_pattern_set, expected_set, batch_size, epochs, @train_callback);
 endfunction
 
 function net = train_callback(net, backprop)
@@ -62,7 +64,7 @@ endfunction
 %!  net = network(2, 1, [3], 0.1, @tanh, @(gh) (1 - gh .^ 2));
 %!  input_pattern_set = [1 1; 1 -1; -1 1; -1 -1];
 %!  expected_set = [-1; 1; 1; -1];
-%!  net = train_momentum(net, input_pattern_set, expected_set, 500, 0.9);
+%!  net = train_momentum(net, input_pattern_set, expected_set, 1, 500, 0.9);
 %!  for i = 1:length(expected_set)
 %!      assert(activate(net, input_pattern_set(i, :)), expected_set(i, :), 0.05);
 %!  end

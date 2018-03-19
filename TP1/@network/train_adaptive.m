@@ -1,6 +1,6 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {@var{net} =} train_adaptive (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs}, @var{lr_increase}, @var{lr_decrease_fator})
-%% @deftypefnx {} {[@var{net}, @var{costs}] =} train_adaptive (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs}, @var{lr_increase}, @var{lr_decrease_fator})
+%% @deftypefn {} {@var{net} =} train_adaptive (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{batch_size}, @var{epochs}, @var{lr_increase}, @var{lr_decrease_fator})
+%% @deftypefnx {} {[@var{net}, @var{costs}] =} train_adaptive (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{batch_size}, @var{epochs}, @var{lr_increase}, @var{lr_decrease_fator})
 %% Adjusts the weights of the network @var{net} given an @var{input_pattern_set}
 %% and an @var{expected_set}. Calculates cost after each iteration.
 %% 
@@ -12,8 +12,10 @@
 %% The argument @var{expected_set} corresponds to a matrix in which each
 %% row defines the expected output for the input pattern of that row.
 %%
-%% The argument @var{cb} corresponds to an optional callback which is 
-%% invoked after each iteration with the @var{net} as argument. 
+%% The argument @var{batch_size} corresponds to the size of the batch
+%% of each training iteration. Use 1 for online training and
+%% rows(@var{input_pattern_set}) for batch training. Anything in
+%% between correspond to mini-batch training.
 %%
 %% The argument @var{epochs} corresponds to the number of epochs to train.
 %%
@@ -32,12 +34,12 @@
 %% @seealso{@@network/network, @@network/train_skeleton, @@network/backpropagation, @@network/cost}
 %% @end deftypefn
 
-function [net, costs] = train_adaptive(net, input_pattern_set, expected_set, epochs, lr_increase, lr_decrease_factor)
+function [net, costs] = train_adaptive(net, input_pattern_set, expected_set, epochs, batch_size, lr_increase, lr_decrease_factor)
     %% global variables for shairng variables between function since
     %% nested function handles are not yet supported in Octave
     %% desired behaviour would be a closure like approach
     init_globals(net, epochs, input_pattern_set, expected_set, lr_increase, lr_decrease_factor);
-    net = train_skeleton(net, input_pattern_set, expected_set, epochs, @train_callback);
+    net = train_skeleton(net, input_pattern_set, expected_set, batch_size, epochs, @train_callback);
 
     global g_costs;
     costs = g_costs;

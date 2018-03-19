@@ -12,6 +12,7 @@ seed = time
 test_ratio = 0.75
 
 %% Train config
+batch_size = 1
 epochs = 25
 algorithm = 'momentum'      % 'momentum' 'adaptive' 'vanilla' 
 alfa = 0.9                  % momentum config

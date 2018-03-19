@@ -17,8 +17,8 @@ function backprop = backpropagation(net, input_pattern, expected)
     c = columns(expected);
     r = rows(net.weights{end});
 
-    if (length(expected) != rows(net.weights{end}))
-        error('@network/backpropagation: length of expected values vector (%s) does not match the number of output neurons (%s)', l, r);
+    if (c != r)
+        error('@network/backpropagation: length of expected values vector (%s) does not match the number of output neurons (%s)', c, r);
     end
 
     outputs = layer_outputs(net, input_pattern);

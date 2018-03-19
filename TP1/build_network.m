@@ -54,9 +54,7 @@ endfunction
 %!  net = build_network(3, 2, [2], 0.5, 'tanh', 1);
 %!  input_pattern_set = [1 1 1; 1 -1 1; -1 1 1; 1 1 -1; 1 -1 -1; -1 1 -1; -1 -1 1; -1 -1 -1];
 %!  expected_set = [1 1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; -1 -1];
-%!  for i = 1:300
-%!      net = train(net, input_pattern_set, expected_set);
-%!  end
+%!  net = train(net, input_pattern_set, expected_set, 2, 300);
 %!  for i = 1:length(expected_set)
 %!      assert(activate(net, input_pattern_set(i, :)), expected_set(i, :), 0.05);
 %!  end
@@ -65,9 +63,7 @@ endfunction
 %!  net = build_network(3, 2, [], 0.5, 'step');
 %!  input_pattern_set = [1 1 1; 1 -1 1; -1 1 1; 1 1 -1; 1 -1 -1; -1 1 -1; -1 -1 1; -1 -1 -1];
 %!  expected_set = [1 1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; 1 -1; -1 -1];
-%!  for i = 1:15
-%!      net = train(net, input_pattern_set, expected_set);
-%!  end
+%!  net = train(net, input_pattern_set, expected_set, 1, 15);
 %!  for i = 1:length(expected_set)
 %!      assert(activate(net, input_pattern_set(i, :)), expected_set(i, :));
 %!  end

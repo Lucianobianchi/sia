@@ -1,6 +1,6 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {@var{net} =} train (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs})
-%% @deftypefnx {} {[@var{net}, @var{costs}] =} train (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{epochs})
+%% @deftypefn {} {@var{net} =} train (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{batch_size}, @var{epochs})
+%% @deftypefnx {} {[@var{net}, @var{costs}] =} train (@var{net}, @var{input_pattern_set}, @var{expected_set}, @var{batch_size}, @var{epochs})
 %% Adjusts the weights of the network @var{net} given an @var{input_pattern_set}
 %% and an @var{expected_set}. Calculates cost after each iteration.
 %% 
@@ -12,8 +12,10 @@
 %% The argument @var{expected_set} corresponds to a matrix in which each
 %% row defines the expected output for the input pattern of that row.
 %%
-%% The argument @var{cb} corresponds to an optional callback which is 
-%% invoked after each iteration with the @var{net} as argument. 
+%% The argument @var{batch_size} corresponds to the size of the batch
+%% of each training iteration. Use 1 for online training and
+%% rows(@var{input_pattern_set}) for batch training. Anything in
+%% between correspond to mini-batch training.
 %%
 %% The argument @var{epochs} corresponds to the number of epochs to train.
 %%
@@ -28,8 +30,8 @@
 %% @seealso{@@network/network, @@network/train_skeleton, @@network/backpropagation, @@network/cost}
 %% @end deftypefn
 
-function [net, costs] = train(net, input_pattern_set, expected_set, epochs)
-    [net, costs] = train_skeleton(net, input_pattern_set, expected_set, epochs, @train_callback);
+function [net, costs] = train(net, input_pattern_set, expected_set, batch_size, epochs)
+    [net, costs] = train_skeleton(net, input_pattern_set, expected_set, batch_size, epochs, @train_callback);
 endfunction
 
 function net = train_callback(net, backprop)
