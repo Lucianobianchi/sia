@@ -23,4 +23,4 @@ tolerance = 0.1
 n_toperrors = 10
 
 %% Plot terrain config
-pts = rand(20000, 2) * 2 - 1;
+pts = rand(20000, 2) * 2 - 1;  % points to plot

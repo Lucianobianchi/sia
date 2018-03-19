@@ -14,7 +14,7 @@
 %% @end deftypefn
 
 function backprop = backpropagation(net, input_pattern, expected)
-    l = length(expected);
+    c = columns(expected);
     r = rows(net.weights{end});
 
     if (length(expected) != rows(net.weights{end}))
@@ -26,10 +26,12 @@ function backprop = backpropagation(net, input_pattern, expected)
 
     backprop = cell(1, length(net.weights));
 
-    backprop{1} = deltas{1}' * [-1 input_pattern];
+    bias_column = ones(rows(input_pattern), 1) * -1;
+
+    backprop{1} = deltas{1}' * [bias_column input_pattern];
 
     for i = 2:length(deltas)
-        backprop{i} = deltas{i}' * [-1 outputs{i-1}];
+        backprop{i} = deltas{i}' * [bias_column outputs{i-1}];
     end
 endfunction
 
