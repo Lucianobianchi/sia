@@ -25,13 +25,14 @@ function backprop = backpropagation(net, input_pattern, expected)
     deltas = layer_deltas(net, outputs, input_pattern, expected);
 
     backprop = cell(1, length(net.weights));
+    batch_size = rows(input_pattern);
 
-    bias_column = ones(rows(input_pattern), 1) * -1;
+    bias_column = ones(batch_size, 1) * -1;
 
-    backprop{1} = deltas{1}' * [bias_column input_pattern];
+    backprop{1} = deltas{1}' * [bias_column input_pattern] / batch_size; % TODO: preguntar si hay q sacar promedio de los deltas
 
     for i = 2:length(deltas)
-        backprop{i} = deltas{i}' * [bias_column outputs{i-1}];
+        backprop{i} = deltas{i}' * [bias_column outputs{i-1}] / batch_size;
     end
 endfunction
 
