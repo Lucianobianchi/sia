@@ -25,7 +25,7 @@
 %% @seealso{@@network/network}
 %% @end deftypefn
 
-function net = build_network(n_inputs, n_outputs, hidden_layers, lr, f_activation_name, slope)
+function net = build_network(n_inputs, n_outputs, hidden_layers, weight_init, lr, f_activation_name, slope)
     if (strcmp(f_activation_name, 'step') != 1 && !exist('slope', 'var'))
         error('build_network: Missing slope input variable for the activation function "%s"', f_activation_name);
     end
@@ -47,7 +47,24 @@ function net = build_network(n_inputs, n_outputs, hidden_layers, lr, f_activatio
             error('build_network: Unsupported activation function %s', f_activation_name);
     endswitch
 
-    net = network(n_inputs, n_outputs, hidden_layers, lr, f_activation, df_activation);
+    switch (weight_init)
+        case 'uniform_one'
+            w_init = @(n_in, n_out) unifrnd(-1, 1, [n_in n_out]);
+        case 'uniform'
+            w_init = @(n_in, n_out) unifrnd(-1/sqrt(n_in), 1/sqrt(n_in), [n_in n_out]);
+        case 'xavier_uniform'
+            w_init = @(n_in, n_out) unifrnd(-sqrt(6)*4/sqrt(n_in + n_out), sqrt(6)*4/sqrt(n_in + n_out), [n_in n_out]);
+        case 'xavier'
+            w_init = @(n_in, n_out) normrnd(0, 2/(n_in + n_out), [n_in n_out]);
+        case 'zero'
+            w_init = @(n_in, n_out) zeros(n_in, n_out);
+        otherwise
+            error('build_network: Unsupported initialization function %s', weight_init);
+    endswitch
+
+    w_init
+
+    net = network(n_inputs, n_outputs, hidden_layers, w_init, lr, f_activation, df_activation);
 endfunction
 
 %!test

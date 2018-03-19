@@ -24,7 +24,7 @@
 %% @seealso{@@network/activate, @@network/backpropagation, @@network/train, @@network/cost}
 %% @end deftypefn
 
-function net = network(n_inputs, n_outputs, hidden_layers, lr, f_activation, df_activation)
+function net = network(n_inputs, n_outputs, hidden_layers, weight_init, lr, f_activation, df_activation)
     if (n_inputs < 1)
         error('@network/network: Number of input neurons must be positive. Received %d', n_inputs);
     end
@@ -48,9 +48,11 @@ function net = network(n_inputs, n_outputs, hidden_layers, lr, f_activation, df_
     net.layers = [n_inputs, hidden_layers, n_outputs];
 
     net.weights = cell(1, length(net.layers) - 1);
-    
+
     for i = 1:(length(net.layers) - 1)
-        net.weights{i} = rand(net.layers(i+1), net.layers(i) + 1) * 2 - 1;
+        net.weights{i} = weight_init(net.layers(i+1), net.layers(i) + 1);
+        net.weights{i}
+        % net.weights{i} = rand(net.layers(i+1), net.layers(i) + 1) * 2 - 1;
     end
 
     net.f_activation = f_activation;

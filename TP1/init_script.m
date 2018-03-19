@@ -1,4 +1,4 @@
-net = build_network(n_inputs, n_outputs, hidden_layers, lr, f_activation_name, slope);
+net = build_network(n_inputs, n_outputs, hidden_layers, initialization, lr, f_activation_name, slope);
 [inputs, outputs] = open_file(filename);
 normalized_inputs = normalize(inputs);
 normalized_outputs = normalize(outputs);
