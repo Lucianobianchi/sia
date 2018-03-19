@@ -29,7 +29,7 @@ function backprop = backpropagation(net, input_pattern, expected)
 
     bias_column = ones(batch_size, 1) * -1;
 
-    backprop{1} = deltas{1}' * [bias_column input_pattern] / batch_size; % TODO: preguntar si hay q sacar promedio de los deltas
+    backprop{1} = deltas{1}' * [bias_column input_pattern] / batch_size;
 
     for i = 2:length(deltas)
         backprop{i} = deltas{i}' * [bias_column outputs{i-1}] / batch_size;

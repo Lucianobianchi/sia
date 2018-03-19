@@ -5,7 +5,7 @@ switch algorithm
     case 'momentum'
         [net, costs] = train_momentum(net, train_set, train_expected, batch_size, epochs, alfa);
     case 'adaptive'
-        [net, costs] = train_adaptive(net, train_set, train_expected, batch_size, epochs, lr_increase, lr_decrease_factor);
+        [net, costs] = train_adaptive(net, train_set, train_expected, batch_size, epochs, cost_interval, inc_steps, lr_increase, lr_decrease_factor);
     otherwise
         error('No such algorithm %s', algorithm)
 end
