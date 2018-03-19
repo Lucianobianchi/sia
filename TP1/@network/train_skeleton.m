@@ -43,8 +43,14 @@ function [net, costs] = train_skeleton(net, input_pattern_set, expected_set, bat
 
     for j = 1:epochs
         for i = batch_vec
-            input_pattern = input_pattern_set(i:(batch_size + i - 1), :);
-            expected = expected_set(i:(batch_size + i - 1), :);
+            to = batch_size + i - 1;
+
+            if (to > r)
+                to = r;
+            end
+
+            input_pattern = input_pattern_set(i:to, :);
+            expected = expected_set(i:to, :);
             backprop = backpropagation(net, input_pattern, expected);
 
             net = cb(net, backprop, input_pattern, expected);
