@@ -51,8 +51,6 @@ function net = network(n_inputs, n_outputs, hidden_layers, weight_init, lr, f_ac
 
     for i = 1:(length(net.layers) - 1)
         net.weights{i} = weight_init(net.layers(i+1), net.layers(i) + 1);
-        net.weights{i}
-        % net.weights{i} = rand(net.layers(i+1), net.layers(i) + 1) * 2 - 1;
     end
 
     net.f_activation = f_activation;

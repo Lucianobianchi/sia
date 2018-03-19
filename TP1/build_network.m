@@ -62,8 +62,6 @@ function net = build_network(n_inputs, n_outputs, hidden_layers, weight_init, lr
             error('build_network: Unsupported initialization function %s', weight_init);
     endswitch
 
-    w_init
-
     net = network(n_inputs, n_outputs, hidden_layers, w_init, lr, f_activation, df_activation);
 endfunction
 
