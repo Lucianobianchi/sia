@@ -55,7 +55,7 @@ function net = build_network(n_inputs, n_outputs, hidden_layers, weight_init, lr
         case 'xavier_uniform'
             w_init = @(n_in, n_out) unifrnd(-sqrt(6)*4/sqrt(n_in + n_out), sqrt(6)*4/sqrt(n_in + n_out), [n_in n_out]);
         case 'xavier'
-            w_init = @(n_in, n_out) normrnd(0, 2/(n_in + n_out), [n_in n_out]);
+            w_init = @(n_in, n_out) normrnd(0, 2/n_in + n_out, [n_in n_out]);
         case 'zero'
             w_init = @(n_in, n_out) zeros(n_in, n_out);
         otherwise
