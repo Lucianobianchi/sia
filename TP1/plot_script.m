@@ -1,8 +1,12 @@
 zpts = activate(net, pts);
 subplot(2,1,2);
-plot3(pts(:,1), pts(:,2), zpts, '.');
+x = inputs(:,1);
+y = inputs(:, 2);
+z = outputs;
+
+plot3(map(pts(:,1), [min(x)], [max(x)]), map(pts(:,2), [min(y)], [max(y)]), map(zpts, [min(z)], [max(z)]), '.');
 title('Neural net terrain');
 
 subplot(2,1,1);
-plot3(normalized_inputs(:,1), normalized_inputs(:,2), normalized_outputs, '.');
+plot3(x, y, z, '.');
 title('Original terrain');

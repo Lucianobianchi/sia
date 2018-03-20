@@ -6,6 +6,8 @@ lr = 0.01;
 f_activation_name = 'tanh';
 slope = 1;
 initialization = 'xavier_uniform';
+input_lower_bound = -0.5;
+input_upper_bound = 0.5;
 
 %% Set config
 filename = 'terrain02.data';
@@ -14,7 +16,7 @@ test_ratio = 0.25;
 
 %% Train config
 batch_size = 1;
-epochs = 40;
+epochs = 45;
 algorithm = 'momentum';      % 'momentum' 'adaptive' 'vanilla'
 alfa = 0.9;                  % momentum config
 cost_interval = 5;          % adaptive config
