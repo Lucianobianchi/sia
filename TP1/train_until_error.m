@@ -25,10 +25,13 @@ while (test_error > 10)
     test_error = error_rate(net, test_set, test_expected, tolerance);
     test_rates = [test_rates test_error];
     train_rates = [train_rates train_error];
-    test_error
     epoch_count++;
+    epoch_count
+    test_error
     fflush(stdout);
 endwhile
+
+plot_layer_activations(net, get(net, 'weights'), test_set)
 
 
 % plot(test_rates);
