@@ -5,18 +5,13 @@ hidden_layers = [60 30];
 lr = 0.01;
 f_activation_name = 'tanh';
 slope = 1;
-initialization = 'xavier_uniform';
+initialization = 'uniform_one';
 input_lower_bound = -0.5;
 input_upper_bound = 0.5;
 
-%% Set config
-filename = 'terrain02.data';
-seed = 42;  % use time() for a different seed each config
-test_ratio = 0.25;
-
 %% Train config
 batch_size = 1;
-epochs = 45;
+epochs = 1;
 algorithm = 'momentum';      % 'momentum' 'adaptive' 'vanilla'
 alfa = 0.9;                  % momentum config
 cost_interval = 5;          % adaptive config
@@ -24,9 +19,19 @@ inc_steps = 3;               % adaptive config
 lr_increase = 0.005;        % adaptive config
 lr_decrease_factor = 0.1;   % adaptive config
 
+%% Plot terrain config
+pts = rand(20000, 2) * 2 - 1;  % points to plot
+
 %% Error config
 tolerance = 0.1;
 n_toperrors = 10;
 
-%% Plot terrain config
-pts = rand(20000, 2) * 2 - 1;  % points to plot
+%% Set config
+filename = 'terrain02.data';
+seed = 42;  % use time() for a different seed each config
+test_ratio = 0.30;
+
+%Train Test config
+max_tries = 200;
+test_error = 5;
+min_cost_change = 1e-6;
