@@ -1,3 +1,0 @@
-config
-init_script
-train_script
