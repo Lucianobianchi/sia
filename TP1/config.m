@@ -5,7 +5,7 @@ hidden_layers = [30 60];
 lr = 0.01;
 f_activation_name = 'tanh';
 slope = 1;
-initialization = 'uniform';
+initialization = 'uniform_one';
 input_lower_bound = -1;
 input_upper_bound = 1;
 
