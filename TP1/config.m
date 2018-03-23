@@ -2,7 +2,7 @@
 n_inputs = 2;
 n_outputs = 1;
 hidden_layers = [40 20];
-lr = 0.09;
+lr = 0.05;
 f_activation_name = 'tanh';
 slope = 1;
 initialization = 'uniform_one';
@@ -28,10 +28,10 @@ n_toperrors = 10;
 
 %% Set config
 filename = 'terrain02.data';
-seed = 30834;  % use time() for a different seed each config
+seed = 13;  % use time() for a different seed each config
 test_ratio = 0.35;
 
 %Train Test config
-max_tries = 5000;
+max_tries = 1000;
 test_error = 3;
 min_cost_change = 1e-6;
