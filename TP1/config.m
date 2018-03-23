@@ -1,7 +1,7 @@
 %% Network config
 n_inputs = 2;
 n_outputs = 1;
-hidden_layers = [40 10];
+hidden_layers = [40 20];
 lr = 0.01;
 f_activation_name = 'tanh';
 slope = 1;
@@ -28,7 +28,7 @@ n_toperrors = 10;
 
 %% Set config
 filename = 'terrain02.data';
-seed = 42;  % use time() for a different seed each config
+seed = 30834;  % use time() for a different seed each config
 test_ratio = 0.35;
 
 %Train Test config
