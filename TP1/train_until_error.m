@@ -10,7 +10,7 @@ try_count = 0;
 
 while (current_error > test_error && try_count < max_tries)
     [net costs] = training(algorithm, net, train_set, train_expected, batch_size, 1, alfa, lr_increase, lr_decrease_factor);
-    train_cost = [train_cost costs(end)];
+    train_cost = [train_cost costs];
     current_cost = costs(end);
     current_error = error_rate(net, test_set, test_expected, tolerance);
     
@@ -30,7 +30,10 @@ while (current_error > test_error && try_count < max_tries)
 endwhile
 
 subplot(2,1,1);
-plot(train_cost);
+x = 1:length(train_cost);
+iterations = length(costs);
+
+plot(x / iterations, train_cost);
 title('Train cost');
 xlabel('Epochs');
 ylabel('Cost');

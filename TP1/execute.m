@@ -1,3 +1,3 @@
 config
 init_script
-train_script
+train_until_error
