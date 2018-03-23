@@ -1,7 +1,7 @@
 %% Network config
 n_inputs = 2;
 n_outputs = 1;
-hidden_layers = [90 60];
+hidden_layers = [60 30];
 lr = 0.01;
 f_activation_name = 'tanh';
 slope = 1;
@@ -32,6 +32,6 @@ seed = 42;  % use time() for a different seed each config
 test_ratio = 0.35;
 
 %Train Test config
-max_tries = 1000;
+max_tries = 5000;
 test_error = 3;
 min_cost_change = 1e-6;
