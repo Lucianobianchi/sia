@@ -1,11 +1,11 @@
 %% Network config
 n_inputs = 2;
 n_outputs = 1;
-hidden_layers = [60];
+hidden_layers = [60 30];
 lr = 0.01;
-f_activation_name = 'logistic';
-slope = 0.6;
-initialization = 'uniform';
+f_activation_name = 'tanh';
+slope = 1;
+initialization = 'uniform_one';
 input_lower_bound = -1;
 input_upper_bound = 1;
 
@@ -23,7 +23,7 @@ lr_decrease_factor = 0.1;   % adaptive config
 pts = rand(20000, 2) * 2 - 1;  % points to plot
 
 %% Error config
-tolerance = 0.05;
+tolerance = 0.1;
 n_toperrors = 10;
 
 %% Set config
@@ -32,6 +32,6 @@ seed = 42;  % use time() for a different seed each config
 test_ratio = 0.35;
 
 %Train Test config
-max_tries = 1000;
+max_tries = 5000;
 test_error = 3;
 min_cost_change = 1e-6;
