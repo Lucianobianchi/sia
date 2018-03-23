@@ -8,7 +8,7 @@ test_cost = [cost(net, test_set, test_expected)];
 test_rates = [];
 epoch_count = 0;
 try_count = 0;
-
+tic;
 while (current_error > test_error && try_count < max_tries)
     [net costs] = training(algorithm, net, train_set, train_expected, batch_size, 1, alfa, lr_increase, lr_decrease_factor);
     train_cost = [train_cost costs];
@@ -30,7 +30,7 @@ while (current_error > test_error && try_count < max_tries)
     last_cost
     fflush(stdout);
 endwhile
-
+toc;
 
 figure(1);
 subplot(2,1,1);

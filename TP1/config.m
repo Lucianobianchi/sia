@@ -1,11 +1,11 @@
 %% Network config
 n_inputs = 2;
 n_outputs = 1;
-hidden_layers = [50 60];
+hidden_layers = [10];
 lr = 0.01;
 f_activation_name = 'tanh';
 slope = 1;
-initialization = 'uniform_one';
+initialization = 'uniform';
 input_lower_bound = -1;
 input_upper_bound = 1;
 
@@ -33,5 +33,5 @@ test_ratio = 0.35;
 
 %Train Test config
 max_tries = 5000;
-test_error = 5;
+test_error = 3;
 min_cost_change = 1e-6;
