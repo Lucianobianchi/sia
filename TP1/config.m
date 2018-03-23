@@ -1,7 +1,7 @@
 %% Network config
 n_inputs = 2;
 n_outputs = 1;
-hidden_layers = [10];
+hidden_layers = [60];
 lr = 0.01;
 f_activation_name = 'logistic';
 slope = 0.6;
