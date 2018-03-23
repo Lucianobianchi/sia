@@ -3,7 +3,7 @@ n_inputs = 2;
 n_outputs = 1;
 hidden_layers = [40 20];
 lr = 0.01;
-f_activation_name = 'logistic';
+f_activation_name = 'tanh';
 slope = 1;
 initialization = 'uniform_one';
 input_lower_bound = -1;
@@ -12,7 +12,7 @@ input_upper_bound = 1;
 %% Train config
 batch_size = 5;
 epochs = 1;
-algorithm = 'vanilla';      % 'momentum' 'adaptive' 'vanilla'
+algorithm = 'momentum';      % 'momentum' 'adaptive' 'vanilla'
 alfa = 0.9;                  % momentum config
 cost_interval = 5;          % adaptive config
 inc_steps = 3;               % adaptive config
