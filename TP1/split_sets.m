@@ -1,11 +1,10 @@
-function [train_set train_expected test_set test_expected] = split_sets(input_set, expected, test_ratio, seed)
+function [train_set train_expected test_set test_expected] = split_sets(input_set, expected, test_ratio)
     li = rows(input_set);
     le = length(expected);
     if (li != le)
         error('split_sets: length of expected values vector (%d) does not match the number of input patterns (%d)', le, li);
     end
 
-    rand('seed', seed);
     shuffled = randperm(length(input_set));
     test_limit = round(length(input_set) * test_ratio);
 
