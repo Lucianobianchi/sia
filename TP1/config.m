@@ -32,6 +32,6 @@ seed = 30834;  % use time() for a different seed each config
 test_ratio = 0.35;
 
 %Train Test config
-max_tries = 1000;
+max_tries = 5000;
 test_error = 3;
 min_cost_change = 1e-6;
