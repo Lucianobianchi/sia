@@ -10,7 +10,7 @@ epoch_count = 0;
 try_count = 0;
 tic;
 while (current_error > test_error && try_count < max_tries)
-    [net costs] = training(algorithm, net, train_set, train_expected, batch_size, 1, alfa, lr_increase, lr_decrease_factor);
+    [net costs] = training(algorithm, net, train_set, train_expected, batch_size, 1, alfa, cost_interval, inc_steps, lr_increase, lr_decrease_factor);
     train_cost = [train_cost costs];
     test_cost = [test_cost cost(net, test_set, test_expected)];
     current_cost = costs(end);

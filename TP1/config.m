@@ -10,13 +10,13 @@ input_lower_bound = -1;
 input_upper_bound = 1;
 
 %% Train config
-batch_size = 500;
+batch_size = 5;
 epochs = 1;
-algorithm = 'momentum';      % 'momentum' 'adaptive' 'vanilla'
+algorithm = 'adaptive';      % 'momentum' 'adaptive' 'vanilla'
 alfa = 0.9;                  % momentum config
 cost_interval = 5;          % adaptive config
 inc_steps = 3;               % adaptive config
-lr_increase = 0.005;        % adaptive config
+lr_increase = 0.1;        % adaptive config
 lr_decrease_factor = 0.1;   % adaptive config
 
 %% Plot terrain config
