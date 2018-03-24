@@ -10,7 +10,7 @@ input_lower_bound = -1;
 input_upper_bound = 1;
 
 %% Train config
-batch_size = 5;
+batch_size = 1;
 epochs = 1;
 algorithm = 'momentum';      % 'momentum' 'adaptive' 'vanilla'
 alfa = 0.9;                  % momentum config
@@ -28,7 +28,7 @@ n_toperrors = 10;
 
 %% Set config
 filename = 'terrain02.data';
-seed = 13;  % use time() for a different seed each config
+seed = 8098;  % use time() for a different seed each config
 test_ratio = 0.35;
 
 %Train Test config
