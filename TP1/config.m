@@ -2,7 +2,7 @@
 n_inputs = 2;
 n_outputs = 1;
 hidden_layers = [20 10];
-lr = 0.1;
+lr = 0.01;
 f_activation_name = 'tanh';
 slope = 1;
 initialization = 'uniform_one';
