@@ -14,10 +14,10 @@ batch_size = 1;
 epochs = 1;
 algorithm = 'adaptive';      % 'momentum' 'adaptive' 'vanilla'
 alfa = 0.9;                  % momentum config
-cost_interval = 10;          % adaptive config
-inc_steps = 4;               % adaptive config
+cost_interval = 5;          % adaptive config
+inc_steps = 5;               % adaptive config
 lr_increase = 0.01;        % adaptive config
-lr_decrease_factor = 0.001;   % adaptive config
+lr_decrease_factor = 0.01;   % adaptive config
 
 %% Plot terrain config
 pts = rand(20000, 2) * 2 - 1;  % points to plot
