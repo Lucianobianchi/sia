@@ -52,12 +52,12 @@ function net = build_network(n_inputs, n_outputs, hidden_layers, weight_init, lr
             w_init = @(n_in, n_out) unifrnd(-1, 1, [n_in n_out]);
         case 'uniform'
             w_init = @(n_in, n_out) unifrnd(-1/sqrt(n_in), 1/sqrt(n_in), [n_in n_out]);
+        case 'normal'
+            w_init = @(n_in, n_out) normrnd(0, sqrt(n_in), [n_in n_out]);
         case 'xavier_uniform'
             w_init = @(n_in, n_out) unifrnd(-sqrt(6)*4/sqrt(n_in + n_out), sqrt(6)*4/sqrt(n_in + n_out), [n_in n_out]);
         case 'xavier'
             w_init = @(n_in, n_out) normrnd(0, 2/n_in + n_out, [n_in n_out]);
-        case 'zero'
-            w_init = @(n_in, n_out) zeros(n_in, n_out);
         otherwise
             error('build_network: Unsupported initialization function %s', weight_init);
     endswitch
