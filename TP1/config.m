@@ -15,8 +15,8 @@ epochs = 1;
 algorithm = 'adaptive';      % 'momentum' 'adaptive' 'vanilla'
 alfa = 0.9;                  % momentum config
 cost_interval = 10;          % adaptive config
-inc_steps = 10;               % adaptive config
-lr_increase = 0.1;        % adaptive config
+inc_steps = 4;               % adaptive config
+lr_increase = 0.01;        % adaptive config
 lr_decrease_factor = 0.001;   % adaptive config
 
 %% Plot terrain config
