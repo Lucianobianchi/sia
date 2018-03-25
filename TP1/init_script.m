@@ -1,4 +1,5 @@
 rand('seed', seed); % initialize seed
+randn('seed', seed); % initialize seed for normal distribution RN generator
 net = build_network(n_inputs, n_outputs, hidden_layers, initialization, lr, f_activation_name, slope);
 [inputs, outputs] = open_file(filename);
 
