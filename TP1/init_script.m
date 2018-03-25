@@ -12,6 +12,13 @@ switch (f_activation_name)
         output_upper_bound = 1;
 endswitch
 
-normalized_inputs = map(inputs, [input_lower_bound input_lower_bound], [input_upper_bound input_upper_bound]);
+% outputs must always be normalized unless linear activation function function is being used in the output layer
 normalized_outputs = map(outputs, [output_lower_bound], [output_upper_bound]);
+
+if (should_normalize)
+    normalized_inputs = map(inputs, [input_lower_bound input_lower_bound], [input_upper_bound input_upper_bound]);
+else
+    normalized_inputs = inputs;
+end
+
 [train_set train_expected test_set test_expected] = split_sets(normalized_inputs, normalized_outputs, test_ratio);
