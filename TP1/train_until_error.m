@@ -53,7 +53,7 @@ subplot(1,1,1);
 x = 1:length(train_cost);
 iterations = length(costs);
 plot(x / iterations, train_cost, 0:(length(test_cost)-1), test_cost);
-title('Train cost');
+title('Cost');
 xlabel('Epochs');
 ylabel('Cost');
 legend('Train', 'Test');
