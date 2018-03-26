@@ -39,8 +39,8 @@ enough for the purpose of the other executable scripts.
 3. Initialize net and terrain data: `init_script`
 4. Run desired trainig script:
 
-..* Choose `train_script` if you wish to train for `epochs` times as defined in `config.m`
-..* Choose `train_until_error` if you wish to train until a certain error or net saturation criteria is met 
+  * Choose `train_script` if you wish to train for `epochs` times as defined in `config.m`
+  * Choose `train_until_error` if you wish to train until a certain error or net saturation criteria is met 
 as defined in the last section `Train Test config` of `config.m`
 
 5. (Optional) Plot the terrain: `plot_script`
