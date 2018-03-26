@@ -1,10 +1,13 @@
 %% -*- texinfo -*-
-%% @deftypefn {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{hidden_layers}, @var{lr}, @var{f_activation_name}, @var{slope})
-%% @deftypefnx {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{hidden_layers}, @var{lr}, 'step')
+%% @deftypefn {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{hidden_layers}, @var{weight_init}, @var{lr}, @var{f_activation_name}, @var{slope})
+%% @deftypefnx {} {} build_network (@var{n_inputs}, @var{n_outputs}, @var{hidden_layers}, @var{weight_init}, @var{lr}, 'step')
 %% Builds a neural network.
 %%
 %% @var{hidden_layers} is represented by a vector in which each
 %% value represents the amount of neurons in each layer.
+%%
+%% @var{weight_init} represents the initialization criteria for the weights.
+%% Supported criterias are: 'uniform_one', 'uniform', 'normal', 'xavier_uniform' and 'xavier'.
 %%
 %% @var{lr} corresponds to the network learning rate.
 %%
