@@ -1,14 +1,9 @@
 config
-init_script
 
-current_error = 100;
-last_cost = cost(net, train_set, train_expected);
-train_cost = [last_cost];
-test_cost = [cost(net, test_set, test_expected)];
-test_rates = [];
-epoch_count = 0;
-max_epochs = epochs;
-try_count = 0;
+net = set_lr(net, lr);
+
+max_epochs += epochs;
+
 tic;
 while (current_error > test_error && try_count < max_tries)
     [net costs] = training(algorithm, net, train_set, train_expected, batch_size, 1, alfa, cost_interval, inc_steps, lr_increase, lr_decrease_factor);
@@ -29,8 +24,9 @@ while (current_error > test_error && try_count < max_tries)
     epoch_count
     current_error
     last_cost
+    fflush(stdout);
 
-    pause(0);
+    pause(1);
     figure(1);
     subplot(2,1,1);
     x = 1:length(train_cost);
@@ -46,7 +42,6 @@ while (current_error > test_error && try_count < max_tries)
     xlabel('Epochs');
     ylabel('Error rate');
     refreshdata();
-    fflush(stdout);
 
     if (stop_early && epoch_count >= max_epochs)
         break;
