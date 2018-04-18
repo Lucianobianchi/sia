@@ -38,5 +38,12 @@
 			<artifactId>logback-classic</artifactId>
 			<version>1.2.3</version>
 		</dependency>
+		<dependency>
+			<groupId>ar.com.itba</groupId>
+			<artifactId>sia</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/GPS.jar</systemPath>
+		</dependency>
 	</dependencies>
 </project>
