@@ -3,12 +3,11 @@ package ar.edu.itba.sia.grupo2.engine;
 import ar.com.itba.sia.Rule;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class Node<S> {
     private final S state;
-    private final Optional<Node<S>> parent;
-    private final Optional<Rule<S>> rule;
+    private final Node<S> parent;
+    private final Rule<S> rule;
     private final double cost;
 
     public static <S> Node<S> rootNode(final S state) {
@@ -27,8 +26,8 @@ public class Node<S> {
             throw new IllegalStateException("Parent node and rule must both be null or non null simultaneously");
 
         this.state = Objects.requireNonNull(state);
-        this.parent = Optional.ofNullable(parent);
-        this.rule = Optional.ofNullable(rule);
+        this.parent = parent;
+        this.rule = rule;
         this.cost = cost;
     }
 
@@ -37,15 +36,15 @@ public class Node<S> {
     }
 
     public Node<S> getParent() {
-        return parent.get();
+        return Objects.requireNonNull(parent);
     }
 
     public Rule<S> getRule() {
-        return rule.get();
+        return Objects.requireNonNull(rule);
     }
 
     public boolean hasParent() {
-        return parent.isPresent();
+        return parent != null;
     }
 
     public double getCost() {

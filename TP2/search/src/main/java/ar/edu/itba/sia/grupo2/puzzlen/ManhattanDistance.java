@@ -1,8 +1,8 @@
 package ar.edu.itba.sia.grupo2.puzzlen;
 
-import java.util.function.ToIntFunction;
+import ar.com.itba.sia.Heuristic;
 
-public class ManhattanDistance implements ToIntFunction<PuzzleNBoard> {
+public class ManhattanDistance implements Heuristic<PuzzleNBoard> {
     private static ManhattanDistance ourInstance = new ManhattanDistance();
 
     public static ManhattanDistance getInstance() {
@@ -12,7 +12,7 @@ public class ManhattanDistance implements ToIntFunction<PuzzleNBoard> {
     private ManhattanDistance() { }
 
     @Override
-    public int applyAsInt(final PuzzleNBoard board) {
+    public double getValue(final PuzzleNBoard board) {
         final int dim = board.getDim();
         int distance = 0;
 
