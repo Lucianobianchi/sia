@@ -30,7 +30,9 @@ public enum AdyacentMovement implements Rule<PuzzleNBoard> {
     }
 
     @Override
-    public void setCost(double v) { }
+    public void setCost(double v) {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public PuzzleNBoard applyToState(final PuzzleNBoard puzzleNBoard) {
