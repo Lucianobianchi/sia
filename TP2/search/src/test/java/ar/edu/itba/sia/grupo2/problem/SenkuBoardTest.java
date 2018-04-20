@@ -46,5 +46,7 @@ public class SenkuBoardTest {
         assertArrayEquals(expectedBoundaries, senkuBoard.getBoundaries());
     }
 
+    @Test
+    public void targetTest(){ assertEquals(new Coordinate(1,1), senkuBoard.getTarget()); }
     // TODO: isValidMovement, applyMovement, equals
 }

@@ -13,6 +13,7 @@ public class SenkuBoard {
     private final RowBoundary[] boundaries;
     private int cellCount;
     private int emptyCellCount;
+    private Coordinate target;
 
     public SenkuBoard(final SenkuContent[][] board) {
         this.board = Objects.requireNonNull(board);
@@ -20,14 +21,17 @@ public class SenkuBoard {
         if (!isSquare())
             throw new IllegalArgumentException("Board must be square");
 
+        this.target = new Coordinate(board.length/2, board[0].length/2); // Center
+
         this.boundaries = calculateBoundaries();
     }
 
-    private SenkuBoard(final SenkuContent[][] board, final RowBoundary[] boundaries, final int cellCount, final int emptyCellCount) {
+    private SenkuBoard(final SenkuContent[][] board, final RowBoundary[] boundaries, final int cellCount, final int emptyCellCount, final Coordinate target) {
         this.board = board;
         this.boundaries = boundaries;
         this.cellCount = cellCount;
         this.emptyCellCount = emptyCellCount;
+        this.target = target;
     }
 
     public int getPegCount() {
@@ -44,6 +48,10 @@ public class SenkuBoard {
 
     public int getDimension() {
         return board.length;
+    }
+
+    public Coordinate getTarget() {
+        return target;
     }
 
     // warning: mutable
@@ -96,7 +104,7 @@ public class SenkuBoard {
         newBoard[to.getRow()][to.getColumn()] = PEG;
         newBoard[between.getRow()][to.getColumn()] = EMPTY;
 
-        return new SenkuBoard(newBoard, boundaries, cellCount, emptyCellCount + 1);
+        return new SenkuBoard(newBoard, boundaries, cellCount, emptyCellCount + 1, target);
     }
 
     private boolean isSquare() {
