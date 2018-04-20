@@ -9,7 +9,7 @@ import ar.edu.itba.sia.grupo2.problem.SenkuContent;
 public class MeanDistanceToTarget implements Heuristic<SenkuBoard> {
 
     @Override
-    public double getValue(SenkuBoard senkuBoard) {
+    public double getValue(final SenkuBoard senkuBoard) {
         Coordinate target = senkuBoard.getTarget();
         RowBoundary[] boardBoundaries = senkuBoard.getBoundaries();
 
@@ -22,7 +22,6 @@ public class MeanDistanceToTarget implements Heuristic<SenkuBoard> {
             for(int col = from; col <= to ; col++){
                 if(senkuBoard.getContent(row, col) == SenkuContent.PEG){
                     cumulativeDistance += Coordinate.manhattanDistance(target, new Coordinate(row,col));
-
                     checkedPegs++;
                     if(checkedPegs == senkuBoard.getPegCount()){ // Early return por eficiencia
                         return cumulativeDistance / senkuBoard.getPegCount(); // Promedio
