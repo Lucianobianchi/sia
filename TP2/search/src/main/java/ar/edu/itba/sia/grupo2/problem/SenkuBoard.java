@@ -79,10 +79,10 @@ public class SenkuBoard {
         if (toContent != EMPTY)
             return false;
 
-        if (from.manchesterDistance(to) != 2)
+        if (Coordinate.manhattanDistance(from, to) != 2)
             return false;
 
-        final Coordinate between = from.between(to);
+        final Coordinate between = Coordinate.between(from, to);
         final SenkuContent betweenContent = getContent(between);
 
         if (betweenContent != PEG)
@@ -97,7 +97,7 @@ public class SenkuBoard {
 
         final Coordinate from = movement.getFrom();
         final Coordinate to = movement.getTo();
-        final Coordinate between = from.between(to);
+        final Coordinate between = Coordinate.between(from, to);
 
         final SenkuContent[][] newBoard = Arrays.copyOf(board, board.length);
         newBoard[from.getRow()][from.getColumn()] = EMPTY;

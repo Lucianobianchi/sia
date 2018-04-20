@@ -22,7 +22,7 @@ public class SenkuMultipleMovement implements Rule<SenkuBoard> {
 
     @Override
     public double getCost() {
-        return path.size() - 1;
+        return 1;
     }
 
     @Override
