@@ -6,6 +6,13 @@ public class Coordinate {
     private final int row;
     private final int column;
 
+    public static int manhattanDistance(final Coordinate a, final Coordinate b) {
+        final int rowDistance = Math.abs(a.getRow() - b.getRow());
+        final int columnDistance = Math.abs(a.getColumn() - b.getColumn());
+
+        return rowDistance + columnDistance;
+    }
+
     public Coordinate(final int row, final int column) {
         if (row < 0 || column < 0)
             throw new IllegalArgumentException("Coordinates components must be non negative");
@@ -22,16 +29,10 @@ public class Coordinate {
         return column;
     }
 
-    public int manchesterDistance(final Coordinate other) {
-        final int rowDistance = Math.abs(other.getRow() - getRow());
-        final int columnDistance = Math.abs(other.getColumn() - getColumn());
 
-        return rowDistance + columnDistance;
-    }
-
-    public Coordinate between(final Coordinate other) {
-        final int betweenRow = getRow() + (other.getRow() - getRow()) / 2;
-        final int betweenColumn = getColumn() + (other.getColumn() - getColumn()) / 2;
+    public static Coordinate between(final Coordinate from, final Coordinate to) {
+        final int betweenRow = from.getRow() + (to.getRow() - from.getRow()) / 2;
+        final int betweenColumn = from.getColumn() + (to.getColumn() - from.getColumn()) / 2;
 
         return new Coordinate(betweenRow, betweenColumn);
     }
