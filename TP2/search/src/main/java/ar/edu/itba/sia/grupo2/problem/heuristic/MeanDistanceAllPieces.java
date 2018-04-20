@@ -14,20 +14,20 @@ public class MeanDistanceAllPieces implements Heuristic<SenkuBoard> {
 
         double cumulativeDistance = 0;
         int checkedPegs = 0;
-        int numberOfPairs = (senkuBoard.getPegCount())*(senkuBoard.getPegCount() - 1) / 2;
+        int pegCount = senkuBoard.getPegCount();
+        int numberOfPairs = pegCount*(pegCount-1)/2;
         for(int row = 0 ; row < boardBoundaries.length ; row++){
             int from = boardBoundaries[row].getFrom();
             int to = boardBoundaries[row].getTo();
             for(int col = from; col <= to ; col++){
                 if(senkuBoard.getContent(row, col) == SenkuContent.PEG){
-                    cumulativeDistance += getDistanceFromLowerPegs(senkuBoard, new Coordinate(row, col), senkuBoard.getPegCount() - checkedPegs);
+                    cumulativeDistance += getDistanceFromLowerPegs(senkuBoard, new Coordinate(row, col), pegCount - checkedPegs);
                     checkedPegs++;
                     if(checkedPegs == senkuBoard.getPegCount()){
                         return cumulativeDistance / numberOfPairs; // Early return por eficiencia
                     }
                 }
             }
-            row++;
         }
 
         return cumulativeDistance / numberOfPairs;
@@ -46,6 +46,7 @@ public class MeanDistanceAllPieces implements Heuristic<SenkuBoard> {
             for (int col = columnLowerLimit; col <= columnUpperLimit; col++) {
                 if (senkuBoard.getContent(row, col) == SenkuContent.PEG) {
                     cumulative += Coordinate.manhattanDistance(from, new Coordinate(row, col));
+
                     remainingPegs--;
                     if(remainingPegs == 0){
                         return cumulative;
