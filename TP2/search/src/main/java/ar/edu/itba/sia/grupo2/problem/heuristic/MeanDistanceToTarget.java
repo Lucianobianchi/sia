@@ -14,6 +14,7 @@ public class MeanDistanceToTarget implements Heuristic<SenkuBoard> {
         RowBoundary[] boardBoundaries = senkuBoard.getBoundaries();
 
         int cumulativeDistance = 0;
+        int checkedPegs = 0;
         int  row = 0;
         for(RowBoundary boundary: boardBoundaries){
             int from = boundary.getFrom();
@@ -21,6 +22,11 @@ public class MeanDistanceToTarget implements Heuristic<SenkuBoard> {
             for(int col = from; col <= to ; col++){
                 if(senkuBoard.getContent(row, col) == SenkuContent.PEG){
                     cumulativeDistance += Coordinate.manhattanDistance(target, new Coordinate(row,col));
+
+                    checkedPegs++;
+                    if(checkedPegs == senkuBoard.getPegCount()){ // Early return por eficiencia
+                        return cumulativeDistance / senkuBoard.getPegCount(); // Promedio
+                    }
                 }
             }
             row++;
