@@ -25,6 +25,7 @@ public class SenkuBoard {
         this.boundaries = calculateBoundaries();
     }
 
+    // TODO: ver que hacer cuando no ponemos target
     private SenkuBoard(final SenkuContent[][] board, final RowBoundary[] boundaries, final int cellCount, final int emptyCellCount, final Coordinate target) {
         this.board = board;
         this.boundaries = boundaries;

@@ -24,7 +24,7 @@ public class SenkuBoardParser {
 			while((line = br.readLine()) != null) {
 
 				if (row == 0)
-					// Se asumen tableros cuadrados
+					// Squared boards
 					board = new SenkuContent[line.length()][line.length()];
 
 				char[] chars = line.toCharArray();
