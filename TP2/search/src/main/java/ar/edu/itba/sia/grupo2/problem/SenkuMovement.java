@@ -9,8 +9,8 @@ public class SenkuMovement implements Rule<SenkuBoard> {
     private final Coordinate to;
 
     public SenkuMovement(final Coordinate from, final Coordinate to) {
-        this.from = from;
-        this.to = to;
+        this.from = Objects.requireNonNull(from);
+        this.to = Objects.requireNonNull(to);
     }
 
     public Coordinate getFrom() {

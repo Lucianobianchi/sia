@@ -67,9 +67,7 @@ public class SenkuBoard {
         return board[row][column];
     }
 
-    public boolean isValidMovement(final SenkuMovement movement) {
-        final Coordinate from = movement.getFrom();
-        final Coordinate to = movement.getTo();
+    public boolean isValidMovement(final Coordinate from, final Coordinate to) {
         final SenkuContent fromContent = getContent(from);
         final SenkuContent toContent = getContent(to);
 
@@ -89,6 +87,13 @@ public class SenkuBoard {
             return false;
 
         return true;
+    }
+
+    public boolean isValidMovement(final SenkuMovement movement) {
+        final Coordinate from = movement.getFrom();
+        final Coordinate to = movement.getTo();
+
+        return isValidMovement(from, to);
     }
 
     public SenkuBoard applyMovement(final SenkuMovement movement) {
