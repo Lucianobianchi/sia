@@ -42,9 +42,4 @@ public class SenkuBoardParser {
 
 		return board;
 	}
-
-	public static void main (String[] args) {
-		System.out.println(Arrays.deepToString(parse("boards/board1.txt")));
-	}
-
 }
