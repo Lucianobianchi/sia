@@ -14,9 +14,6 @@ public class Coordinate {
     }
 
     public Coordinate(final int row, final int column) {
-        if (row < 0 || column < 0)
-            throw new IllegalArgumentException("Coordinates components must be non negative");
-
         this.row = row;
         this.column = column;
     }

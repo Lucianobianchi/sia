@@ -34,32 +34,35 @@ public class SenkuProblem implements Problem<SenkuBoard> {
     @Override
     public List<Rule<SenkuBoard>> getRules(final SenkuBoard senkuBoard) {
         final List<Rule<SenkuBoard>> rules = new ArrayList<>(); // TODO: initial capacity o sino usar LinkedList
-        int remainingEmptyCells = senkuBoard.getEmptyCount();
+        final int pegCount = senkuBoard.getPegCount();
+        final int emptyCount = senkuBoard.getEmptyCount();
 
-        for (int i = 0; remainingEmptyCells > 0; i++)
-            remainingEmptyCells -= addRulesAtRow(senkuBoard, i, rules);
+        int remaining = pegCount > emptyCount ? emptyCount : pegCount;
+        final SenkuContent contentToConsider = pegCount > emptyCount ? EMPTY : PEG;
+
+        for (int i = 0; remaining > 0; i++)
+            remaining -= addRulesAtRow(senkuBoard, i, contentToConsider, rules);
 
         return rules;
     }
 
-    private int addRulesAtRow(final SenkuBoard senkuBoard, final int row, final List<Rule<SenkuBoard>> rules) {
-        int emptyCellsFound = 0;
+    private int addRulesAtRow(final SenkuBoard senkuBoard, final int row, final SenkuContent content, final List<Rule<SenkuBoard>> rules) {
+        int contentFound = 0;
         final RowBoundary boundary = senkuBoard.getBoundaries()[row];
         final int from = boundary.getFrom();
         final int to = boundary.getTo();
 
         for (int i = from; i <= to; i++) {
-            if (senkuBoard.getContent(row, i) == EMPTY) {
-                emptyCellsFound += 1;
-
-                addRulesAtCell(senkuBoard, new Coordinate(row, i), rules);
+            if (senkuBoard.getContent(row, i) == content) {
+                contentFound += 1;
+                addRulesAtCell(senkuBoard, new Coordinate(row, i), content, rules);
             }
         }
 
-        return emptyCellsFound;
+        return contentFound;
     }
 
-    private void addRulesAtCell(final SenkuBoard senkuBoard, final Coordinate coordinate, final List<Rule<SenkuBoard>> rules) {
+    private void addRulesAtCell(final SenkuBoard senkuBoard, final Coordinate coordinate, final SenkuContent content, final List<Rule<SenkuBoard>> rules) {
         final int row = coordinate.getRow();
         final int col = coordinate.getColumn();
 
@@ -67,8 +70,14 @@ public class SenkuProblem implements Problem<SenkuBoard> {
             final Coordinate vertical = new Coordinate(row + delta, col);
             final Coordinate horizontal = new Coordinate(row, col + delta);
 
-            tryAddRule(senkuBoard, vertical, coordinate, rules);
-            tryAddRule(senkuBoard, horizontal, coordinate, rules);
+            if (content == EMPTY) {
+                tryAddRule(senkuBoard, vertical, coordinate, rules);
+                tryAddRule(senkuBoard, horizontal, coordinate, rules);
+            }
+            else {
+                tryAddRule(senkuBoard, coordinate, vertical, rules);
+                tryAddRule(senkuBoard, coordinate, horizontal, rules);
+            }
         }
     }
 
