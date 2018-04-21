@@ -62,7 +62,8 @@ public class SenkuBoardTest {
         assertTrue(senkuBoard.isValidMovement(movement));
 
         final SenkuMovement[] invalidMovements = new SenkuMovement[] {
-            new SenkuMovement(new Coordinate(1, 1), new Coordinate(1, 1)),
+            new SenkuMovement(new Coordinate(1, 1), new Coordinate(2, 2)),
+            new SenkuMovement(new Coordinate(1, 1), new Coordinate(3, 3)),
             new SenkuMovement(new Coordinate(0, 0), new Coordinate(0, 1)),
             new SenkuMovement(new Coordinate(1, 1), new Coordinate(1, 3)),
             new SenkuMovement(new Coordinate(2, 2), new Coordinate(0, 2)),
@@ -77,11 +78,11 @@ public class SenkuBoardTest {
     public void applyMovementTest() {
         final SenkuMovement movement = new SenkuMovement(new Coordinate(0, 2), new Coordinate(2, 2));
         final SenkuBoard expectedSenkuBoard = new SenkuBoard(new SenkuContent[][] {
-                {INVALID, PEG, EMPTY, PEG, INVALID},
-                {INVALID, PEG, EMPTY, PEG, INVALID},
-                {PEG, PEG, PEG, PEG, PEG},
-                {INVALID, PEG, PEG, PEG, INVALID},
-                {INVALID, PEG, PEG, PEG, INVALID}
+            {INVALID, PEG, EMPTY, PEG, INVALID},
+            {INVALID, PEG, EMPTY, PEG, INVALID},
+            {PEG, PEG, PEG, PEG, PEG},
+            {INVALID, PEG, PEG, PEG, INVALID},
+            {INVALID, PEG, PEG, PEG, INVALID}
         });
 
         final SenkuBoard actualSenkuBoard = senkuBoard.applyMovement(movement);
@@ -102,11 +103,11 @@ public class SenkuBoardTest {
     @Test
     public void equalsTest() {
         final SenkuBoard expectedSenkuBoard = new SenkuBoard(new SenkuContent[][] {
-                {INVALID, PEG, PEG, PEG, INVALID},
-                {INVALID, PEG, PEG, PEG, INVALID},
-                {PEG, PEG, EMPTY, PEG, PEG},
-                {INVALID, PEG, PEG, PEG, INVALID},
-                {INVALID, PEG, PEG, PEG, INVALID}
+            {INVALID, PEG, PEG, PEG, INVALID},
+            {INVALID, PEG, PEG, PEG, INVALID},
+            {PEG, PEG, EMPTY, PEG, PEG},
+            {INVALID, PEG, PEG, PEG, INVALID},
+            {INVALID, PEG, PEG, PEG, INVALID}
         });
 
         assertEquals(expectedSenkuBoard, senkuBoard);

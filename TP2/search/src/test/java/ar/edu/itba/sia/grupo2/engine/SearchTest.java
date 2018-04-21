@@ -49,7 +49,7 @@ public class SearchTest {
         assertGraphSearch(algorithm);
     }
 
-    @Test(timeout = 1300)
+    @Test(timeout = 1500)
     public void idfsTest() {
         final IterativeDFS<PuzzleNBoard> algorithm = new IterativeDFS<>();
 

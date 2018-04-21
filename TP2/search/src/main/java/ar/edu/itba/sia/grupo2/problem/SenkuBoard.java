@@ -2,6 +2,7 @@ package ar.edu.itba.sia.grupo2.problem;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.EMPTY;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
@@ -67,9 +68,21 @@ public class SenkuBoard {
         return board[row][column];
     }
 
-    public boolean isValidMovement(final SenkuMovement movement) {
-        final Coordinate from = movement.getFrom();
-        final Coordinate to = movement.getTo();
+    public boolean isValidPosition(final Coordinate coordinate) {
+        return isValidPosition(coordinate.getRow(), coordinate.getColumn());
+    }
+
+    public boolean isValidPosition(final int row, final int column) {
+        final int dim = getDimension();
+        return row >= 0 && row < dim && column >= 0 && column < dim;
+    }
+
+    public boolean isValidMovement(final Coordinate from, final Coordinate to) {
+        final int dim = getDimension();
+
+        if (!isValidPosition(from) || !isValidPosition(to))
+            return false;
+
         final SenkuContent fromContent = getContent(from);
         final SenkuContent toContent = getContent(to);
 
@@ -82,13 +95,24 @@ public class SenkuBoard {
         if (Coordinate.manhattanDistance(from, to) != 2)
             return false;
 
-        final Coordinate between = Coordinate.between(from, to);
-        final SenkuContent betweenContent = getContent(between);
+        final Optional<Coordinate> between = Coordinate.between(from, to);
+
+        if (!between.isPresent())
+            return false;
+
+        final SenkuContent betweenContent = getContent(between.get());
 
         if (betweenContent != PEG)
             return false;
 
         return true;
+    }
+
+    public boolean isValidMovement(final SenkuMovement movement) {
+        final Coordinate from = movement.getFrom();
+        final Coordinate to = movement.getTo();
+
+        return isValidMovement(from, to);
     }
 
     public SenkuBoard applyMovement(final SenkuMovement movement) {
@@ -97,7 +121,7 @@ public class SenkuBoard {
 
         final Coordinate from = movement.getFrom();
         final Coordinate to = movement.getTo();
-        final Coordinate between = Coordinate.between(from, to);
+        final Coordinate between = Coordinate.between(from, to).get();
 
         final SenkuContent[][] newBoard = Arrays.copyOf(board, board.length);
         newBoard[from.getRow()][from.getColumn()] = EMPTY;
