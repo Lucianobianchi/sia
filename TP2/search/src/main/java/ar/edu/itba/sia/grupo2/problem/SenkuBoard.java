@@ -69,8 +69,8 @@ public class SenkuBoard {
     public boolean isValidMovement(final SenkuMovement movement) {
         final Coordinate from = movement.getFrom();
         final Coordinate to = movement.getTo();
-        final SenkuContent fromContent = getContent(movement.getFrom());
-        final SenkuContent toContent = getContent(movement.getTo());
+        final SenkuContent fromContent = getContent(from);
+        final SenkuContent toContent = getContent(to);
 
         if (fromContent != PEG)
             return false;
