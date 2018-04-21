@@ -1,5 +1,8 @@
-package ar.edu.itba.sia.grupo2.problem;
+package ar.edu.itba.sia.grupo2.view;
 
+import ar.edu.itba.sia.grupo2.problem.SenkuBoard;
+import ar.edu.itba.sia.grupo2.problem.SenkuBoardParser;
+import ar.edu.itba.sia.grupo2.problem.SenkuContent;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
