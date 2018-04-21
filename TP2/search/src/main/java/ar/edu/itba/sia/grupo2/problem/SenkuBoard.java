@@ -7,7 +7,6 @@ import static ar.edu.itba.sia.grupo2.problem.SenkuContent.EMPTY;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.PEG;
 
-// TODO: hashcode, toString & equals
 public class SenkuBoard {
     private final SenkuContent[][] board;
     private final RowBoundary[] boundaries;
@@ -105,6 +104,55 @@ public class SenkuBoard {
         newBoard[between.getRow()][to.getColumn()] = EMPTY;
 
         return new SenkuBoard(newBoard, boundaries, cellCount, emptyCellCount + 1, target);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == this)
+            return true;
+
+        if (!(obj instanceof SenkuBoard))
+            return false;
+
+        final SenkuBoard other = (SenkuBoard) obj;
+
+        if (getDimension() != other.getDimension() || getCellCount() != other.getCellCount() || getEmptyCount() != other.getEmptyCount())
+            return false;
+
+        for (int i = 0; i < getDimension(); i++)
+            if (!Arrays.equals(board[i], other.board[i]))
+                return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int dim = getDimension();
+        int hash = 17;
+
+        for (int i = 0; i < dim; i++)
+            hash = 31 * hash + Arrays.hashCode(board[i]);
+
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder stringBuilder = new StringBuilder();
+        final int dim = getDimension();
+
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                stringBuilder.append(board[i][j]);
+            }
+
+            stringBuilder.append('\n');
+        }
+
+        // remove last newline
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return stringBuilder.toString();
     }
 
     private boolean isSquare() {
