@@ -8,7 +8,7 @@ import static ar.edu.itba.sia.grupo2.problem.SenkuContent.PEG;
 import static org.junit.Assert.*;
 
 public class SenkuBoardTest {
-    private SenkuBoard senkuBoard = new SenkuBoard(SenkuBoardParser.parse("testBoards/test1.txt"));
+    private SenkuBoard senkuBoard = SenkuBoardLoader.load("testBoards/test1.txt");
 
     private String expectedString =
             "XOOOX\n" +
