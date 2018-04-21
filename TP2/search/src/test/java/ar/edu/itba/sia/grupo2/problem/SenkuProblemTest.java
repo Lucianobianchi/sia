@@ -45,10 +45,10 @@ public class SenkuProblemTest {
 
         final Coordinate from = new Coordinate(2, 2);
         final List<Rule<SenkuBoard>> expectedRules = Arrays.asList(
-                new SenkuMovement(from, new Coordinate(0, 2)),
-                new SenkuMovement(from, new Coordinate(2, 0)),
-                new SenkuMovement(from, new Coordinate(4, 2)),
-                new SenkuMovement(from, new Coordinate(2, 4))
+            new SenkuMovement(from, new Coordinate(0, 2)),
+            new SenkuMovement(from, new Coordinate(2, 0)),
+            new SenkuMovement(from, new Coordinate(4, 2)),
+            new SenkuMovement(from, new Coordinate(2, 4))
         );
 
         final List<Rule<SenkuBoard>> actualRules = senkuProblem.getRules(senkuBoard);

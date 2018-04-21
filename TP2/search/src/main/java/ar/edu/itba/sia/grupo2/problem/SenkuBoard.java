@@ -2,6 +2,7 @@ package ar.edu.itba.sia.grupo2.problem;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.EMPTY;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
@@ -94,8 +95,12 @@ public class SenkuBoard {
         if (Coordinate.manhattanDistance(from, to) != 2)
             return false;
 
-        final Coordinate between = Coordinate.between(from, to);
-        final SenkuContent betweenContent = getContent(between);
+        final Optional<Coordinate> between = Coordinate.between(from, to);
+
+        if (!between.isPresent())
+            return false;
+
+        final SenkuContent betweenContent = getContent(between.get());
 
         if (betweenContent != PEG)
             return false;
@@ -116,7 +121,7 @@ public class SenkuBoard {
 
         final Coordinate from = movement.getFrom();
         final Coordinate to = movement.getTo();
-        final Coordinate between = Coordinate.between(from, to);
+        final Coordinate between = Coordinate.between(from, to).get();
 
         final SenkuContent[][] newBoard = Arrays.copyOf(board, board.length);
         newBoard[from.getRow()][from.getColumn()] = EMPTY;
