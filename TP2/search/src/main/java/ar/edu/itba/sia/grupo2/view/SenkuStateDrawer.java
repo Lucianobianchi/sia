@@ -1,7 +1,7 @@
 package ar.edu.itba.sia.grupo2.view;
 
 import ar.edu.itba.sia.grupo2.problem.SenkuBoard;
-import ar.edu.itba.sia.grupo2.problem.SenkuBoardParser;
+import ar.edu.itba.sia.grupo2.problem.SenkuBoardLoader;
 import ar.edu.itba.sia.grupo2.problem.SenkuContent;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -39,7 +39,7 @@ public class SenkuStateDrawer extends Application {
 		}
 	}
 
-	private static final SenkuBoard board = new SenkuBoard(SenkuBoardParser.parse("boards/board1.txt"));;
+	private static final SenkuBoard board = SenkuBoardLoader.load("boards/board1.txt");
 
 	@Override
 	public void start (Stage stage) throws Exception {

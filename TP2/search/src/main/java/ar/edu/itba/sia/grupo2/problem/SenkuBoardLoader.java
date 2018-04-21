@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class SenkuBoardParser {
+public class SenkuBoardLoader {
 	private static final Map<Character, SenkuContent> symbolMap;
 	static {
 		Map<Character, SenkuContent> aMap = new HashMap<>();
@@ -15,7 +15,7 @@ public class SenkuBoardParser {
 		symbolMap = Collections.unmodifiableMap(aMap);
 	}
 
-	public static SenkuContent[][] parse(final String filePath) {
+	private static SenkuContent[][] parse(final String filePath) {
 		SenkuContent[][] board = new SenkuContent[0][0];
 		String line;
 		int row = 0;
@@ -41,5 +41,9 @@ public class SenkuBoardParser {
 		}
 
 		return board;
+	}
+
+	public static SenkuBoard load(final String boardPath) {
+		return new SenkuBoard(parse(boardPath));
 	}
 }
