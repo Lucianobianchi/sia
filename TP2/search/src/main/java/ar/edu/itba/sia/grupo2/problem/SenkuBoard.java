@@ -26,24 +26,14 @@ public class SenkuBoard {
 
         final SenkuContent contentToConsider = board.getPegCount() > board.getEmptyCount() ? EMPTY : PEG;
 
-        InterestingCoordinatesIterator boardIter = new InterestingCoordinatesIterator(board, contentToConsider);
-
-        Set<Coordinate> check = new HashSet<>();
-
-        while(boardIter.hasNext()){
-            check.add(boardIter.next());
-        }
-
-
         for(Symmetry s : Symmetry.values()){
             boolean symmetric = true;
-            InterestingCoordinatesIterator otherIter = new InterestingCoordinatesIterator(other, contentToConsider);
-            while(otherIter.hasNext()){
-                Coordinate next = otherIter.next();
+            InterestingCoordinatesIterator iterator = new InterestingCoordinatesIterator(other, contentToConsider);
+            while(iterator.hasNext() && symmetric){
+                Coordinate next = iterator.next();
                 Coordinate transformed = s.transform(next, board.getDimension());
-                if(!check.contains(transformed)){
+                if(board.getContent(transformed) != contentToConsider){
                     symmetric = false;
-                    break;
                 }
             }
 
