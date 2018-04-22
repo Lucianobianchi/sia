@@ -14,7 +14,7 @@ public class SenkuMultipleMovement implements Rule<SenkuBoard> {
         if(path.size() < 2){
             throw new IllegalArgumentException();
         }
-        this.path = path;
+        this.path = new ArrayList<>(path);
     }
 
 

@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class SenkuProblemTest {
     @Test
     public void getInitialStateTest() {
-        final SenkuBoard senkuBoard = new SenkuBoard(SenkuBoardParser.parse("testBoards/test1.txt"));
+        final SenkuBoard senkuBoard = SenkuBoardLoader.load("testBoards/test1.txt");
         final Problem<SenkuBoard> senkuProblem = new SenkuProblem(senkuBoard);
 
         assertEquals(senkuBoard, senkuProblem.getInitialState());
@@ -21,7 +21,7 @@ public class SenkuProblemTest {
 
     @Test
     public void getRulesFindEmptyTest() {
-        final SenkuBoard senkuBoard = new SenkuBoard(SenkuBoardParser.parse("testBoards/test1.txt"));
+        final SenkuBoard senkuBoard = SenkuBoardLoader.load("testBoards/test1.txt");
         final Problem<SenkuBoard> senkuProblem = new SenkuProblem(senkuBoard);
 
         final Coordinate to = new Coordinate(2, 2);
@@ -40,7 +40,7 @@ public class SenkuProblemTest {
 
     @Test
     public void getRulesFindPegsTest() {
-        final SenkuBoard senkuBoard = new SenkuBoard(SenkuBoardParser.parse("testBoards/test2.txt"));
+        final SenkuBoard senkuBoard = SenkuBoardLoader.load("testBoards/test2.txt");
         final Problem<SenkuBoard> senkuProblem = new SenkuProblem(senkuBoard);
 
         final Coordinate from = new Coordinate(2, 2);
