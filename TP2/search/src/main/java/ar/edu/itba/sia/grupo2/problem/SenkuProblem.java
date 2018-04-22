@@ -37,30 +37,17 @@ public class SenkuProblem implements Problem<SenkuBoard> {
         final int pegCount = senkuBoard.getPegCount();
         final int emptyCount = senkuBoard.getEmptyCount();
 
-        int remaining = pegCount > emptyCount ? emptyCount : pegCount;
         final SenkuContent contentToConsider = pegCount > emptyCount ? EMPTY : PEG;
 
-        for (int i = 0; remaining > 0; i++)
-            remaining -= addRulesAtRow(senkuBoard, i, contentToConsider, rules);
+        InterestingCoordinatesIterator iterator = new InterestingCoordinatesIterator(senkuBoard, contentToConsider);
+
+        while(iterator.hasNext()){
+            addRulesAtCell(senkuBoard, iterator.next(), contentToConsider, rules);
+        }
 
         return rules;
     }
 
-    private int addRulesAtRow(final SenkuBoard senkuBoard, final int row, final SenkuContent content, final List<Rule<SenkuBoard>> rules) {
-        int contentFound = 0;
-        final RowBoundary boundary = senkuBoard.getBoundaries()[row];
-        final int from = boundary.getFrom();
-        final int to = boundary.getTo();
-
-        for (int i = from; i <= to; i++) {
-            if (senkuBoard.getContent(row, i) == content) {
-                contentFound += 1;
-                addRulesAtCell(senkuBoard, new Coordinate(row, i), content, rules);
-            }
-        }
-
-        return contentFound;
-    }
 
     private void addRulesAtCell(final SenkuBoard senkuBoard, final Coordinate coordinate, final SenkuContent content, final List<Rule<SenkuBoard>> rules) {
         final int row = coordinate.getRow();
