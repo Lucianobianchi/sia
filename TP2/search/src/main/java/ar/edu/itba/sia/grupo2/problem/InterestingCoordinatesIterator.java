@@ -1,6 +1,7 @@
 package ar.edu.itba.sia.grupo2.problem;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class InterestingCoordinatesIterator implements Iterator<Coordinate> {
 
@@ -32,7 +33,7 @@ public class InterestingCoordinatesIterator implements Iterator<Coordinate> {
     @Override
     public Coordinate next() {
         if(!hasNext()){
-            throw new IllegalStateException();
+            throw new NoSuchElementException();
         }
 
         for(int i = lastRow ; i < boundaries.length ; i++){
