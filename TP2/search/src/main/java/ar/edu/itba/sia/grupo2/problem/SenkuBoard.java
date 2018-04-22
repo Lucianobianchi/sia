@@ -85,7 +85,7 @@ public class SenkuBoard {
         setContent(coordinate.getRow(), coordinate.getColumn(), content);
     }
 
-    public void setContent(final int row, final int column, SenkuContent content) {
+    private void setContent(final int row, final int column, SenkuContent content) {
         board[row*getDimension() + column] = content;
     }
 
@@ -150,9 +150,9 @@ public class SenkuBoard {
 
         SenkuBoard modifiedBoard =  new SenkuBoard(newBoard, boundaries, dimension, cellCount, emptyCellCount+1, target);
 
-        modifiedBoard.setContent(from.getRow(), from.getColumn(), EMPTY);
-        modifiedBoard.setContent(to.getRow(), to.getColumn(), PEG);
-        modifiedBoard.setContent(between.getRow(), between.getColumn(), EMPTY);
+        modifiedBoard.setContent(from, EMPTY);
+        modifiedBoard.setContent(to, PEG);
+        modifiedBoard.setContent(between, EMPTY);
 
         return modifiedBoard;
     }
