@@ -55,4 +55,15 @@ public class SenkuMultipleMovement implements Rule<SenkuBoard> {
     public int hashCode() {
         return Objects.hash(path);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(path.get(0).toString());
+        for(int i = 1; i < path.size() ; i++){
+            sb.append(" -> ");
+            sb.append(path.get(i));
+        }
+        return sb.toString();
+    }
+
 }
