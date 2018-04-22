@@ -13,7 +13,7 @@ public enum Symmetry {
         @Override
         public Coordinate transform(Coordinate coordinate, int dimension) {
             int maxCoord = dimension - 1;
-            return new Coordinate(dimension - coordinate.getRow(), maxCoord - coordinate.getColumn());
+            return new Coordinate(maxCoord - coordinate.getRow(), maxCoord - coordinate.getColumn());
         }
     },
 

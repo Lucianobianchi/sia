@@ -127,9 +127,10 @@ public class SenkuBoardTest {
         assert(SenkuBoard.areSymmetric(sym1, sym2));
         assert(SenkuBoard.areSymmetric(sym2, sym1));
         assert(SenkuBoard.areSymmetric(sym2, sym3));
-       // assert(SenkuBoard.areSymmetric(sym1, sym3));
+        assert(SenkuBoard.areSymmetric(sym1, sym3));
         assert(SenkuBoard.areSymmetric(sym3, sym4));
         assert(SenkuBoard.areSymmetric(sym1, sym4));
+        assert(SenkuBoard.areSymmetric(sym2, sym4));
         assert(SenkuBoard.areSymmetric(sym4, sym1));
         assert(SenkuBoard.areSymmetric(sym1, sym5));
         assert(SenkuBoard.areSymmetric(sym4, sym5));
