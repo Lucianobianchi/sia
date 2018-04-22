@@ -1,36 +1,28 @@
 package ar.edu.itba.sia.grupo2.problem.heuristic;
 
 import ar.com.itba.sia.Heuristic;
-import ar.edu.itba.sia.grupo2.problem.Coordinate;
-import ar.edu.itba.sia.grupo2.problem.RowBoundary;
-import ar.edu.itba.sia.grupo2.problem.SenkuBoard;
-import ar.edu.itba.sia.grupo2.problem.SenkuContent;
+import ar.edu.itba.sia.grupo2.problem.*;
 
 public class MeanDistanceAllPegs implements Heuristic<SenkuBoard> {
 
     @Override
     public double getValue(final SenkuBoard senkuBoard) {
-        RowBoundary[] boardBoundaries = senkuBoard.getBoundaries();
 
         double cumulativeDistance = 0;
         final int pegCount = senkuBoard.getPegCount();
         int remainingPegs = pegCount;
         final int numberOfPairs = pegCount*(pegCount-1)/2;
-        for(int row = 0 ; row < boardBoundaries.length ; row++){
-            int from = boardBoundaries[row].getFrom();
-            int to = boardBoundaries[row].getTo();
-            for(int col = from; col <= to ; col++){
-                if(senkuBoard.getContent(row, col) == SenkuContent.PEG){
-                    cumulativeDistance += getDistanceFromLowerPegs(senkuBoard, new Coordinate(row, col), remainingPegs);
-                    remainingPegs--;
-                    if(remainingPegs == 0){
-                        return cumulativeDistance / numberOfPairs; // Early return por eficiencia
-                    }
-                }
-            }
+
+        InterestingCoordinatesIterator iterator = new InterestingCoordinatesIterator(senkuBoard, SenkuContent.PEG);
+
+        while(iterator.hasNext()){
+            Coordinate hit = iterator.next();
+            cumulativeDistance += getDistanceFromLowerPegs(senkuBoard, hit, remainingPegs);
+            remainingPegs--;
         }
 
         return cumulativeDistance / numberOfPairs;
+
     }
 
 
