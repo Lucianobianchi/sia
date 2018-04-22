@@ -9,27 +9,38 @@ import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.PEG;
 
 public class SenkuBoard {
-    private final SenkuContent[][] board;
+    private final SenkuContent[] board;
     private final RowBoundary[] boundaries;
+    private final int dimension;
     private int cellCount;
     private int emptyCellCount;
     private Coordinate target;
 
     public SenkuBoard(final SenkuContent[][] board) {
-        this.board = Objects.requireNonNull(board);
+        Objects.requireNonNull(board);
 
-        if (!isSquare())
+        if (!isSquare(board))
             throw new IllegalArgumentException("Board must be square");
 
-        this.target = new Coordinate(board.length/2, board[0].length/2); // Center
+        this.dimension = board.length;
+        this.board = new SenkuContent[this.dimension * this.dimension];
+
+        for(int i = 0 ; i < board.length ; i++){
+            for(int j = 0 ; j < board[i].length ; j++){
+                setContent(i, j, board[i][j]);
+            }
+        }
+
+        this.target = new Coordinate(this.dimension /2, this.dimension /2); // Center
 
         this.boundaries = calculateBoundaries();
     }
 
     // TODO: ver que hacer cuando no ponemos target
-    private SenkuBoard(final SenkuContent[][] board, final RowBoundary[] boundaries, final int cellCount, final int emptyCellCount, final Coordinate target) {
+    private SenkuBoard(final SenkuContent[] board, final RowBoundary[] boundaries, final int dimension, final int cellCount, final int emptyCellCount, final Coordinate target) {
         this.board = board;
         this.boundaries = boundaries;
+        this.dimension = dimension;
         this.cellCount = cellCount;
         this.emptyCellCount = emptyCellCount;
         this.target = target;
@@ -48,7 +59,7 @@ public class SenkuBoard {
     }
 
     public int getDimension() {
-        return board.length;
+        return this.dimension;
     }
 
     public Coordinate getTarget() {
@@ -65,8 +76,20 @@ public class SenkuBoard {
     }
 
     public SenkuContent getContent(final int row, final int column) {
-        return board[row][column];
+        return board[row*getDimension() + column];
     }
+
+
+
+    private void setContent(final Coordinate coordinate, SenkuContent content) {
+        setContent(coordinate.getRow(), coordinate.getColumn(), content);
+    }
+
+    public void setContent(final int row, final int column, SenkuContent content) {
+        board[row*getDimension() + column] = content;
+    }
+
+
 
     public boolean isValidPosition(final Coordinate coordinate) {
         return isValidPosition(coordinate.getRow(), coordinate.getColumn());
@@ -123,12 +146,15 @@ public class SenkuBoard {
         final Coordinate to = movement.getTo();
         final Coordinate between = Coordinate.between(from, to).get();
 
-        final SenkuContent[][] newBoard = Arrays.copyOf(board, board.length);
-        newBoard[from.getRow()][from.getColumn()] = EMPTY;
-        newBoard[to.getRow()][to.getColumn()] = PEG;
-        newBoard[between.getRow()][to.getColumn()] = EMPTY;
+        final SenkuContent[] newBoard = Arrays.copyOf(board, board.length);
 
-        return new SenkuBoard(newBoard, boundaries, cellCount, emptyCellCount + 1, target);
+        SenkuBoard modifiedBoard =  new SenkuBoard(newBoard, boundaries, dimension, cellCount, emptyCellCount+1, target);
+
+        modifiedBoard.setContent(from.getRow(), from.getColumn(), EMPTY);
+        modifiedBoard.setContent(to.getRow(), to.getColumn(), PEG);
+        modifiedBoard.setContent(between.getRow(), between.getColumn(), EMPTY);
+
+        return modifiedBoard;
     }
 
     @Override
@@ -144,32 +170,21 @@ public class SenkuBoard {
         if (getDimension() != other.getDimension() || getCellCount() != other.getCellCount() || getEmptyCount() != other.getEmptyCount())
             return false;
 
-        for (int i = 0; i < getDimension(); i++)
-            if (!Arrays.equals(board[i], other.board[i]))
-                return false;
-
-        return true;
+        return Arrays.equals(board, other.board);
     }
 
     @Override
     public int hashCode() {
-        final int dim = getDimension();
-        int hash = 17;
-
-        for (int i = 0; i < dim; i++)
-            hash = 31 * hash + Arrays.hashCode(board[i]);
-
-        return hash;
+        return Arrays.hashCode(board);
     }
 
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
         final int dim = getDimension();
-
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                stringBuilder.append(board[i][j]);
+                stringBuilder.append(getContent(i,j));
             }
 
             stringBuilder.append('\n');
@@ -180,7 +195,7 @@ public class SenkuBoard {
         return stringBuilder.toString();
     }
 
-    private boolean isSquare() {
+    private boolean isSquare(SenkuContent[][] board) {
         return board.length == board[0].length;
     }
 
@@ -201,7 +216,7 @@ public class SenkuBoard {
         int toBoundary = -1;
 
         for (int j = 0; j < dim; j++) {
-            final SenkuContent content = board[row][j];
+            final SenkuContent content = getContent(row,j);
 
             if (content == PEG || content == EMPTY) {
                 cellCount += 1;

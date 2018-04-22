@@ -87,6 +87,7 @@ public class SenkuBoardTest {
 
         final SenkuBoard actualSenkuBoard = senkuBoard.applyMovement(movement);
         assertEquals(expectedSenkuBoard, actualSenkuBoard);
+        assertNotEquals(senkuBoard, actualSenkuBoard); // Inmutability
     }
 
     @Test(expected = IllegalArgumentException.class)
