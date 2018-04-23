@@ -1,6 +1,7 @@
 package ar.edu.itba.sia.grupo2.problem;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.EMPTY;
@@ -272,11 +273,11 @@ public class SenkuBoard {
     }
 
     private long calculateId() {
-        long minId = calculateIdRot(c -> c);
+        long minId = Long.MAX_VALUE;
         final int dim = getDimension();
 
         for (final Symmetry s : Symmetry.values()) {
-            final long id = calculateIdRot(c -> s.transform(c, dim));
+            final long id = calculateIdRot(s);
 
             if (id < minId)
                 minId = id;
@@ -285,19 +286,17 @@ public class SenkuBoard {
         return minId;
     }
 
-    private long calculateIdRot(final Function<Coordinate, Coordinate> rot) {
+    private long calculateIdRot(Symmetry sym) {
         final int dim = getDimension();
         long id = 0;
 
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                final Coordinate coord = new Coordinate(i, j);
-                final SenkuContent content = getContent(rot.apply(coord));
-                id = (id << 1) + content.getNum();
+                final SenkuContent content = getContent(sym.transform(i, j, dim));
+                id = (id << 1) | content.getNum();
             }
         }
 
         return id;
     }
-
 }
