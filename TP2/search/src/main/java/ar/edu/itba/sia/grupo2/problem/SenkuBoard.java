@@ -214,11 +214,11 @@ public class SenkuBoard {
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
         final int dim = getDimension();
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                stringBuilder.append(getContent(i,j));
-            }
 
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++)
+                stringBuilder.append(getContent(i,j));
+            
             stringBuilder.append('\n');
         }
 
@@ -273,17 +273,10 @@ public class SenkuBoard {
     }
 
     private long calculateId() {
-        long minId = Long.MAX_VALUE;
-        final int dim = getDimension();
-
-        for (final Symmetry s : Symmetry.values()) {
-            final long id = calculateIdRot(s);
-
-            if (id < minId)
-                minId = id;
-        }
-
-        return minId;
+        return Arrays.stream(Symmetry.values())
+                .mapToLong(this::calculateIdRot)
+                .min()
+                .getAsLong();
     }
 
     private long calculateIdRot(Symmetry sym) {
