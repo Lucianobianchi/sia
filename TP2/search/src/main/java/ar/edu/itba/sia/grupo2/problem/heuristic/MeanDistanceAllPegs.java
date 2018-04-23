@@ -8,6 +8,10 @@ public class MeanDistanceAllPegs implements Heuristic<SenkuBoard> {
     @Override
     public double getValue(final SenkuBoard senkuBoard) {
 
+        if(senkuBoard.pagoda() != KleinGroup.fromPosition(senkuBoard.getTarget().getRow(), senkuBoard.getTarget().getColumn(), senkuBoard.getDimension())){
+            return Double.MAX_VALUE; // Infinity
+        }
+
         double cumulativeDistance = 0;
         final int pegCount = senkuBoard.getPegCount();
         int remainingPegs = pegCount;

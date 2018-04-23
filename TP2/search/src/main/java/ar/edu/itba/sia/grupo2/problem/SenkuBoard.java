@@ -15,11 +15,31 @@ public class SenkuBoard {
     private int emptyCellCount;
     private Coordinate target;
     private long id;
-    
-    public static boolean areSymmetric(SenkuBoard board, SenkuBoard other){
+
+
+    public static boolean areSymmetric(SenkuBoard board, SenkuBoard other) {
+        return board.id  == other.id;
+    }
+
+
+    public KleinGroup pagoda(){
+        InterestingCoordinatesIterator iter = new InterestingCoordinatesIterator(this, SenkuContent.PEG);
+        Coordinate first = iter.next();
+        KleinGroup adder = KleinGroup.fromPosition(first.getRow(), first.getColumn(), getDimension());
+        while(iter.hasNext()){
+            Coordinate c = iter.next();
+            KleinGroup toAdd = KleinGroup.fromPosition(c.getRow(), c.getColumn(), getDimension());
+            adder = adder.add(toAdd);
+        }
+
+        return adder;
+    }
+
+    public static boolean areSymmetricxx(SenkuBoard board, SenkuBoard other){
         if(board.emptyCellCount != other.emptyCellCount || board.getDimension() != other.getDimension()){
             return false;
         }
+
 
         final SenkuContent contentToConsider = board.getPegCount() > board.getEmptyCount() ? EMPTY : PEG;
 
