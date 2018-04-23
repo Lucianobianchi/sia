@@ -84,6 +84,7 @@ public class Node<S> {
         while (node.hasParent()) {
             stringBuilder.insert(0, '\n');
             stringBuilder.insert(0, node.getState());
+            stringBuilder.insert(0, '\n');
             node = node.getParent();
         }
 
