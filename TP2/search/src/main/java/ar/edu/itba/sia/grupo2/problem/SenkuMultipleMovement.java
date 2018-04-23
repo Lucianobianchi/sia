@@ -32,11 +32,12 @@ public class SenkuMultipleMovement implements Rule<SenkuBoard> {
 
     @Override
     public SenkuBoard applyToState(SenkuBoard senkuBoard) {
+        SenkuBoard duplicate = senkuBoard.duplicate();
         for(int i = 0; i < path.size() - 1; i++){
             SenkuMovement movement = new SenkuMovement(path.get(i), path.get(i+1));
-            senkuBoard = senkuBoard.applyMovement(movement);
+            duplicate.applyMovement(movement, true);
         }
-        return senkuBoard;
+        return duplicate;
     }
 
     @Override

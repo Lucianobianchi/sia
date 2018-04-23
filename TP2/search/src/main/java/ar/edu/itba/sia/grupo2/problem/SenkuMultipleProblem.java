@@ -63,7 +63,7 @@ public class SenkuMultipleProblem extends SenkuProblem {
     }
 
     private void addMoves(final SenkuBoard board, final Coordinate originPeg, final Coordinate nextPosition, Set<List<Coordinate>> moves) {
-        SenkuBoard modifiedBoard = board.applyMovement(new SenkuMovement(originPeg, nextPosition));
+        SenkuBoard modifiedBoard = board.applyMovement(new SenkuMovement(originPeg, nextPosition), false);
         Set<List<Coordinate>> additional = getMovementsFrom(modifiedBoard, nextPosition);
 
         for(List<Coordinate> nextMoves : additional){

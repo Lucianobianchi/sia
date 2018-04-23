@@ -20,10 +20,6 @@ public class SenkuBoard {
             return false;
         }
 
-        if(board.equals(other)){
-            return true;
-        }
-
         final SenkuContent contentToConsider = board.getPegCount() > board.getEmptyCount() ? EMPTY : PEG;
 
         for(Symmetry s : Symmetry.values()){
@@ -110,7 +106,7 @@ public class SenkuBoard {
 
 
 
-    private void setContent(final Coordinate coordinate, SenkuContent content) {
+    public void setContent(final Coordinate coordinate, SenkuContent content) {
         setContent(coordinate.getRow(), coordinate.getColumn(), content);
     }
 
@@ -167,7 +163,7 @@ public class SenkuBoard {
         return isValidMovement(from, to);
     }
 
-    public SenkuBoard applyMovement(final SenkuMovement movement) {
+    public SenkuBoard applyMovement(final SenkuMovement movement, boolean mutate) {
         if (!isValidMovement(movement))
             throw new IllegalArgumentException("Invalid movement");
 
@@ -175,16 +171,23 @@ public class SenkuBoard {
         final Coordinate to = movement.getTo();
         final Coordinate between = Coordinate.between(from, to).get();
 
-        final SenkuContent[] newBoard = Arrays.copyOf(board, board.length);
 
-        SenkuBoard modifiedBoard =  new SenkuBoard(newBoard, boundaries, dimension, cellCount, emptyCellCount+1, target);
 
+        SenkuBoard modifiedBoard = mutate ? this : duplicate();
+
+        modifiedBoard.emptyCellCount++;
         modifiedBoard.setContent(from, EMPTY);
         modifiedBoard.setContent(to, PEG);
         modifiedBoard.setContent(between, EMPTY);
 
         return modifiedBoard;
     }
+
+    public SenkuBoard duplicate() {
+        final SenkuContent[] newBoard = Arrays.copyOf(board, board.length);
+        return new SenkuBoard(newBoard, boundaries, dimension, cellCount, emptyCellCount, target);
+    }
+
 
     @Override
     public boolean equals(final Object obj) {
@@ -199,7 +202,7 @@ public class SenkuBoard {
         if (getDimension() != other.getDimension() || getCellCount() != other.getCellCount() || getEmptyCount() != other.getEmptyCount())
             return false;
 
-        return Arrays.equals(board, other.board);
+        return Arrays.equals(board, other.board) || areSymmetric(this, other);
     }
 
     @Override
