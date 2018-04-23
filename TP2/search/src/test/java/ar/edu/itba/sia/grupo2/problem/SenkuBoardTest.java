@@ -115,6 +115,38 @@ public class SenkuBoardTest {
         assertEquals(expectedSenkuBoard.hashCode(), senkuBoard.hashCode());
     }
 
+
+    @Test
+    public void symmetryTest(){
+        SenkuBoard sym1 = SenkuBoardLoader.load("testBoards/sym1.txt");
+        SenkuBoard sym2 = SenkuBoardLoader.load("testBoards/sym2.txt");
+        SenkuBoard sym3 = SenkuBoardLoader.load("testBoards/sym3.txt");
+        SenkuBoard sym4 = SenkuBoardLoader.load("testBoards/sym4.txt");
+        SenkuBoard sym5 = SenkuBoardLoader.load("testBoards/sym5.txt");
+
+        assert(SenkuBoard.areSymmetric(sym1, sym2));
+        assert(SenkuBoard.areSymmetric(sym2, sym1));
+        assert(SenkuBoard.areSymmetric(sym2, sym3));
+        assert(SenkuBoard.areSymmetric(sym1, sym3));
+        assert(SenkuBoard.areSymmetric(sym3, sym4));
+        assert(SenkuBoard.areSymmetric(sym1, sym4));
+        assert(SenkuBoard.areSymmetric(sym2, sym4));
+        assert(SenkuBoard.areSymmetric(sym4, sym1));
+        assert(SenkuBoard.areSymmetric(sym1, sym5));
+        assert(SenkuBoard.areSymmetric(sym4, sym5));
+
+
+    }
+
+    @Test
+    public void notSymmetricTest(){
+        SenkuBoard sym1 = SenkuBoardLoader.load("testBoards/sym1.txt");
+        SenkuBoard notsym = SenkuBoardLoader.load("testBoards/notsym.txt");
+
+        assertFalse(SenkuBoard.areSymmetric(sym1, notsym));
+
+    }
+
     @Test
     public void toStringTest() {
         assertEquals(expectedString, senkuBoard.toString());

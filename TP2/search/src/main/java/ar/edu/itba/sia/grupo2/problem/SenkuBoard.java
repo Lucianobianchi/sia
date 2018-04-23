@@ -1,8 +1,6 @@
 package ar.edu.itba.sia.grupo2.problem;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.EMPTY;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
@@ -15,6 +13,37 @@ public class SenkuBoard {
     private int cellCount;
     private int emptyCellCount;
     private Coordinate target;
+
+    
+    public static boolean areSymmetric(SenkuBoard board, SenkuBoard other){
+        if(board.emptyCellCount != other.emptyCellCount || board.getDimension() != other.getDimension()){
+            return false;
+        }
+
+        if(board.equals(other)){
+            return true;
+        }
+
+        final SenkuContent contentToConsider = board.getPegCount() > board.getEmptyCount() ? EMPTY : PEG;
+
+        for(Symmetry s : Symmetry.values()){
+            boolean symmetric = true;
+            InterestingCoordinatesIterator iterator = new InterestingCoordinatesIterator(other, contentToConsider);
+            while(iterator.hasNext() && symmetric){
+                Coordinate next = iterator.next();
+                Coordinate transformed = s.transform(next, board.getDimension());
+                if(board.getContent(transformed) != contentToConsider){
+                    symmetric = false;
+                }
+            }
+
+            if(symmetric){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public SenkuBoard(final SenkuContent[][] board) {
         Objects.requireNonNull(board);
