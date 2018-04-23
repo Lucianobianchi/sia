@@ -9,6 +9,10 @@ public class MeanDistanceToTarget implements Heuristic<SenkuBoard> {
     public double getValue(final SenkuBoard senkuBoard) {
         final Coordinate target = senkuBoard.getTarget();
 
+        if(senkuBoard.pagoda() != KleinGroup.fromPosition(target.getRow(), target.getColumn(), senkuBoard.getDimension())){
+            return Double.MAX_VALUE; // Infinity
+        }
+
         InterestingCoordinatesIterator iterator = new InterestingCoordinatesIterator(senkuBoard, SenkuContent.PEG);
 
         int cumulativeDistance = 0;
