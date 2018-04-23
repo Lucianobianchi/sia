@@ -1,6 +1,7 @@
 package ar.edu.itba.sia.grupo2.problem;
 
 import java.util.*;
+import java.util.function.Function;
 
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.EMPTY;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
@@ -13,7 +14,7 @@ public class SenkuBoard {
     private int cellCount;
     private int emptyCellCount;
     private Coordinate target;
-
+    private long id;
     
     public static boolean areSymmetric(SenkuBoard board, SenkuBoard other){
         if(board.emptyCellCount != other.emptyCellCount || board.getDimension() != other.getDimension()){
@@ -59,16 +60,18 @@ public class SenkuBoard {
         this.target = new Coordinate(this.dimension /2, this.dimension /2); // Center
 
         this.boundaries = calculateBoundaries();
+        this.id = calculateId();
     }
 
     // TODO: ver que hacer cuando no ponemos target
-    private SenkuBoard(final SenkuContent[] board, final RowBoundary[] boundaries, final int dimension, final int cellCount, final int emptyCellCount, final Coordinate target) {
+    private SenkuBoard(final SenkuContent[] board, final RowBoundary[] boundaries, final int dimension, final int cellCount, final int emptyCellCount, final Coordinate target, final long id) {
         this.board = board;
         this.boundaries = boundaries;
         this.dimension = dimension;
         this.cellCount = cellCount;
         this.emptyCellCount = emptyCellCount;
         this.target = target;
+        this.id = id;
     }
 
     public int getPegCount() {
@@ -104,8 +107,6 @@ public class SenkuBoard {
         return board[row*getDimension() + column];
     }
 
-
-
     public void setContent(final Coordinate coordinate, SenkuContent content) {
         setContent(coordinate.getRow(), coordinate.getColumn(), content);
     }
@@ -114,7 +115,9 @@ public class SenkuBoard {
         board[row*getDimension() + column] = content;
     }
 
-
+    public long getId() {
+        return id;
+    }
 
     public boolean isValidPosition(final Coordinate coordinate) {
         return isValidPosition(coordinate.getRow(), coordinate.getColumn());
@@ -171,21 +174,20 @@ public class SenkuBoard {
         final Coordinate to = movement.getTo();
         final Coordinate between = Coordinate.between(from, to).get();
 
-
-
         SenkuBoard modifiedBoard = mutate ? this : duplicate();
 
         modifiedBoard.emptyCellCount++;
         modifiedBoard.setContent(from, EMPTY);
         modifiedBoard.setContent(to, PEG);
         modifiedBoard.setContent(between, EMPTY);
+        modifiedBoard.id = modifiedBoard.calculateId();
 
         return modifiedBoard;
     }
 
     public SenkuBoard duplicate() {
         final SenkuContent[] newBoard = Arrays.copyOf(board, board.length);
-        return new SenkuBoard(newBoard, boundaries, dimension, cellCount, emptyCellCount, target);
+        return new SenkuBoard(newBoard, boundaries, dimension, cellCount, emptyCellCount, target, id);
     }
 
 
@@ -199,15 +201,12 @@ public class SenkuBoard {
 
         final SenkuBoard other = (SenkuBoard) obj;
 
-        if (getDimension() != other.getDimension() || getCellCount() != other.getCellCount() || getEmptyCount() != other.getEmptyCount())
-            return false;
-
-        return Arrays.equals(board, other.board) || areSymmetric(this, other);
+        return id == other.id;
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(board);
+        return Objects.hash(id);
     }
 
     @Override
@@ -271,4 +270,34 @@ public class SenkuBoard {
 
         return rowBoundary;
     }
+
+    private long calculateId() {
+        long minId = calculateIdRot(c -> c);
+        final int dim = getDimension();
+
+        for (final Symmetry s : Symmetry.values()) {
+            final long id = calculateIdRot(c -> s.transform(c, dim));
+
+            if (id < minId)
+                minId = id;
+        }
+
+        return minId;
+    }
+
+    private long calculateIdRot(final Function<Coordinate, Coordinate> rot) {
+        final int dim = getDimension();
+        long id = 0;
+
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                final Coordinate coord = new Coordinate(i, j);
+                final SenkuContent content = getContent(rot.apply(coord));
+                id = (id << 1) + content.getNum();
+            }
+        }
+
+        return id;
+    }
+
 }

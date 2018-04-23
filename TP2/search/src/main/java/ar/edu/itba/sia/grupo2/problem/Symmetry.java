@@ -35,11 +35,11 @@ public enum Symmetry {
 
 
     FLIP_VER{
-            @Override
-            public Coordinate transform(Coordinate coordinate, int dimension) {
-                int maxCoord = dimension - 1;
-                return new Coordinate(maxCoord - coordinate.getRow(), coordinate.getColumn());
-            }
+        @Override
+        public Coordinate transform(Coordinate coordinate, int dimension) {
+            int maxCoord = dimension - 1;
+            return new Coordinate(maxCoord - coordinate.getRow(), coordinate.getColumn());
+        }
     },
 
     DIAG_1{

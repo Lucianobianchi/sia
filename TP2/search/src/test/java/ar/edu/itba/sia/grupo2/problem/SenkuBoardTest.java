@@ -86,6 +86,10 @@ public class SenkuBoardTest {
         });
 
         final SenkuBoard actualSenkuBoard = senkuBoard.applyMovement(movement, false);
+
+        System.out.println(actualSenkuBoard.getId());
+        System.out.println(expectedSenkuBoard.getId());
+
         assertEquals(expectedSenkuBoard, actualSenkuBoard);
         assertNotEquals(senkuBoard, actualSenkuBoard); // Inmutability
     }
