@@ -3,6 +3,7 @@ package ar.edu.itba.sia.grupo2.problem;
 import ar.com.itba.sia.Rule;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,4 +67,7 @@ public class SenkuMultipleMovement implements Rule<SenkuBoard> {
         return sb.toString();
     }
 
+    public List<Coordinate> getPath () {
+        return Collections.unmodifiableList(path);
+    }
 }

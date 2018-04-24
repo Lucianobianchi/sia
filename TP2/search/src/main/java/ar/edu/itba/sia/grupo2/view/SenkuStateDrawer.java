@@ -1,31 +1,48 @@
 package ar.edu.itba.sia.grupo2.view;
 
+import ar.edu.itba.sia.grupo2.problem.Coordinate;
 import ar.edu.itba.sia.grupo2.problem.SenkuBoard;
-import ar.edu.itba.sia.grupo2.problem.SenkuBoardLoader;
 import ar.edu.itba.sia.grupo2.problem.SenkuContent;
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
+import ar.edu.itba.sia.grupo2.problem.SenkuMultipleMovement;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-// TODO: hay que ver bien como usar el drawer. No puede ser algo estático por como funciona JavaFX,
-// tiene que tener un listener que le diga cuando dibujar de nuevo un tablero.
-public class SenkuStateDrawer extends Application {
-	private static final int SQUARE_SIZE = 50;
 
-	public static void draw(final SenkuBoard board, final GraphicsContext gc) {
-		// TODO: esto esta mal pero no me deja instanciar Image estáticamente.
-		Map<SenkuContent, Image> images = new HashMap<>();
+public class SenkuStateDrawer {
+	private static final int SQUARE_SIZE = 50;
+	private static final Color LINE_COLOR = Color.RED;
+	private static final double LINE_WIDTH = 5;
+
+	private final Map<SenkuContent, Image> images;
+	private final Canvas canvas;
+
+	public SenkuStateDrawer () {
+		images = new HashMap<>();
 		images.put(SenkuContent.INVALID, new Image("file:assets/invalidSquare.png"));
 		images.put(SenkuContent.PEG, new Image("file:assets/pegSquare.png"));
 		images.put(SenkuContent.EMPTY, new Image("file:assets/emptySquare.png"));
+		canvas = new Canvas();
+	}
 
+	public Canvas getCanvas() {
+		return canvas;
+	}
+
+	public void draw(final SenkuBoard board) {
+		int pixelSize = board.getDimension() * SQUARE_SIZE;
+		canvas.setHeight(pixelSize);
+		canvas.setWidth(pixelSize);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
 
 		int dim = board.getDimension();
 
@@ -34,29 +51,36 @@ public class SenkuStateDrawer extends Application {
 				SenkuContent type = board.getContent(row, col);
 				gc.clearRect(SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
 				gc.drawImage(images.get(type),
-						SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
+					SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
 			}
 		}
 	}
 
-	private static final SenkuBoard board = SenkuBoardLoader.load("boards/board1.txt");
+	// TODO: SimpleMovement
+	public void draw(final SenkuBoard board, final SenkuMultipleMovement movement) {
+		draw(board);
+		List<Coordinate> path = movement.getPath();
 
-	@Override
-	public void start (Stage stage) throws Exception {
-		Group root = new Group();
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		gc.setStroke(LINE_COLOR);
+		gc.setLineWidth(LINE_WIDTH);
+		gc.setLineJoin(StrokeLineJoin.ROUND);
+		gc.setLineCap(StrokeLineCap.ROUND);
 
-		stage.setResizable(false);
-		stage.setScene(new Scene(root));
-
-		int pixelSize = board.getDimension() * SQUARE_SIZE;
-		Canvas graphicBoard = new Canvas(pixelSize, pixelSize);
-		draw(board, graphicBoard.getGraphicsContext2D());
-
-		root.getChildren().add(graphicBoard);
-		stage.show();
+		for (int i = 0; i < path.size() - 1; i++) {
+			Coordinate from = path.get(i);
+			Coordinate to = path.get(i+1);
+			drawLine(from, to);
+		}
 	}
 
-	public static void main (String[] args) {
-		launch(args);
+	private void drawLine(Coordinate from, Coordinate to) {
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		gc.strokeLine(toPixel(from.getColumn()), toPixel(from.getRow()),
+				toPixel(to.getColumn()), toPixel(to.getRow()));
+	}
+
+	private static int toPixel (int coord) {
+		return coord * SQUARE_SIZE + SQUARE_SIZE / 2;
 	}
 }
