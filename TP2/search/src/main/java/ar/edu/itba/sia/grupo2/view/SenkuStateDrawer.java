@@ -8,8 +8,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 
@@ -59,6 +57,9 @@ public class SenkuStateDrawer {
 	// TODO: SimpleMovement
 	public void draw(final SenkuBoard board, final SenkuMultipleMovement movement) {
 		draw(board);
+		if (movement == null)
+			return;
+
 		List<Coordinate> path = movement.getPath();
 
 		GraphicsContext gc = canvas.getGraphicsContext2D();

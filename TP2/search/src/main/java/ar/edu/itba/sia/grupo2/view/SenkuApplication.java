@@ -24,15 +24,15 @@ public class SenkuApplication extends Application {
 
 		SenkuStateDrawer drawer = new SenkuStateDrawer();
 
-		Iterator<Node<SenkuBoard>> iterator = getSolutionStates(rootNode).iterator();
+		Iterator<StateAndAction> iterator = getSolutionStates(rootNode).iterator();
 
 		final Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run () {
 				if (iterator.hasNext()) {
-					Node<SenkuBoard> node = iterator.next();
-					drawer.draw(node.getState(), (SenkuMultipleMovement) node.getRule());
+					StateAndAction stateAndAction = iterator.next();
+					drawer.draw(stateAndAction.state, stateAndAction.nextAction);
 				}
 				else {
 					t.cancel();
@@ -56,17 +56,34 @@ public class SenkuApplication extends Application {
 		return result.get();
 	}
 
-	private List<Node<SenkuBoard>> getSolutionStates(Node<SenkuBoard> last) {
-		LinkedList<Node<SenkuBoard>> solution = new LinkedList<>();
+	private List<StateAndAction> getSolutionStates(Node<SenkuBoard> last) {
+		LinkedList<Node<SenkuBoard>> path = new LinkedList<>();
 
 		Node<SenkuBoard> node = last;
 		while (node.hasParent()) {
-			solution.addFirst(node);
+			path.addFirst(node);
 			node = node.getParent();
 		}
 
-		solution.addFirst(node);
+		path.addFirst(node);
 
-		return solution;
+		LinkedList<StateAndAction> solutions = new LinkedList<>();
+
+		for (int i = 0; i  < path.size() - 1; i++) {
+			solutions.add(new StateAndAction(path.get(i).getState(), (SenkuMultipleMovement) path.get(i+1).getRule()));
+		}
+		solutions.add(new StateAndAction(path.getLast().getState(), null));
+
+		return solutions;
+	}
+
+	private static class StateAndAction {
+		SenkuBoard state;
+		SenkuMultipleMovement nextAction;
+
+		public StateAndAction (SenkuBoard state, SenkuMultipleMovement nextAction) {
+			this.state = state;
+			this.nextAction = nextAction;
+		}
 	}
 }
