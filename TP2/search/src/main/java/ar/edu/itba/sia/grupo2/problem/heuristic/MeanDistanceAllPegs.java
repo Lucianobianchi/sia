@@ -3,13 +3,23 @@ package ar.edu.itba.sia.grupo2.problem.heuristic;
 import ar.com.itba.sia.Heuristic;
 import ar.edu.itba.sia.grupo2.problem.*;
 
+import java.util.Random;
+
 public class MeanDistanceAllPegs implements Heuristic<SenkuBoard> {
 
+    private static Random random = new Random();
+    private long pruned = 0;
+    private long iterations = 0;
     @Override
     public double getValue(final SenkuBoard senkuBoard) {
-
-        if(senkuBoard.pagoda() != KleinGroup.fromPosition(senkuBoard.getTarget().getRow(), senkuBoard.getTarget().getColumn(), senkuBoard.getDimension())){
+        iterations++;
+        if(EnglishBoardPagoda.pagoda(senkuBoard) < EnglishBoardPagoda.eval(senkuBoard.getTarget())){
+            pruned++;
+            if(random.nextDouble() < 0.0005){
+                System.out.printf("%d : %d\n", iterations, pruned);
+            }
             return Double.MAX_VALUE; // Infinity
+
         }
 
         double cumulativeDistance = 0;

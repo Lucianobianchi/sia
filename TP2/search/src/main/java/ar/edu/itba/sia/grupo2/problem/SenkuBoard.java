@@ -22,47 +22,6 @@ public class SenkuBoard {
         return board.id  == other.id;
     }
 
-
-    public KleinGroup pagoda(){
-        InterestingCoordinatesIterator iter = new InterestingCoordinatesIterator(this, SenkuContent.PEG);
-        Coordinate first = iter.next();
-        KleinGroup adder = KleinGroup.fromPosition(first.getRow(), first.getColumn(), getDimension());
-        while(iter.hasNext()){
-            Coordinate c = iter.next();
-            KleinGroup toAdd = KleinGroup.fromPosition(c.getRow(), c.getColumn(), getDimension());
-            adder = adder.add(toAdd);
-        }
-
-        return adder;
-    }
-
-    public static boolean areSymmetricxx(SenkuBoard board, SenkuBoard other){
-        if(board.emptyCellCount != other.emptyCellCount || board.getDimension() != other.getDimension()){
-            return false;
-        }
-
-
-        final SenkuContent contentToConsider = board.getPegCount() > board.getEmptyCount() ? EMPTY : PEG;
-
-        for(Symmetry s : Symmetry.values()){
-            boolean symmetric = true;
-            InterestingCoordinatesIterator iterator = new InterestingCoordinatesIterator(other, contentToConsider);
-            while(iterator.hasNext() && symmetric){
-                Coordinate next = iterator.next();
-                Coordinate transformed = s.transform(next, board.getDimension());
-                if(board.getContent(transformed) != contentToConsider){
-                    symmetric = false;
-                }
-            }
-
-            if(symmetric){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public SenkuBoard(final SenkuContent[][] board) {
         Objects.requireNonNull(board);
 
@@ -206,6 +165,56 @@ public class SenkuBoard {
         return modifiedBoard;
     }
 
+
+    public SenkuBoard revertMovement(final SenkuMovement movement, boolean mutate){
+        if (!isValidReverseMovement(movement))
+            throw new IllegalArgumentException("Invalid movement");
+
+        final Coordinate from = movement.getFrom();
+        final Coordinate to = movement.getTo();
+        final Coordinate between = Coordinate.between(from, to).get();
+
+        SenkuBoard modifiedBoard = mutate ? this : duplicate();
+
+        modifiedBoard.emptyCellCount--;
+        modifiedBoard.setContent(from, EMPTY);
+        modifiedBoard.setContent(to, PEG);
+        modifiedBoard.setContent(between, PEG);
+        modifiedBoard.id = modifiedBoard.calculateId();
+
+        return modifiedBoard;
+    }
+
+    public boolean isValidReverseMovement(SenkuMovement movement) {
+        Coordinate from = movement.getFrom();
+        Coordinate to = movement.getTo();
+
+        if (!isValidPosition(from) || !isValidPosition(to))
+            return false;
+
+        final SenkuContent fromContent = getContent(from);
+        final SenkuContent toContent = getContent(to);
+
+        if (fromContent != PEG) {
+            return false;
+        }
+        if (toContent != EMPTY)
+            return false;
+
+        if (Coordinate.manhattanDistance(from, to) != 2) {
+            return false;
+        }
+
+        final Optional<Coordinate> between = Coordinate.between(from, to);
+
+        if (!between.isPresent())
+            return false;
+
+        final SenkuContent betweenContent = getContent(between.get());
+
+        return betweenContent == EMPTY;
+    }
+
     public SenkuBoard duplicate() {
         final SenkuContent[] newBoard = Arrays.copyOf(board, board.length);
         return new SenkuBoard(newBoard, boundaries, dimension, cellCount, emptyCellCount, target, id);
@@ -318,5 +327,9 @@ public class SenkuBoard {
         }
 
         return id;
+    }
+
+    public void recalculateId() {
+        this.id = calculateId();
     }
 }
