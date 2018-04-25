@@ -46,4 +46,20 @@ public class SenkuBoardLoader {
 	public static SenkuBoard load(final String boardPath) {
 		return new SenkuBoard(parse(boardPath));
 	}
+
+	public static void main (String[] args) {
+		SenkuBoard b = load("boards/board4.txt");
+		System.out.println(b);
+		System.out.println(Arrays.toString(b.getBoundaries()));
+		System.out.println(b.getDimension());
+		System.out.println(b.getCellCount());
+		System.out.println(b.getEmptyCount());
+		System.out.println(b.getPegCount());
+		System.out.println(b.getTarget());
+		for (int i = 0; i < b.getDimension(); i++) {
+			for (int j = 0; j < b.getDimension(); j++) {
+				System.out.println(b.getContent(i, j));
+			}
+		}
+	}
 }

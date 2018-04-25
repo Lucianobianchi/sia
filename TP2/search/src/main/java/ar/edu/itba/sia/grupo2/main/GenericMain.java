@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class GenericMain {
     public static void main(String[] args) {
-        final Problem<SenkuBoard> problem = new SenkuProblem(SenkuBoardLoader.load("boards/easy.txt"));
+        final Problem<SenkuBoard> problem = new SenkuProblem(SenkuBoardLoader.load("boards/board4.txt"));
         final Search<SenkuBoard> search = new AStar<>(new MeanDistanceAllPegs());
 
         final Optional<Node<SenkuBoard>> result = search.graphSearch(problem);
