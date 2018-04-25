@@ -33,7 +33,7 @@ public class SenkuMovement implements Rule<SenkuBoard> {
 
     @Override
     public SenkuBoard applyToState(final SenkuBoard senkuBoard) {
-        return senkuBoard.applyMovement(this);
+        return senkuBoard.applyMovement(this, false);
     }
 
     @Override

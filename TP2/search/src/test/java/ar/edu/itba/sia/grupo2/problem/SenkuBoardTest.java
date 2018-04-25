@@ -85,7 +85,11 @@ public class SenkuBoardTest {
             {INVALID, PEG, PEG, PEG, INVALID}
         });
 
-        final SenkuBoard actualSenkuBoard = senkuBoard.applyMovement(movement);
+        final SenkuBoard actualSenkuBoard = senkuBoard.applyMovement(movement, false);
+
+        System.out.println(actualSenkuBoard.getId());
+        System.out.println(expectedSenkuBoard.getId());
+
         assertEquals(expectedSenkuBoard, actualSenkuBoard);
         assertNotEquals(senkuBoard, actualSenkuBoard); // Inmutability
     }
@@ -93,7 +97,7 @@ public class SenkuBoardTest {
     @Test(expected = IllegalArgumentException.class)
     public void applyMovementThrow() {
         final SenkuMovement invalidMovement = new SenkuMovement(new Coordinate(0, 1), new Coordinate(2, 2));
-        senkuBoard.applyMovement(invalidMovement);
+        senkuBoard.applyMovement(invalidMovement, false);
     }
 
     @Test
