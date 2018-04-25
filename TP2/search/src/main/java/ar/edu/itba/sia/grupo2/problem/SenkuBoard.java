@@ -9,7 +9,7 @@ import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.PEG;
 
 public class SenkuBoard {
-    long board;
+    private long board;
     private final RowBoundary[] boundaries;
     private final int dimension;
     private int cellCount;
@@ -30,7 +30,7 @@ public class SenkuBoard {
 
         // Soporta hasta tamaño 8
         this.dimension = layout.length;
-        this.board = 0;
+        this.board = 0L;
         this.boundaries = calculateBoundaries(layout);
 
         for(int i = 0 ; i < layout.length ; i++){
@@ -84,10 +84,10 @@ public class SenkuBoard {
     }
 
     public SenkuContent getContent(final int row, final int column) {
-        if (!isValidPosition(row, column) || !isInBoundaries(row, column))
+        if (!isInBoundaries(row, column))
             return INVALID;
 
-        long pos = 1 << (row*getDimension() + column);
+        long pos = 1L << (row*getDimension() + column);
         boolean res = (board & pos) != 0;
         return res ? PEG : EMPTY;
     }
@@ -101,7 +101,8 @@ public class SenkuBoard {
             throw new IllegalArgumentException("Invalid position");
 
         boolean addPeg = content == PEG;
-        long pos = 1L << (row*getDimension() + column);
+        long pos = 1L;
+        pos = pos << (row * getDimension() + column);
 
         if (addPeg) // set
             this.board |= pos;
