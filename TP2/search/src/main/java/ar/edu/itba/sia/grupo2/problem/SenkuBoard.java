@@ -1,6 +1,8 @@
 package ar.edu.itba.sia.grupo2.problem;
 
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.EMPTY;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
@@ -13,36 +15,11 @@ public class SenkuBoard {
     private int cellCount;
     private int emptyCellCount;
     private Coordinate target;
+    private long id;
 
-    
-    public static boolean areSymmetric(SenkuBoard board, SenkuBoard other){
-        if(board.emptyCellCount != other.emptyCellCount || board.getDimension() != other.getDimension()){
-            return false;
-        }
 
-        if(board.equals(other)){
-            return true;
-        }
-
-        final SenkuContent contentToConsider = board.getPegCount() > board.getEmptyCount() ? EMPTY : PEG;
-
-        for(Symmetry s : Symmetry.values()){
-            boolean symmetric = true;
-            InterestingCoordinatesIterator iterator = new InterestingCoordinatesIterator(other, contentToConsider);
-            while(iterator.hasNext() && symmetric){
-                Coordinate next = iterator.next();
-                Coordinate transformed = s.transform(next, board.getDimension());
-                if(board.getContent(transformed) != contentToConsider){
-                    symmetric = false;
-                }
-            }
-
-            if(symmetric){
-                return true;
-            }
-        }
-
-        return false;
+    public static boolean areSymmetric(SenkuBoard board, SenkuBoard other) {
+        return board.id  == other.id;
     }
 
     public SenkuBoard(final SenkuContent[][] layout) {
@@ -51,7 +28,7 @@ public class SenkuBoard {
         if (!isSquare(layout))
             throw new IllegalArgumentException("Board must be square");
 
-        // TODO: solo soporta tamaño 7
+        // Soporta hasta tamaño 8
         this.dimension = layout.length;
         this.board = 0;
         this.boundaries = calculateBoundaries(layout);
@@ -64,16 +41,17 @@ public class SenkuBoard {
         }
 
         this.target = new Coordinate(this.dimension /2, this.dimension /2); // Center
-
+        this.id = calculateId();
     }
 
-    private SenkuBoard(final long board, final RowBoundary[] boundaries, final int dimension, final int cellCount, final int emptyCellCount, final Coordinate target) {
+    private SenkuBoard(final long board, final RowBoundary[] boundaries, final int dimension, final int cellCount, final int emptyCellCount, final Coordinate target, final long id) {
         this.board = board;
         this.boundaries = boundaries;
         this.dimension = dimension;
         this.cellCount = cellCount;
         this.emptyCellCount = emptyCellCount;
         this.target = target;
+        this.id = id;
     }
 
     public int getPegCount() {
@@ -114,7 +92,7 @@ public class SenkuBoard {
         return res ? PEG : EMPTY;
     }
 
-    private void setContent(final Coordinate coordinate, SenkuContent content) {
+    public void setContent(final Coordinate coordinate, SenkuContent content) {
         setContent(coordinate.getRow(), coordinate.getColumn(), content);
     }
 
@@ -134,6 +112,10 @@ public class SenkuBoard {
     private boolean isInBoundaries(final int row, final int column) {
         RowBoundary bounds = boundaries[row];
         return bounds.getFrom() <= column && column <= bounds.getTo();
+    }
+
+    public long getId() {
+        return id;
     }
 
     public boolean isValidPosition(final Coordinate coordinate) {
@@ -183,7 +165,7 @@ public class SenkuBoard {
         return isValidMovement(from, to);
     }
 
-    public SenkuBoard applyMovement(final SenkuMovement movement) {
+    public SenkuBoard applyMovement(final SenkuMovement movement, boolean mutate) {
         if (!isValidMovement(movement))
             throw new IllegalArgumentException("Invalid movement");
 
@@ -191,13 +173,69 @@ public class SenkuBoard {
         final Coordinate to = movement.getTo();
         final Coordinate between = Coordinate.between(from, to).get();
 
-        SenkuBoard modifiedBoard =  new SenkuBoard(board, boundaries, dimension, cellCount, emptyCellCount+1, target);
+        SenkuBoard modifiedBoard =  mutate ? this : duplicate();
 
+        modifiedBoard.emptyCellCount++;
         modifiedBoard.setContent(from, EMPTY);
         modifiedBoard.setContent(to, PEG);
         modifiedBoard.setContent(between, EMPTY);
+        modifiedBoard.id = modifiedBoard.calculateId();
 
         return modifiedBoard;
+    }
+
+
+    public SenkuBoard revertMovement(final SenkuMovement movement, boolean mutate){
+        if (!isValidReverseMovement(movement))
+            throw new IllegalArgumentException("Invalid movement");
+
+        final Coordinate from = movement.getFrom();
+        final Coordinate to = movement.getTo();
+        final Coordinate between = Coordinate.between(from, to).get();
+
+        SenkuBoard modifiedBoard = mutate ? this : duplicate();
+
+        modifiedBoard.emptyCellCount--;
+        modifiedBoard.setContent(from, EMPTY);
+        modifiedBoard.setContent(to, PEG);
+        modifiedBoard.setContent(between, PEG);
+        modifiedBoard.id = modifiedBoard.calculateId();
+
+        return modifiedBoard;
+    }
+
+    public SenkuBoard duplicate() {
+        return new SenkuBoard(board, boundaries, dimension, cellCount, emptyCellCount, target, id);
+    }
+
+    public boolean isValidReverseMovement(SenkuMovement movement) {
+        Coordinate from = movement.getFrom();
+        Coordinate to = movement.getTo();
+
+        if (!isValidPosition(from) || !isValidPosition(to))
+            return false;
+
+        final SenkuContent fromContent = getContent(from);
+        final SenkuContent toContent = getContent(to);
+
+        if (fromContent != PEG) {
+            return false;
+        }
+        if (toContent != EMPTY)
+            return false;
+
+        if (Coordinate.manhattanDistance(from, to) != 2) {
+            return false;
+        }
+
+        final Optional<Coordinate> between = Coordinate.between(from, to);
+
+        if (!between.isPresent())
+            return false;
+
+        final SenkuContent betweenContent = getContent(between.get());
+
+        return betweenContent == EMPTY;
     }
 
     @Override
@@ -210,23 +248,23 @@ public class SenkuBoard {
 
         final SenkuBoard other = (SenkuBoard) obj;
 
-        return board == other.board;
+        return id == other.id;
     }
 
     @Override
     public int hashCode() {
-        return Long.hashCode(board);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
         final int dim = getDimension();
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                stringBuilder.append(getContent(i,j));
-            }
 
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++)
+                stringBuilder.append(getContent(i,j));
+            
             stringBuilder.append('\n');
         }
 
@@ -278,5 +316,30 @@ public class SenkuBoard {
             throw new IllegalArgumentException("Row " + row + " does not contain any empty cell nor peg");
 
         return rowBoundary;
+    }
+
+    private long calculateId() {
+        return Arrays.stream(Symmetry.values())
+                .mapToLong(this::calculateIdRot)
+                .min()
+                .getAsLong();
+    }
+
+    private long calculateIdRot(Symmetry sym) {
+        final int dim = getDimension();
+        long id = 0;
+
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                final SenkuContent content = getContent(sym.transform(i, j, dim));
+                id = (id << 1) | content.getNum();
+            }
+        }
+
+        return id;
+    }
+
+    public void recalculateId() {
+        this.id = calculateId();
     }
 }

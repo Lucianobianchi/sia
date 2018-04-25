@@ -48,7 +48,6 @@ public class SenkuProblem implements Problem<SenkuBoard> {
         return rules;
     }
 
-
     private void addRulesAtCell(final SenkuBoard senkuBoard, final Coordinate coordinate, final SenkuContent content, final List<Rule<SenkuBoard>> rules) {
         final int row = coordinate.getRow();
         final int col = coordinate.getColumn();
