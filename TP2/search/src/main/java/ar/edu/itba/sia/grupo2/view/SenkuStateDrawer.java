@@ -63,12 +63,13 @@ public class SenkuStateDrawer {
 		}
 	}
 
-	public void draw(final SenkuBoard board, final SenkuMultipleMovement movement) {
+	public void draw(final SenkuBoard board, final SenkuMultipleMovement movement, final int duration) {
 		draw(board);
 		if (movement == null)
 			return;
 
 		List<Coordinate> path = movement.getPath();
+		int durationForEachMovement = duration / path.size();
 
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		gc.setStroke(LINE_COLOR);
@@ -77,15 +78,21 @@ public class SenkuStateDrawer {
 		gc.setLineCap(StrokeLineCap.ROUND);
 
 		for (int i = 0; i < path.size() - 1; i++) {
+		    int runAt = i * durationForEachMovement;
 			Coordinate from = path.get(i);
 			Coordinate to = path.get(i+1);
 			drawLine(from, to);
+			animateAt(from, to, Duration.millis(durationForEachMovement), Duration.millis(runAt));
 		}
-
-		animate(path.get(0), path.get(1));
 	}
 
-    private void animate(Coordinate from, Coordinate to) {
+	private void animateAt(Coordinate from, Coordinate to, Duration duration, Duration delay) {
+        PauseTransition pause = new PauseTransition(delay);
+        pause.setOnFinished(e -> animate(from, to, duration));
+        pause.play();
+    }
+
+    private void animate(Coordinate from, Coordinate to, Duration duration) {
 		timeline.stop();
 		timeline.getKeyFrames().clear();
 
@@ -97,7 +104,7 @@ public class SenkuStateDrawer {
         final IntegerProperty y = new SimpleIntegerProperty(from.getRow() * SQUARE_SIZE);
         final KeyValue kvX = new KeyValue(x, to.getColumn() * SQUARE_SIZE);
         final KeyValue kvY = new KeyValue(y, to.getRow() * SQUARE_SIZE);
-        final KeyFrame kf = new KeyFrame(Duration.millis(2900), kvX, kvY);
+        final KeyFrame kf = new KeyFrame(duration, kvX, kvY);
 
 		timeline.getKeyFrames().add(kf);
 
@@ -113,11 +120,11 @@ public class SenkuStateDrawer {
 		timer.start();
     }
 
-    public void draw(final SenkuBoard board, final SenkuMovement movement) {
+    public void draw(final SenkuBoard board, final SenkuMovement movement, final int duration) {
 		final List<Coordinate> path = new LinkedList<>();
 		path.add(movement.getFrom());
 		path.add(movement.getTo());
-		draw(board, new SenkuMultipleMovement(path));
+		draw(board, new SenkuMultipleMovement(path), duration);
 	}
 
 	private void drawLine(Coordinate from, Coordinate to) {

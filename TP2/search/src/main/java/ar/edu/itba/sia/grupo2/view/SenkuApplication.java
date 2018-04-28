@@ -21,6 +21,7 @@ public class SenkuApplication extends Application {
 
 	@Override
 	public void start (final Stage stage) throws Exception {
+		final int period = 3000;
 		Node<SenkuBoard> rootNode = runSearch();
 
 		SenkuStateDrawer drawer = new SenkuStateDrawer();
@@ -33,13 +34,13 @@ public class SenkuApplication extends Application {
 			public void run () {
 				if (iterator.hasNext()) {
 					StateAndAction stateAndAction = iterator.next();
-					drawer.draw(stateAndAction.state, stateAndAction.nextAction);
+					drawer.draw(stateAndAction.state, stateAndAction.nextAction, period);
 				}
 				else {
 					t.cancel();
 				}
 			}
-		}, 0, 3000);
+		}, 0, period);
 
 		Group root = new Group();
 		stage.setResizable(false);
