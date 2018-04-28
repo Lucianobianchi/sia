@@ -1,17 +1,20 @@
 package ar.edu.itba.sia.grupo2.view;
 
-import ar.edu.itba.sia.grupo2.problem.Coordinate;
-import ar.edu.itba.sia.grupo2.problem.SenkuBoard;
-import ar.edu.itba.sia.grupo2.problem.SenkuContent;
-import ar.edu.itba.sia.grupo2.problem.SenkuMultipleMovement;
+import ar.edu.itba.sia.grupo2.problem.*;
+import javafx.animation.*;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
+import javafx.util.Duration;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +26,10 @@ public class SenkuStateDrawer {
 
 	private final Map<SenkuContent, Image> images;
 	private final Canvas canvas;
+	private final Timeline timeline = new Timeline();
+	private AnimationTimer timer;
 
-	public SenkuStateDrawer () {
+    public SenkuStateDrawer () {
 		images = new HashMap<>();
 		images.put(SenkuContent.INVALID, new Image("file:assets/invalidSquare.png"));
 		images.put(SenkuContent.PEG, new Image("file:assets/pegSquare.png"));
@@ -36,6 +41,12 @@ public class SenkuStateDrawer {
 		return canvas;
 	}
 
+	private void drawAt(final int row, final int col, final SenkuContent type) {
+        final GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
+        gc.drawImage(images.get(type), SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
+    }
+
 	public void draw(final SenkuBoard board) {
 		int pixelSize = board.getDimension() * SQUARE_SIZE;
 		canvas.setHeight(pixelSize);
@@ -46,15 +57,12 @@ public class SenkuStateDrawer {
 
 		for (int row = 0; row < dim; row++) {
 			for (int col = 0; col < dim; col++) {
-				SenkuContent type = board.getContent(row, col);
-				gc.clearRect(SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
-				gc.drawImage(images.get(type),
-					SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
+			    SenkuContent type = board.getContent(row, col);
+			    drawAt(row, col, type);
 			}
 		}
 	}
 
-	// TODO: SimpleMovement
 	public void draw(final SenkuBoard board, final SenkuMultipleMovement movement) {
 		draw(board);
 		if (movement == null)
@@ -73,6 +81,43 @@ public class SenkuStateDrawer {
 			Coordinate to = path.get(i+1);
 			drawLine(from, to);
 		}
+
+		animate(path.get(0), path.get(1));
+	}
+
+    private void animate(Coordinate from, Coordinate to) {
+		timeline.stop();
+		timeline.getKeyFrames().clear();
+
+		if (timer != null)
+		    timer.stop();
+
+		final GraphicsContext gc = canvas.getGraphicsContext2D();
+        final IntegerProperty x = new SimpleIntegerProperty(from.getColumn() * SQUARE_SIZE);
+        final IntegerProperty y = new SimpleIntegerProperty(from.getRow() * SQUARE_SIZE);
+        final KeyValue kvX = new KeyValue(x, to.getColumn() * SQUARE_SIZE);
+        final KeyValue kvY = new KeyValue(y, to.getRow() * SQUARE_SIZE);
+        final KeyFrame kf = new KeyFrame(Duration.millis(2900), kvX, kvY);
+
+		timeline.getKeyFrames().add(kf);
+
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                drawAt(from.getRow(), from.getColumn(), SenkuContent.EMPTY);
+                gc.drawImage(images.get(SenkuContent.PEG), x.get(), y.get(), SQUARE_SIZE, SQUARE_SIZE);
+            }
+        };
+
+		timeline.play();
+		timer.start();
+    }
+
+    public void draw(final SenkuBoard board, final SenkuMovement movement) {
+		final List<Coordinate> path = new LinkedList<>();
+		path.add(movement.getFrom());
+		path.add(movement.getTo());
+		draw(board, new SenkuMultipleMovement(path));
 	}
 
 	private void drawLine(Coordinate from, Coordinate to) {

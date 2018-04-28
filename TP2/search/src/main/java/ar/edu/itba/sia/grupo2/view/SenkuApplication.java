@@ -6,6 +6,7 @@ import ar.edu.itba.sia.grupo2.engine.Search;
 import ar.edu.itba.sia.grupo2.engine.informed.AStar;
 import ar.edu.itba.sia.grupo2.problem.*;
 import ar.edu.itba.sia.grupo2.problem.heuristic.MeanDistanceAllPegs;
+import ar.edu.itba.sia.grupo2.problem.heuristic.PegsDifficulty;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -49,8 +50,8 @@ public class SenkuApplication extends Application {
 	}
 
 	private Node<SenkuBoard> runSearch() {
-		final Problem<SenkuBoard> problem = new SenkuMultipleProblem(SenkuBoardLoader.load("boards/easy.txt"));
-		final Search<SenkuBoard> search = new AStar<>(new MeanDistanceAllPegs());
+		final Problem<SenkuBoard> problem = new SenkuMultipleProblem(SenkuBoardLoader.load("boards/board4.txt"));
+		final Search<SenkuBoard> search = new AStar<>(new PegsDifficulty());
 
 		final Optional<Node<SenkuBoard>> result = search.graphSearch(problem);
 		return result.get();
