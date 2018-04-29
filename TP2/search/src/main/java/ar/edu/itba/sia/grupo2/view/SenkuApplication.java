@@ -46,7 +46,7 @@ public class SenkuApplication extends Application {
 		stage.setResizable(false);
 		stage.setScene(new Scene(root));
 
-		root.getChildren().add(drawer.getCanvas());
+		root.getChildren().add(drawer.getNode());
 		stage.show();
 	}
 

@@ -4,9 +4,11 @@ import ar.edu.itba.sia.grupo2.problem.*;
 import javafx.animation.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
@@ -21,44 +23,66 @@ import java.util.Map;
 
 public class SenkuStateDrawer {
 	private static final int SQUARE_SIZE = 50;
+	private static final int PEG_SIZE = 40;
 	private static final Color LINE_COLOR = Color.RED;
 	private static final double LINE_WIDTH = 5;
 
 	private final Map<SenkuContent, Image> images;
-	private final Canvas canvas;
+	private final Canvas boardCanvas;
+	private final Canvas pegCanvas;
+	private final Pane pane;
 	private final Timeline timeline = new Timeline();
 	private AnimationTimer timer;
 
-    public SenkuStateDrawer () {
+    public SenkuStateDrawer() {
 		images = new HashMap<>();
 		images.put(SenkuContent.INVALID, new Image("file:assets/invalidSquare.png"));
-		images.put(SenkuContent.PEG, new Image("file:assets/pegSquare.png"));
+		images.put(SenkuContent.PEG, new Image("file:assets/peq.png"));
 		images.put(SenkuContent.EMPTY, new Image("file:assets/emptySquare.png"));
-		canvas = new Canvas();
+		boardCanvas = new Canvas();
+		pegCanvas = new Canvas();
+		pane = new Pane();
+		pane.getChildren().add(boardCanvas);
+		pane.getChildren().add(pegCanvas);
+		pegCanvas.toFront();
 	}
 
-	public Canvas getCanvas() {
-		return canvas;
+	public Node getNode() {
+		return pane;
 	}
 
-	private void drawAt(final int row, final int col, final SenkuContent type) {
-        final GraphicsContext gc = canvas.getGraphicsContext2D();
+	private void drawAtBoard(final int row, final int col, SenkuContent type) {
+        final GraphicsContext gc = boardCanvas.getGraphicsContext2D();
+
+        if (type == SenkuContent.PEG)
+            type = SenkuContent.EMPTY;
+
         gc.clearRect(SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
         gc.drawImage(images.get(type), SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
     }
 
+    private void drawPeg(final int row, final int col) {
+        final GraphicsContext gc = pegCanvas.getGraphicsContext2D();
+        gc.drawImage(images.get(SenkuContent.PEG), SQUARE_SIZE * col + 5, SQUARE_SIZE * row + 5, PEG_SIZE, PEG_SIZE);
+    }
+
 	public void draw(final SenkuBoard board) {
 		int pixelSize = board.getDimension() * SQUARE_SIZE;
-		canvas.setHeight(pixelSize);
-		canvas.setWidth(pixelSize);
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+		boardCanvas.setHeight(pixelSize);
+		boardCanvas.setWidth(pixelSize);
+        pegCanvas.setHeight(pixelSize);
+        pegCanvas.setWidth(pixelSize);
 
 		int dim = board.getDimension();
 
 		for (int row = 0; row < dim; row++) {
 			for (int col = 0; col < dim; col++) {
 			    SenkuContent type = board.getContent(row, col);
-			    drawAt(row, col, type);
+			    drawAtBoard(row, col, type);
+			    pegCanvas.getGraphicsContext2D().clearRect(SQUARE_SIZE * col, SQUARE_SIZE * row, SQUARE_SIZE, SQUARE_SIZE);
+
+			    if (type == SenkuContent.PEG)
+			        drawPeg(row, col);
 			}
 		}
 	}
@@ -71,7 +95,7 @@ public class SenkuStateDrawer {
 		List<Coordinate> path = movement.getPath();
 		int durationForEachMovement = duration / path.size();
 
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+		GraphicsContext gc = boardCanvas.getGraphicsContext2D();
 		gc.setStroke(LINE_COLOR);
 		gc.setLineWidth(LINE_WIDTH);
 		gc.setLineJoin(StrokeLineJoin.ROUND);
@@ -99,7 +123,7 @@ public class SenkuStateDrawer {
 		if (timer != null)
 		    timer.stop();
 
-		final GraphicsContext gc = canvas.getGraphicsContext2D();
+		final GraphicsContext gc = pegCanvas.getGraphicsContext2D();
         final IntegerProperty x = new SimpleIntegerProperty(from.getColumn() * SQUARE_SIZE);
         final IntegerProperty y = new SimpleIntegerProperty(from.getRow() * SQUARE_SIZE);
         final KeyValue kvX = new KeyValue(x, to.getColumn() * SQUARE_SIZE);
@@ -111,8 +135,8 @@ public class SenkuStateDrawer {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                drawAt(from.getRow(), from.getColumn(), SenkuContent.EMPTY);
-                gc.drawImage(images.get(SenkuContent.PEG), x.get(), y.get(), SQUARE_SIZE, SQUARE_SIZE);
+                gc.clearRect(x.get(), y.get(), SQUARE_SIZE, SQUARE_SIZE);
+                gc.drawImage(images.get(SenkuContent.PEG), x.get() + 5, y.get() + 5, PEG_SIZE, PEG_SIZE);
             }
         };
 
@@ -128,7 +152,7 @@ public class SenkuStateDrawer {
 	}
 
 	private void drawLine(Coordinate from, Coordinate to) {
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+		GraphicsContext gc = boardCanvas.getGraphicsContext2D();
 		gc.strokeLine(toPixel(from.getColumn()), toPixel(from.getRow()),
 				toPixel(to.getColumn()), toPixel(to.getRow()));
 	}
