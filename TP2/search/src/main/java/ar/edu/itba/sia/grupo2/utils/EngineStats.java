@@ -14,7 +14,7 @@ public class EngineStats {
 	}
 
 	public void expansion(int level) {
-		final int current = levelExpansions.containsKey(level) ? levelExpansions.get(level) + 1 : 1;
+		final int current = levelExpansions.getOrDefault(level, 0) + 1;
 		levelExpansions.put(level, current);
 
 		if (log && current % LOG_INTERVAL == 0)
