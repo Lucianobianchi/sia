@@ -24,6 +24,10 @@ public class GenericMain {
         System.out.println("Time elapsed: " + stats.getTimeElapsed());
         System.out.println("Expansions: " + stats.getLevelExpansions());
         System.out.println("Total expansions: " + stats.getTotalExpansions());
+        System.out.println("Frontier: " + stats.getLevelFrontier());
+        System.out.println("Total frontier: " + stats.getTotalFrontier());
+        System.out.println("Generated: " + stats.getLevelGenerated());
+        System.out.println("Total generated: " + stats.getTotalGenerated());
         node.ifPresent(n -> System.out.println("Solution level: " + n.getLevel()));
         System.out.println(node);
     }

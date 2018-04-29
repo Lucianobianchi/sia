@@ -46,6 +46,7 @@ public abstract class Search<S> {
         final Node<S> root = Node.rootNode(problem.getInitialState());
 
         addToFrontier(root);
+        stats.frontier(root);
 
         if (problem.isResolved(root.getState()))
             return Optional.of(root);
@@ -53,6 +54,7 @@ public abstract class Search<S> {
         while (!isFrontierEmpty()) {
             final Node<S> node = removeFromFrontier();
             final S state = node.getState();
+            stats.removeFrontier(node);
 
             if (!explored.contains(state)) {
                 if (checkBeforeExpansion() && problem.isResolved(state))
@@ -70,8 +72,10 @@ public abstract class Search<S> {
                     if (!checkBeforeExpansion() && problem.isResolved(childState))
                         return Optional.of(childNode);
 
-                    if (!explored.contains(childState))
+                    if (!explored.contains(childState)) {
                         addToFrontier(childNode);
+                        stats.frontier(childNode);
+                    }
                 }
             }
         }
