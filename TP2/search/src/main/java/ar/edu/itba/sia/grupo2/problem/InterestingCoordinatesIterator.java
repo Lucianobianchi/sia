@@ -48,9 +48,7 @@ public class InterestingCoordinatesIterator implements Iterator<Coordinate> {
             }
 
         }
-
-        System.out.println(board);
-
+        
         throw new RuntimeException(); // Unreachable
     }
 
