@@ -6,13 +6,12 @@ import ar.edu.itba.sia.grupo2.engine.Search;
 import ar.edu.itba.sia.grupo2.engine.informed.AStar;
 import ar.edu.itba.sia.grupo2.problem.*;
 import ar.edu.itba.sia.grupo2.problem.heuristic.*;
+import ar.edu.itba.sia.grupo2.utils.EngineStats;
 
 import java.util.Optional;
 
 public class GenericMain {
     public static void main(String[] args) {
-        long time = System.currentTimeMillis();
-
         final Problem<SenkuBoard> problem = new SenkuProblem(SenkuBoardLoader.load("boards/board4.txt"));
 
         final Search<SenkuBoard> search = new AStar<>(new IsolatedPegs());
@@ -20,8 +19,12 @@ public class GenericMain {
         //final Search<SenkuBoard> search = new BFS<>();
         final Optional<Node<SenkuBoard>> node = search.graphSearch(problem);
 
-        long time2 = System.currentTimeMillis();
-        System.out.println(time2 - time);
+        final EngineStats stats = search.getStats();
+
+        System.out.println("Time elapsed: " + stats.getTimeElapsed());
+        System.out.println("Expansions: " + stats.getLevelExpansions());
+        System.out.println("Total expansions: " + stats.getTotalExpansions());
+        node.ifPresent(n -> System.out.println("Solution level: " + n.getLevel()));
         System.out.println(node);
     }
 }
