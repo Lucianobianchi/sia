@@ -15,11 +15,7 @@ public class DistanceAllPegs implements Heuristic<SenkuBoard> {
         iterations++;
         if(EnglishBoardPagoda.pagoda(senkuBoard) < EnglishBoardPagoda.eval(senkuBoard.getTarget())){
             pruned++;
-            if(random.nextDouble() < 0.0005){
-                System.out.printf("%d : %d\n", iterations, pruned);
-            }
             return Double.MAX_VALUE; // Infinity
-
         }
 
         double cumulativeDistance = 0;
