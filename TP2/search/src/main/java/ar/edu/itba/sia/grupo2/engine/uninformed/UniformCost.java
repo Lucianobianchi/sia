@@ -1,4 +1,7 @@
-package ar.edu.itba.sia.grupo2.engine;
+package ar.edu.itba.sia.grupo2.engine.uninformed;
+
+import ar.edu.itba.sia.grupo2.engine.Node;
+import ar.edu.itba.sia.grupo2.engine.Search;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;

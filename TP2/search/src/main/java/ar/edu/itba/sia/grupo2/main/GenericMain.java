@@ -1,12 +1,9 @@
 package ar.edu.itba.sia.grupo2.main;
 
 import ar.com.itba.sia.Problem;
-import ar.edu.itba.sia.grupo2.engine.BFS;
-import ar.edu.itba.sia.grupo2.engine.DFS;
 import ar.edu.itba.sia.grupo2.engine.Node;
 import ar.edu.itba.sia.grupo2.engine.Search;
 import ar.edu.itba.sia.grupo2.engine.informed.AStar;
-import ar.edu.itba.sia.grupo2.generator.RandomBoardGenerator;
 import ar.edu.itba.sia.grupo2.problem.*;
 import ar.edu.itba.sia.grupo2.problem.heuristic.*;
 
