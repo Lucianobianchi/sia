@@ -5,7 +5,7 @@ import ar.edu.itba.sia.grupo2.problem.*;
 
 import java.util.Random;
 
-public class MeanDistanceAllPegs implements Heuristic<SenkuBoard> {
+public class DistanceAllPegs implements Heuristic<SenkuBoard> {
 
     private static Random random = new Random();
     private long pruned = 0;
@@ -35,7 +35,7 @@ public class MeanDistanceAllPegs implements Heuristic<SenkuBoard> {
             remainingPegs--;
         }
 
-        return cumulativeDistance / numberOfPairs;
+        return cumulativeDistance;
 
     }
 

@@ -3,7 +3,7 @@ package ar.edu.itba.sia.grupo2.problem.heuristic;
 import ar.com.itba.sia.Heuristic;
 import ar.edu.itba.sia.grupo2.problem.*;
 
-public class MeanDistanceToTarget implements Heuristic<SenkuBoard> {
+public class DistanceToTarget implements Heuristic<SenkuBoard> {
 
 
     private long pruned = 0;
@@ -19,7 +19,6 @@ public class MeanDistanceToTarget implements Heuristic<SenkuBoard> {
 
         }
 
-
         InterestingCoordinatesIterator iterator = new InterestingCoordinatesIterator(senkuBoard, SenkuContent.PEG);
 
         int cumulativeDistance = 0;
@@ -28,6 +27,6 @@ public class MeanDistanceToTarget implements Heuristic<SenkuBoard> {
             cumulativeDistance += Coordinate.manhattanDistance(target, iterator.next())/2;
         }
 
-        return cumulativeDistance / senkuBoard.getPegCount(); // Promedio
+        return cumulativeDistance; // Promedio
     }
 }

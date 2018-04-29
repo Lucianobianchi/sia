@@ -5,7 +5,6 @@ import ar.edu.itba.sia.grupo2.engine.Node;
 import ar.edu.itba.sia.grupo2.engine.Search;
 import ar.edu.itba.sia.grupo2.engine.informed.AStar;
 import ar.edu.itba.sia.grupo2.problem.*;
-import ar.edu.itba.sia.grupo2.problem.heuristic.MeanDistanceAllPegs;
 import ar.edu.itba.sia.grupo2.problem.heuristic.PegsDifficulty;
 import javafx.application.Application;
 import javafx.scene.Group;

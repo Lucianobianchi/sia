@@ -9,7 +9,7 @@ import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.PEG;
 import static org.junit.Assert.assertEquals;
 
-public class MeanDistanceAllPegsTest {
+public class DistanceAllPegsTest {
     private static final double EPSILON = 0.001;
 
     private SenkuBoard senkuBoard = new SenkuBoard(new SenkuContent[][] {
@@ -20,7 +20,7 @@ public class MeanDistanceAllPegsTest {
             {INVALID, EMPTY, EMPTY, EMPTY, INVALID},
     });
 
-    private MeanDistanceAllPegs heuristic = new MeanDistanceAllPegs();
+    private DistanceAllPegs heuristic = new DistanceAllPegs();
 
 
     @Test
