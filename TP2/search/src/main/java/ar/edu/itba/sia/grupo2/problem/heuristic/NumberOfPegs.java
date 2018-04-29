@@ -7,6 +7,6 @@ public class NumberOfPegs implements Heuristic<SenkuBoard> {
 
     @Override
     public double getValue(SenkuBoard senkuBoard) {
-        return senkuBoard.getPegCount();
+        return senkuBoard.getPegCount() - 1;
     }
 }
