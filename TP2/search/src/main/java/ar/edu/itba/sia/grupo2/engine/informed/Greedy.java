@@ -20,7 +20,7 @@ public class Greedy<S> extends Search<S> {
 
     @Override
     protected boolean checkBeforeExpansion() {
-        return false;
+        return true;
     }
 
     @Override

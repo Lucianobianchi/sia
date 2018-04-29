@@ -11,7 +11,7 @@ public class DFS<S> extends Search<S> {
 
     @Override
     protected boolean checkBeforeExpansion() {
-        return true;
+        return false;
     }
 
     @Override
