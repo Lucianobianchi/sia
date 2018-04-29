@@ -8,26 +8,28 @@ public class Node<S> {
     private final S state;
     private final Node<S> parent;
     private final Rule<S> rule;
+    private final int level;
     private final double cost;
 
     public static <S> Node<S> rootNode(final S state) {
-        return new Node<>(state, null, null, 0);
+        return new Node<>(state, null, null, 0, 0.0);
     }
 
     public static <S> Node<S> childNode(final Node<S> parent, final Rule<S> rule) {
         final S state = rule.applyToState(parent.getState());
         final double stepCost = rule.getCost();
 
-        return new Node<>(state, parent, rule, stepCost + parent.getCost());
+        return new Node<>(state, parent, rule, parent.getLevel() + 1, stepCost + parent.getCost());
     }
 
-    private Node(final S state, final Node<S> parent, final Rule<S> rule, final double cost) {
+    private Node(final S state, final Node<S> parent, final Rule<S> rule, final int level, final double cost) {
         if ((Objects.isNull(parent) && Objects.nonNull(rule)) || Objects.isNull(rule) && Objects.nonNull(parent))
             throw new IllegalStateException("Parent node and rule must both be null or non null simultaneously");
 
         this.state = Objects.requireNonNull(state);
         this.parent = parent;
         this.rule = rule;
+        this.level = level;
         this.cost = cost;
     }
 
@@ -45,6 +47,10 @@ public class Node<S> {
 
     public boolean hasParent() {
         return parent != null;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public double getCost() {
@@ -67,8 +73,8 @@ public class Node<S> {
         if (!hasParent())
             return getState().equals(other.getState()) && getCost() == other.getCost();
 
-        return getState().equals(other.getState()) && getRule().equals(other.getRule())
-                && getCost() == other.getCost() && getParent().equals(other.getParent());
+        return getState().equals(other.getState()) && getRule().equals(other.getRule()) && getLevel() == other.getLevel()
+                && Objects.equals(getCost(), other.getCost()) && getParent().equals(other.getParent());
     }
 
     @Override

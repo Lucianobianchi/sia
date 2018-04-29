@@ -1,6 +1,10 @@
 package ar.edu.itba.sia.grupo2.engine;
 
 import ar.com.itba.sia.Problem;
+import ar.edu.itba.sia.grupo2.engine.uninformed.BFS;
+import ar.edu.itba.sia.grupo2.engine.uninformed.DFS;
+import ar.edu.itba.sia.grupo2.engine.uninformed.IterativeDFS;
+import ar.edu.itba.sia.grupo2.engine.uninformed.UniformCost;
 import ar.edu.itba.sia.grupo2.engine.informed.AStar;
 import ar.edu.itba.sia.grupo2.puzzlen.ManhattanDistance;
 import ar.edu.itba.sia.grupo2.puzzlen.PuzzleNProblem;

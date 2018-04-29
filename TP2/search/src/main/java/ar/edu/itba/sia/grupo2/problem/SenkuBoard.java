@@ -125,7 +125,7 @@ public class SenkuBoard {
 
     public boolean isValidPosition(final int row, final int column) {
         final int dim = getDimension();
-        return row >= 0 && row < dim && column >= 0 && column < dim;
+        return row >= 0 && row < dim && column >= 0 && column < dim && getContent(row, column) != INVALID;
     }
 
     public boolean isValidMovement(final Coordinate from, final Coordinate to) {

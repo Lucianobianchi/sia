@@ -1,7 +1,8 @@
-package ar.edu.itba.sia.grupo2.engine;
+package ar.edu.itba.sia.grupo2.engine.uninformed;
 
 import ar.com.itba.sia.Problem;
 import ar.com.itba.sia.Rule;
+import ar.edu.itba.sia.grupo2.engine.Node;
 
 import java.util.HashSet;
 import java.util.Optional;
