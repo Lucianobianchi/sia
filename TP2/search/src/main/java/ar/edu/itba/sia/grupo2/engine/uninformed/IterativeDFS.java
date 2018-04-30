@@ -2,6 +2,7 @@ package ar.edu.itba.sia.grupo2.engine.uninformed;
 
 import ar.com.itba.sia.Problem;
 import ar.edu.itba.sia.grupo2.engine.Node;
+import ar.edu.itba.sia.grupo2.utils.EngineStats;
 
 import java.util.Optional;
 
@@ -15,5 +16,9 @@ public class IterativeDFS<S> {
             solution = ldfs.search(problem, i);
 
         return solution;
+    }
+
+    public EngineStats getStats() {
+        return ldfs.getStats();
     }
 }
