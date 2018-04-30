@@ -10,9 +10,9 @@ public class PegsDifficulty implements Heuristic<SenkuBoard> {
     private static final int[][] difficultyTable = new int[][] {
             {0, 0, 4, 1, 4, 0, 0},
             {0, 0, 2, 1, 2, 0, 0},
-            {4, 1, 3, 1, 3, 1, 4},
+            {4, 2, 3, 1, 3, 2, 4},
             {1, 1, 1, 0, 1, 1, 1},
-            {4, 1, 3, 1, 3, 1, 4},
+            {4, 2, 3, 1, 3, 2, 4},
             {0, 0, 2, 1, 2, 0, 0},
             {0, 0, 4, 1, 4, 0, 0}
     };
