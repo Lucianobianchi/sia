@@ -6,14 +6,10 @@ import ar.edu.itba.sia.grupo2.problem.*;
 public class DistanceToTarget implements Heuristic<SenkuBoard> {
 
 
-    private long pruned = 0;
-    private long iterations = 0;
-
     @Override
     public double getValue(final SenkuBoard senkuBoard) {
         final Coordinate target = senkuBoard.getTarget();
 
-        iterations++;
         if(EnglishBoardPagoda.pagoda(senkuBoard) < EnglishBoardPagoda.eval(target)){
             return Double.MAX_VALUE; // Infinity
 
@@ -27,6 +23,6 @@ public class DistanceToTarget implements Heuristic<SenkuBoard> {
             cumulativeDistance += Coordinate.manhattanDistance(target, iterator.next());
         }
 
-        return cumulativeDistance;
+        return 2*cumulativeDistance;
     }
 }
