@@ -24,9 +24,9 @@ public class DistanceToTarget implements Heuristic<SenkuBoard> {
         int cumulativeDistance = 0;
 
         while(iterator.hasNext()){
-            cumulativeDistance += Coordinate.manhattanDistance(target, iterator.next())/2;
+            cumulativeDistance += Coordinate.manhattanDistance(target, iterator.next());
         }
 
-        return cumulativeDistance; // Promedio
+        return cumulativeDistance;
     }
 }

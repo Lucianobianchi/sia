@@ -8,13 +8,13 @@ import ar.edu.itba.sia.grupo2.problem.SenkuContent;
 
 public class PegsDifficulty implements Heuristic<SenkuBoard> {
     private static final int[][] difficultyTable = new int[][] {
-        {0, 0, 4, 1, 4, 0, 0},
-        {0, 0, 1, 1, 1, 0, 0},
-        {4, 1, 2, 0, 2, 1, 4},
-        {1, 1, 0, 1, 0, 1, 1},
-        {4, 1, 2, 0, 2, 1, 4},
-        {0, 0, 1, 1, 1, 0, 0},
-        {0, 0, 4, 1, 4, 0, 0}
+            {0, 0, 4, 1, 4, 0, 0},
+            {0, 0, 2, 1, 2, 0, 0},
+            {4, 1, 3, 1, 3, 1, 4},
+            {1, 1, 1, 0, 1, 1, 1},
+            {4, 1, 3, 1, 3, 1, 4},
+            {0, 0, 2, 1, 2, 0, 0},
+            {0, 0, 4, 1, 4, 0, 0}
     };
 
     @Override
