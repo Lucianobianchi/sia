@@ -37,6 +37,7 @@ local.properties
 
 # Package Files #
 *.jar
+!search.jar
 
 *.class
 .DS_Store
