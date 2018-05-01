@@ -37,7 +37,7 @@ public class CmdMain {
     }
 
     public static void main(final String[] args) {
-        final Problem<SenkuBoard> problem = new SenkuProblem(SenkuBoardLoader.load("boards/board4.txt"));
+        final Problem<SenkuBoard> problem = new SenkuProblem();
         Search<SenkuBoard> search = null;
         IterativeDFS<SenkuBoard> idfs = null;
 
