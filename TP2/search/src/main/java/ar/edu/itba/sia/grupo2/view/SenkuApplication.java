@@ -20,12 +20,12 @@ public class SenkuApplication extends Application {
 
     @Override
     public void start (final Stage stage) throws Exception {
-        final int period = 3000;
+        final int period = 2000;
         Node<SenkuBoard> rootNode = runSearch();
 
         SenkuStateDrawer drawer = new SenkuStateDrawer();
 
-        Iterator<StateAndAction> iterator = getSolutionStates(rootNode).iterator();
+        Iterator<StateAndAction> iterator = getSolutionStates(rootNode, false).iterator();
 
         final Timer t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
@@ -33,7 +33,7 @@ public class SenkuApplication extends Application {
             public void run () {
                 if (iterator.hasNext()) {
                     StateAndAction stateAndAction = iterator.next();
-                    drawer.draw(stateAndAction.state, stateAndAction.nextAction, period);
+                    drawer.draw(stateAndAction.state, stateAndAction.nextAction, (int) (period * 0.85));
                 }
                 else {
                     t.cancel();
@@ -50,14 +50,17 @@ public class SenkuApplication extends Application {
     }
 
     private Node<SenkuBoard> runSearch() {
-        final Problem<SenkuBoard> problem = new SenkuMultipleProblem(SenkuBoardLoader.load("boards/board4.txt"));
+        final Problem<SenkuBoard> problem = new SenkuProblem(SenkuBoardLoader.load("boards/board4.txt"));
         final Search<SenkuBoard> search = new AStar<>(new PegsDifficulty());
 
         final Optional<Node<SenkuBoard>> result = search.graphSearch(problem);
+
+        System.out.println(result);
+
         return result.get();
     }
 
-    private List<StateAndAction> getSolutionStates(Node<SenkuBoard> last) {
+    private List<StateAndAction> getSolutionStates(Node<SenkuBoard> last, boolean isMultiple) {
         LinkedList<Node<SenkuBoard>> path = new LinkedList<>();
 
         Node<SenkuBoard> node = last;
@@ -71,18 +74,30 @@ public class SenkuApplication extends Application {
         LinkedList<StateAndAction> solutions = new LinkedList<>();
 
         for (int i = 0; i  < path.size() - 1; i++) {
-            solutions.add(new StateAndAction(path.get(i).getState(), (SenkuMultipleMovement) path.get(i+1).getRule()));
+            Node<SenkuBoard> n = path.get(i+1);
+            if (isMultiple)
+                solutions.add(new StateAndAction(path.get(i).getState(), (SenkuMultipleMovement) n.getRule()));
+            else
+                solutions.add(new StateAndAction(path.get(i).getState(), simpleToMultiple((SenkuMovement) n.getRule())));
         }
+
         solutions.add(new StateAndAction(path.getLast().getState(), null));
 
         return solutions;
+    }
+
+    private SenkuMultipleMovement simpleToMultiple(SenkuMovement movement) {
+        final List<Coordinate> path = new LinkedList<>();
+        path.add(movement.getFrom());
+        path.add(movement.getTo());
+        return new SenkuMultipleMovement(path);
     }
 
     private static class StateAndAction {
         SenkuBoard state;
         SenkuMultipleMovement nextAction;
 
-        public StateAndAction (SenkuBoard state, SenkuMultipleMovement nextAction) {
+        private StateAndAction (SenkuBoard state, SenkuMultipleMovement nextAction) {
             this.state = state;
             this.nextAction = nextAction;
         }

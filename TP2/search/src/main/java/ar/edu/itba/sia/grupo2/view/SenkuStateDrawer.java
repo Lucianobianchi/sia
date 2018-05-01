@@ -68,8 +68,6 @@ public class SenkuStateDrawer {
         if (movement == null)
             return;
 
-        duration *= 0.9;
-
         List<Coordinate> path = movement.getPath();
         int durationForEachMovement = duration / path.size();
 
