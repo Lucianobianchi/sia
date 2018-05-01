@@ -54,7 +54,7 @@ public class CmdMain {
         else if (algorithm.equals("idfs")) {
             idfs = new IterativeDFS<>();
         }
-        else if (algorithm.equals("a*")) {
+        else if (algorithm.equals("astar")) {
             search = new AStar<>(extractHeuristic(args));
         }
         else if (algorithm.equals(("greedy"))) {
