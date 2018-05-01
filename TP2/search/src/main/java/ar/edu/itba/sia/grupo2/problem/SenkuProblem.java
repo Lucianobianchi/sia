@@ -8,13 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.EMPTY;
+import static ar.edu.itba.sia.grupo2.problem.SenkuContent.INVALID;
 import static ar.edu.itba.sia.grupo2.problem.SenkuContent.PEG;
 
 public class SenkuProblem implements Problem<SenkuBoard> {
+    private static final SenkuBoard DEFAULT_BOARD = new SenkuBoard(new SenkuContent[][] {
+            {INVALID, INVALID, PEG, PEG, PEG, INVALID, INVALID},
+            {INVALID, INVALID, PEG, PEG, PEG, INVALID, INVALID},
+            {PEG, PEG, PEG, PEG, PEG, PEG, PEG},
+            {PEG, PEG, PEG, EMPTY, PEG, PEG, PEG},
+            {PEG, PEG, PEG, PEG, PEG, PEG, PEG},
+            {INVALID, INVALID, PEG, PEG, PEG, INVALID, INVALID},
+            {INVALID, INVALID, PEG, PEG, PEG, INVALID, INVALID}
+    });
+
     private final SenkuBoard initialState;
 
     public SenkuProblem(final SenkuBoard initialState) {
         this.initialState = initialState;
+    }
+
+    public SenkuProblem() {
+        this(DEFAULT_BOARD);
     }
 
     @Override

@@ -4,6 +4,7 @@ import ar.com.itba.sia.Problem;
 import ar.edu.itba.sia.grupo2.engine.Node;
 import ar.edu.itba.sia.grupo2.engine.Search;
 import ar.edu.itba.sia.grupo2.engine.informed.AStar;
+import ar.edu.itba.sia.grupo2.engine.informed.Greedy;
 import ar.edu.itba.sia.grupo2.engine.uninformed.BFS;
 import ar.edu.itba.sia.grupo2.engine.uninformed.DFS;
 import ar.edu.itba.sia.grupo2.engine.uninformed.IterativeDFS;
@@ -17,11 +18,11 @@ public class GenericMain {
     public static void main(String[] args) {
         final Problem<SenkuBoard> problem = new SenkuProblem(SenkuBoardLoader.load("boards/board4.txt"));
 
-        //final Search<SenkuBoard> search = new AStar<>(new DistanceToTarget());
+        final Search<SenkuBoard> search = new AStar<>(new PegsDifficulty());
         //final Search<SenkuBoard> search = new DFS<>();
         //final Search<SenkuBoard> search = new BFS<>();
-        final IterativeDFS<SenkuBoard> search = new IterativeDFS<>();
-        final Optional<Node<SenkuBoard>> node = search.search(problem);
+        //final IterativeDFS<SenkuBoard> search = new IterativeDFS<>();
+        final Optional<Node<SenkuBoard>> node = search.graphSearch(problem);
 
         final EngineStats stats = search.getStats();
 
@@ -33,6 +34,6 @@ public class GenericMain {
         System.out.println("Generated: " + stats.getLevelGenerated());
         System.out.println("Total generated: " + stats.getTotalGenerated());
         node.ifPresent(n -> System.out.println("Solution level: " + n.getLevel()));
-        System.out.println(node);
+        node.ifPresent(System.out::println);
     }
 }
