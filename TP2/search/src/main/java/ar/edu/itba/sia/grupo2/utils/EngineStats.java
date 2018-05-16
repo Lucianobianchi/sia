@@ -24,6 +24,7 @@ public class EngineStats {
 
     public void reset() {
         levelExpansions.clear();
+        levelFrontier.clear();
         timeElapsed = 0;
     }
 
@@ -63,7 +64,10 @@ public class EngineStats {
 
     public Map<Integer, Integer> getLevelGenerated() {
         final Map<Integer, Integer> levelGenerated = new HashMap<>(levelFrontier);
-        levelExpansions.forEach((k, v) -> levelGenerated.put(k, levelGenerated.get(k) + v));
+        levelExpansions.forEach((k, v) -> {
+            if (levelGenerated.containsKey(k))
+                levelGenerated.put(k, levelGenerated.get(k) + v);
+        });
         return levelGenerated;
     }
 

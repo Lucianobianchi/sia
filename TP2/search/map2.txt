@@ -1,0 +1,6 @@
+5 11
+XXXXXXXXXXX
+X@  XXX   X
+X * X  *  X
+X     .XX.X
+XXXXXXXXXXX
