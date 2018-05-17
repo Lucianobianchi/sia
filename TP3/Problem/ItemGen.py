@@ -38,5 +38,7 @@ class ItemGen:
     def type(self):
         return self._type
 
+    # TODO: no puede ser mutable GEN porque se comparten instancias de genes.
+    # Mutate debe devolver una nueva instancia del gen.
     def mutate(self):
         ItemGen.__init__(self, self._type, RANDOM)

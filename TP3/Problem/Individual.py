@@ -9,8 +9,13 @@ class Individual:
     def calculate_fitness(self):
         return randint(0, 10)
 
-    def genes():
+    @property
+    def genes(self):
         return self._genes
+
+    @property
+    def genes_count(self):
+        return len(self._genes)
 
     @property
     def fitness(self):

@@ -43,3 +43,5 @@ local.properties
 .DS_Store
 .idea
 *.iml
+
+__pycache__/
