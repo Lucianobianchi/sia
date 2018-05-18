@@ -3,7 +3,10 @@ from Engine.Selectors import selector
 from Engine.Crossovers import crossover
 
 G = [Individual(None), Individual(None), Individual(None), Individual(None), Individual(None)]
-G = selector('roulette')(G, 3)
+for i in G:
+    print(i.fitness)
+print()
+G = selector('universal')(G, 3)
 for i in G:
     print(i.fitness)
 
