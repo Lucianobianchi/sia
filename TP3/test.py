@@ -2,11 +2,11 @@ from Problem.Individual import Individual
 from Engine.Selectors import selector
 from Engine.Crossovers import crossover
 
-G = [Individual(None), Individual(None), Individual(None), Individual(None), Individual(None)]
-for i in G:
-    print(i.fitness)
-print()
-G = selector('universal')(G, 3)
+N = 200
+k = 10
+G = [Individual(None) for _ in range(N)]
+
+G = selector('universal')(G, k)
 for i in G:
     print(i.fitness)
 
