@@ -1,6 +1,8 @@
+from random import uniform
+
 class HeightGen:
-    upper_bound = 2.0
     lower_bound = 1.3
+    upper_bound = 2.0
 
     def __init__(self, h):
         if h < self.lower_bound or h > self.upper_bound:
@@ -22,5 +24,4 @@ class HeightGen:
         return self._dem
 
     def mutate(self):
-        #TODO
-        return
+        return HeightGen(uniform(lower_bound, upper_bound))
