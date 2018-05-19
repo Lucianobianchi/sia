@@ -24,8 +24,7 @@ def _universal_selector(group, select_count):
 def _acum_rel_fitness(group):
     total_fitness = sum(i.fitness for i in group) # More efficient to use generator than map()
     acum_rel_fitness = list(accumulate([i.fitness / total_fitness for i in group]))
-    acum_rel_fitness.insert(0, 0)
-    return acum_rel_fitness    
+    return acum_rel_fitness
 
 strategies = {
     'elite': _elite_selector,
