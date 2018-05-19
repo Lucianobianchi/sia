@@ -1,7 +1,7 @@
 from ItemReader import read_items
 from random import randint
 
-# TODO: __eq__ y __str__
+# TODO: __eq__
 class ItemGen:
     items = {
         'boot': read_items('botas'),

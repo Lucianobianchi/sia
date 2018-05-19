@@ -4,11 +4,11 @@ from random import randint, uniform
 
 def generate_population(size):
     population = [ Archer3([
-        ItemGen('helmet', randint(0, 10)),
-        ItemGen('sword', randint(0, 10)),
-        ItemGen('glove', randint(0, 10)),
-        ItemGen('shield', randint(0, 10)),
-        ItemGen('gem', randint(0, 10)),
+        ItemGen('boot', randint(0, 9)),
+        ItemGen('weapon', randint(0, 9)),
+        ItemGen('helmet', randint(0, 9)),
+        ItemGen('glove', randint(0, 9)),
+        ItemGen('armor', randint(0, 9)),
         HeightGen(uniform(1.3, 2.0))
     ]) for i in range(0, size) ]
     return population
@@ -22,6 +22,7 @@ class Archer3:
             raise ValueError('Genes length should be {0}, received {1}'.format(self.gene_length, len(genes)))
         # TODO: DUDA: si hacés los asserts estáticos no puedo acceder a las constantes de la clase
         # Es necesario hacer los assert o en Python no es adecuado y hay que dejarlo de palabra?
+        # Assert de los tipos de items tambien?
         self.assert_genes_items(genes)
         self.assert_genes_height(genes)
         self._genes = genes

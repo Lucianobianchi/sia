@@ -1,7 +1,7 @@
 import csv
 
 def read_items(name):
-    with open(f'../Items/{name}.tsv') as fd:
+    with open(f'Items/{name}.tsv') as fd:
         rd = csv.reader(fd, delimiter = '\t')
         return [{
             'str': float(row[1]),
