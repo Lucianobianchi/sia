@@ -50,14 +50,10 @@ class ItemGen:
         return self._type
 
     def mutate(self):
-<<<<<<< HEAD
-        ItemGen.__init__(self, self._type, RANDOM)
-
-    def __repr__(self):
-        return '{0} [id: {1}]'.format(self.type, self.id)
-=======
         r = self.id
         while r == self.id:
             r = randint(0, len(self.items[self.type]) - 1)
-        return ItemGen(self.type, r)
->>>>>>> c4721d1e0c374807806c85c3e0944edb6944c616
+            return ItemGen(self.type, r)
+
+    def __repr__(self):
+        return '{0} [id: {1}]'.format(self.type, self.id)
