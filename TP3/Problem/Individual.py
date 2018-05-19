@@ -1,7 +1,6 @@
 from random import randint
 
 class Individual:
-
     def __init__(self, genes):
         self._genes = genes
         self._fitness = self.calculate_fitness()
