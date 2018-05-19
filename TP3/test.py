@@ -2,11 +2,16 @@ from Problem.Individual import Individual
 from Engine.Selectors import selector
 from Engine.Crossovers import crossover
 
-N = 200
-k = 10
+N = 10
+k = 3
 G = [Individual(None) for _ in range(N)]
 
-G = selector('universal')(G, k)
+for i in G:
+    print(i.fitness)
+
+print()
+
+G = selector('tournament_prob')(G, k)
 for i in G:
     print(i.fitness)
 

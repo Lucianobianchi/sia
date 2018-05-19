@@ -4,8 +4,10 @@ from random import choices
 from bisect import bisect
 from itertools import accumulate
 
+fit_getter = lambda i: i.fitness
+
 def _elite_selector(group, select_count):
-    ranked = sorted(group, key = lambda i: i.fitness, reverse = True)
+    ranked = sorted(group, key = fit_getter, reverse = True)
     return ranked[:select_count]
 
 def _random_selector(group, select_count):
@@ -26,14 +28,25 @@ def _acum_rel_fitness(group):
     acum_rel_fitness = list(accumulate([i.fitness / total_fitness for i in group]))
     return acum_rel_fitness
 
+# TODO: considerar tener algo que sea como 'load_selectors(config)' que settee parámetros extras como la m de tournament
+def _tournament_det_selector(group, select_count, m = 2):
+    return [max(sample(group, select_count), key = fit_getter) for _ in range(select_count)]
+
+def _tournament_prob_selector(group, select_count):
+    return [_pick_winner(sample(group, 2)) for _ in range(select_count)]
+
+def _pick_winner(contenders):
+    r = random()
+    return max(contenders, key = fit_getter) if r < 0.75 else min(contenders, key = fit_getter)
+
 strategies = {
     'elite': _elite_selector,
     'random': _random_selector,
     'roulette': _roulette_selector,
     'universal': _universal_selector,
     'boltzmann': None,
-    'tournament_deterministic': None,
-    'tournament_probabilistic': None,
+    'tournament_det': _tournament_det_selector,
+    'tournament_prob': _tournament_prob_selector,
     'ranking': None
 }
 
