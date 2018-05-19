@@ -29,7 +29,7 @@ def _acum_rel_fitness(group):
 
 # TODO: considerar tener algo que sea como 'load_selectors(config)' que settee parámetros extras como la m de tournament
 def _tournament_det_selector(group, select_count, m = 2):
-    return [max(random.sample(group, select_count), key = fit_getter) for _ in range(select_count)]
+    return [max(random.sample(group, m), key = fit_getter) for _ in range(select_count)]
 
 def _tournament_prob_selector(group, select_count):
     return [_pick_winner(random.sample(group, 2)) for _ in range(select_count)]

@@ -11,7 +11,7 @@ for i in G:
 
 print()
 
-G = selector('tournament_prob')(G, k)
+G = selector('tournament_det')(G, k)
 for i in G:
     print(i.fitness)
 
