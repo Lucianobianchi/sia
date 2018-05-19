@@ -20,4 +20,4 @@ for i in G:
 # Mutate -> mutation strategies
 # Select from parents + descendants -> selection strategies
 
-print(crossover('two_point')((Individual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), Individual([10, 11, 12, 13, 14, 15, 16, 17, 18, 19]))))
+print(crossover('anular')((Individual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), Individual([10, 11, 12, 13, 14, 15, 16, 17, 18, 19]))))
