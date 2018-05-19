@@ -3,7 +3,7 @@ from bisect import bisect
 from itertools import accumulate
 
 fit_getter = lambda i: i.fitness
-random = Random()
+random = Random() # TODO: seed
 
 def _elite_selector(group, select_count):
     ranked = sorted(group, key = fit_getter, reverse = True)
@@ -36,8 +36,6 @@ def _tournament_prob_selector(group, select_count):
 
 def _pick_winner(contenders):
     r = random.random()
-    print(str(r))
-    print(str([i.fitness for i in contenders]))
     return max(contenders, key = fit_getter) if r < 0.75 else min(contenders, key = fit_getter)
 
 strategies = {

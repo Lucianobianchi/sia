@@ -1,9 +1,12 @@
-from random import randint
+from random import Random
+
+random = Random() # TODO: seed
 
 def _one_point(pair):
-    locus = randint(0, pair[0].genes_count)
-    new_genes = pair[0].genes[:locus] + pair[1].genes[locus:]
-    return new_genes
+    locus = random.randint(0, pair[0].genes_count)
+    a = pair[0].genes[:locus] + pair[1].genes[locus:]
+    b = pair[1].genes[:locus] + pair[0].genes[locus:]
+    return [a, b]
 
 strategies = {
     'one_point': _one_point,
