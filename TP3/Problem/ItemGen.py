@@ -53,7 +53,7 @@ class ItemGen:
         r = self.id
         while r == self.id:
             r = randint(0, len(self.items[self.type]) - 1)
-            return ItemGen(self.type, r)
+        return ItemGen(self.type, r)
 
     def __repr__(self):
         return '{0} [id: {1}]'.format(self.type, self.id)
