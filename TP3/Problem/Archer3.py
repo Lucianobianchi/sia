@@ -1,6 +1,17 @@
 from HeightGen import HeightGen
 from ItemGen import ItemGen
-from random import randint
+from random import randint, uniform
+
+def generate_population(size):
+    population = [ Archer3([
+        ItemGen('helmet', randint(0, 10)),
+        ItemGen('sword', randint(0, 10)),
+        ItemGen('glove', randint(0, 10)),
+        ItemGen('shield', randint(0, 10)),
+        ItemGen('gem', randint(0, 10)),
+        HeightGen(uniform(1.3, 2.0))
+    ]) for i in range(0, size) ]
+    return population
 
 class Archer3:
     gene_length = 6
@@ -44,4 +55,9 @@ class Archer3:
     def fitness(self):
         return self._fitness
 
-Archer3([ItemGen('helmet', 3), ItemGen('sword', 4), ItemGen('glove', 1), ItemGen('shield', 10), ItemGen('gem', 15), HeightGen(1.5)])
+    def __repr__(self):
+        return '{{fit: {0}, {1}}}'.format(self.fitness, self.genes)
+
+# TODO: tests
+pop = generate_population(10)
+print(pop)

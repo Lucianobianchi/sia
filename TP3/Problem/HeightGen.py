@@ -24,3 +24,6 @@ class HeightGen:
     def mutate(self):
         #TODO
         return
+
+    def __repr__(self):
+        return 'Height: {0}'.format(self.h)

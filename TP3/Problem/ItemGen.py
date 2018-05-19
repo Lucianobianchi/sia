@@ -41,3 +41,6 @@ class ItemGen:
     # Mutate debe devolver una nueva instancia del gen.
     def mutate(self):
         ItemGen.__init__(self, self._type, RANDOM)
+
+    def __repr__(self):
+        return '{0} [id: {1}]'.format(self.type, self.id)
