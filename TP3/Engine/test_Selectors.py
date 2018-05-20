@@ -1,7 +1,7 @@
 import unittest
 from Selectors import selector
 from random import Random
-from unittest.mock import patch
+from unittest.mock import patch, call
 
 class Individual:
     def __init__(self, fitness, name):
@@ -68,6 +68,7 @@ class TestSelectors(unittest.TestCase):
         self.assertNotIn(self.C, selected)
         self.assertEqual(3, len(selected))
         self.assertEqual(3, sample.call_count)
+        sample.assert_called_with(self.group, 2)
 
     @patch('Selectors.sample')
     @patch('Selectors.random')

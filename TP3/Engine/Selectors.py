@@ -1,6 +1,7 @@
 from random import random, sample, choices
 from bisect import bisect
 from itertools import accumulate
+from math import exp
 
 fit_getter = lambda i: i.fitness
 
@@ -26,9 +27,24 @@ def _acum_rel_fitness(group):
     acum_rel_fitness = list(accumulate([i.fitness / total_fitness for i in group]))
     return acum_rel_fitness
 
+# TODO: revisar lo del avg
+def _boltzmann_generator(schedule):
+    t = 0
+    def _boltzmann_selector(group, select_count):
+        temp = schedule(t)
+        exps = [exp(i.fitness / temp) for i in group]
+        avg = sum(exps) / len(group)
+        for i in range(len(group)):
+            exps[i] /= avg
+        t += 1
+        return choices(group, weights = pressure, k = select_count)
+    return _boltzmann_selector
+
 # TODO: considerar tener algo que sea como 'load_selectors(config)' que settee parámetros extras como la m de tournament
-def _tournament_det_selector(group, select_count, m = 2):
-    return [max(sample(group, m), key = fit_getter) for _ in range(select_count)]
+def _tournament_det_generator(m = 2):
+    def _tournament_det_selector(group, select_count):
+        return [max(sample(group, m), key = fit_getter) for _ in range(select_count)]
+    return _tournament_det_selector
 
 def _tournament_prob_selector(group, select_count):
     return [_pick_winner(sample(group, 2)) for _ in range(select_count)]
@@ -42,8 +58,8 @@ strategies = {
     'random': _random_selector,
     'roulette': _roulette_selector,
     'universal': _universal_selector,
-    'boltzmann': None,
-    'tournament_det': _tournament_det_selector,
+    'boltzmann': _boltzmann_generator(lambda t: 100 - t), # TODO
+    'tournament_det': _tournament_det_generator(2), # TODO
     'tournament_prob': _tournament_prob_selector,
     'ranking': None
 }
