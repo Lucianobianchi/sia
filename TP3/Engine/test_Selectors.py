@@ -19,11 +19,11 @@ class Individual:
     def __eq__(self, other):
         if isinstance(self, other.__class__):
             return self._name == other._name
-        return False     
+        return False
 
 # Random(1).random: [0.1343, 0.8474, 0.7637, 0.2550, 0.4954, 0.4494]
 
-class TestSelectors(unittest.TestCase):        
+class TestSelectors(unittest.TestCase):
     def setUp(self):
         self.i = 0
         self.A = Individual(0.005, 'A')
