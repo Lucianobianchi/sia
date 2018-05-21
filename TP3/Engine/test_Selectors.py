@@ -57,7 +57,7 @@ class TestSelectors(unittest.TestCase):
     @patch('Selectors.sample')
     def test_tournament_det(self, sample):
         sample.side_effect = [[self.A, self.D], [self.B, self.C], [self.C, self.B]]
-        selected = selector('tournament_det')(self.group, 3)
+        selected = selector('tournament_det')(self.group, 3, m = 2)
         self.assertIn(self.D, selected)
         self.assertIn(self.B, selected)
         self.assertNotIn(self.A, selected)
