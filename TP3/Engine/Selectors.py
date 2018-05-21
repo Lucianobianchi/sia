@@ -54,6 +54,11 @@ def _pick_winner(contenders):
     r = random()
     return max(contenders, key = fit_getter) if r < 0.75 else min(contenders, key = fit_getter)
 
+def _ranking_selector(group, select_count):
+    ranked = sorted(group, key = fit_getter)
+    weights = range(1, len(ranked) + 1)
+    return choices(ranked, weights = weights, k = select_count)
+
 strategies = {
     'elite': _elite_selector,
     'random': _random_selector,
@@ -62,7 +67,7 @@ strategies = {
     'boltzmann': _boltzmann_generator(lambda t: 100 - t), # TODO
     'tournament_det': _tournament_det_generator(2), # TODO
     'tournament_prob': _tournament_prob_selector,
-    'ranking': None
+    'ranking': _ranking_selector
 }
 
 def selector(name = 'elite'):
