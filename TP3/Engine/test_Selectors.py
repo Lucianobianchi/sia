@@ -1,5 +1,6 @@
 import unittest
 from Selectors import selector
+from utils import choices
 from random import Random
 from unittest.mock import patch, call
 
@@ -36,16 +37,11 @@ class TestSelectors(unittest.TestCase):
         self.assertIn(self.C, selected)
         self.assertEqual(2, len(selected))
 
-    # Random(1).random: [0.1343, 0.8474, 0.7637, 0.2550, 0.4954, 0.4494]
-    @patch('Selectors.choices', Random(1).choices)
-    def test_roulette(self):
+    @patch('Selectors.choices')
+    def test_roulette(self, choices):
         selected = selector('roulette')(self.group, 3)
-        self.assertIn(self.B, selected) # 0.005 < 0.1353 < 0.655
-        self.assertIn(self.C, selected) # 0.655 < 0.8474 < 0.895
-        self.assertIn(self.C, selected) # 0.655 < 0.7637 < 0.895
-        self.assertNotIn(self.A, selected)
-        self.assertNotIn(self.D, selected)
-        self.assertEqual(3, len(selected))
+        fitness = [self.A.fitness, self.B.fitness, self.C.fitness, self.D.fitness]
+        choices.assert_called_once_with(self.group, fitness, 3)
 
     @patch('Selectors.random')
     def test_universal(self, random):
@@ -83,7 +79,6 @@ class TestSelectors(unittest.TestCase):
         self.assertEqual(3, len(selected))
         self.assertEqual(3, sample.call_count)
         self.assertEqual(3, random.call_count)
-
 
 if __name__ == '__main__':
     unittest.main()

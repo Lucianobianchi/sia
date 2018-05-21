@@ -1,5 +1,5 @@
-from random import random, sample, choices
-from bisect import bisect
+from random import random, sample
+from utils import choices, between_index
 from itertools import accumulate
 from math import exp
 
@@ -14,13 +14,13 @@ def _random_selector(group, select_count):
 
 def _roulette_selector(group, select_count):
     fitnesses = [i.fitness for i in group]
-    return choices(group, weights = fitnesses, k = select_count)
+    return choices(group, fitnesses, select_count)
 
 def _universal_selector(group, select_count):
     acum = _acum_rel_fitness(group)
     k = select_count
     r = random()
-    return [group[bisect(acum, (r + j) / k)] for j in range(0, k)]
+    return [group[between_index(acum, (r + j) / k)] for j in range(0, k)]
 
 def _acum_rel_fitness(group):
     total_fitness = sum(i.fitness for i in group)
@@ -38,7 +38,7 @@ def _boltzmann_generator(schedule):
         for i in range(len(group)):
             exps[i] /= avg
         t += 1
-        return choices(group, weights = pressure, k = select_count)
+        return choices(group, pressure, select_count)
     return _boltzmann_selector
 
 # TODO: considerar tener algo que sea como 'load_selectors(config)' que settee parámetros extras como la m de tournament
@@ -57,7 +57,7 @@ def _pick_winner(contenders):
 def _ranking_selector(group, select_count):
     ranked = sorted(group, key = fit_getter)
     weights = range(1, len(ranked) + 1)
-    return choices(ranked, weights = weights, k = select_count)
+    return choices(ranked, weights, select_count)
 
 strategies = {
     'elite': _elite_selector,
