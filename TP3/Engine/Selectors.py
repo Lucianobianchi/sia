@@ -64,7 +64,8 @@ strategies = {
     'random': _random_selector,
     'roulette': _roulette_selector,
     'universal': _universal_selector,
-    'boltzmann': _boltzmann_generator(lambda t: 100 - t), # TODO
+    'boltzmann_sel': _boltzmann_generator(lambda t: 100 - t), # TODO
+    'boltzmann_rep': _boltzmann_generator(lambda t: 100 - t), # TODO
     'tournament_det': _tournament_det_generator(2), # TODO
     'tournament_prob': _tournament_prob_selector,
     'ranking': _ranking_selector
