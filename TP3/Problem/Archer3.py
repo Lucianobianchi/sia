@@ -1,6 +1,7 @@
 from HeightGen import HeightGen
 from ItemGen import ItemGen
 from random import randint, uniform
+from math import tanh
 
 def generate_population(size):
     population = [ Archer3([
@@ -44,6 +45,34 @@ class Archer3:
             raise TypeError('Gene at index {0} should be of type HeightGen. Found {1}.' \
                 .format(self.items_length, type(g).__name__))
 
+    def _sum_item_property(self, property_getter):
+        return sum(property_getter(self.genes[i]) for i in range(0, 5))
+
+    @property
+    def strength(self):
+        s = self._sum_item_property(lambda x: x.str * 0.8)
+        return 100 * tanh(0.01 * s)
+
+    @property
+    def agility(self):
+        s = self._sum_item_property(lambda x: x.agi * 0.8)
+        return tanh(0.01 * s)
+
+    @property
+    def dexterity(self):
+        s = self._sum_item_property(lambda x: x.dex * 0.8)
+        return 0.6 * tanh(0.01 * s)
+
+    @property
+    def resistance(self):
+        s = self._sum_item_property(lambda x: x.res * 1.1)
+        return tanh(0.01 * s)
+
+    @property
+    def vitality(self):
+        s = self._sum_item_property(lambda x: x.vit * 1.2)
+        return 100 * tanh(0.01 * s)
+
     @property
     def genes(self):
         return self._genes
@@ -53,12 +82,16 @@ class Archer3:
         return len(self._genes)
 
     @property
+    def attack(self):
+        return (self.agility + self.dexterity) * self.strength * self.genes[-1].atm
+
+    @property
+    def defense(self):
+        return (self.resistance + self.dexterity) * self.vitality * self.genes[-1].dem
+
+    @property
     def fitness(self):
-        return self._fitness
+        return 0.9 * self.attack + 0.1 * self.defense
 
     def __repr__(self):
         return '{{fit: {0}, {1}}}'.format(self.fitness, self.genes)
-
-# TODO: tests
-pop = generate_population(10)
-print(pop)
