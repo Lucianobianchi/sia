@@ -1,19 +1,4 @@
-class ContinueController:
-    controllers = {
-        'generations': _generations
-        'max_fitness': _max_fitness
-        # 'content:' _content
-        # 'structure': _structure
-    }
-
-    def __init__(self, name, **kwargs):
-        self.generations = -1
-        # self.last_population = []
-        # self.last_max_fittest = -1
-        # self.content_compare = 0
-        self.ctrl_params = kwargs
-        self._cut_condition = controllers[name]
-
+class CutConditionController:
     def _generations(self, population):
         self.generations += 1
         return self.generations < self.ctrl_params['max_generations']
@@ -29,4 +14,19 @@ class ContinueController:
         return max_fit > self.ctrl_params['target_fitness']
 
     def should_continue(self, population):
-        return self._cut_condition(population)
+        return self._cut_condition(self, population)
+
+    controllers = {
+        'generations': _generations,
+        'max_fitness': _max_fitness
+        # 'content:' _content
+        # 'structure': _structure
+    }
+
+    def __init__(self, name, params):
+        self.generations = -1
+        # self.last_population = []
+        # self.last_max_fittest = -1
+        # self.content_compare = 0
+        self.ctrl_params = params
+        self._cut_condition = self.controllers[name]
