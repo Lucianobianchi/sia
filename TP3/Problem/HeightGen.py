@@ -24,7 +24,7 @@ class HeightGen:
         return self._dem
 
     def mutate(self):
-        return HeightGen(uniform(lower_bound, upper_bound))
+        return HeightGen(uniform(self.lower_bound, self.upper_bound))
 
     def __repr__(self):
         return 'Height: {0}'.format(self.h)

@@ -1,8 +1,8 @@
 import unittest
-from Selectors import selector
-from utils import choices
 from random import Random
 from unittest.mock import patch, call
+from .Selectors import selector
+from .utils import choices
 
 class Individual:
     def __init__(self, fitness, name):

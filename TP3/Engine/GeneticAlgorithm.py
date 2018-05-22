@@ -1,24 +1,54 @@
-from CutConditionController import CutConditionController
-from Selectors import selector
-from Crossovers import crossover
-from Mutator import mutate_genes
-from Replacers import replacer
+from .CutConditionController import CutConditionController
+from .Selectors import selector
+from .Pairs import pairs
+from .Crossovers import crossover
+from .Mutator import mutate_genes
+from .Replacers import replacer
+
+# TODO: metricas, qué retorna
 
 def search(population, config):
-    t = 0
     controller = CutConditionController(config['should_continue'], config['cut_conditions'])
-    selector_alg = selector(config['selector'])
-    select_count = config['select_count']
+    selector_params = {
+        't': 0,
+        'm': config['tournament_m'],
+        'schedule': config['boltzmann_schedule']
+    }
+    selector1 = selector(config['selectors'][0])
+    selector2 = selector(config['selectors'][1])
+    pairs_alg = pairs(config['pairs'])
     crossover_alg = crossover(config['crossover'])
     mutate_prob = config['mutate_prob']
     next_mutate_prob = config['next_mutate_prob']
     child_factory = config['child_factory']
+    generation_gap = config['generation_gap']
+    replacer_alg = replacer(config['replacer'])
+    selector3 = selector(config['selectors'][2])
+    selector4 = selector(config['selectors'][3])
+    B = config['B']
+
+    N = len(population)
+    k = round(generation_gap * N)
+    n_selector1 = round(k * config['A'])
+    n_selector2 = k - n_selector1
+
+    if k % 2 != 0:
+        k += 1
 
     while controller.should_continue(population):
-        selected = selector_alg(population, select_count)
-        # TODO: pick pairs
-        children = [child_factory(mutate_genes(c, mutate_prob)) for c in crossover_alg(p) for p in pairs]
-        mutate_prob = next_mutate_prob(population, t, mutate_prob)
-        population = replacer_alg(population, children)
+        selected = do_selection(population, selector1, n_selector1, selector2, n_selector2, selector_params)
+        selected_pairs = pairs_alg(selected, k / 2)
+
+        children = [child_factory(mutate_genes(c, mutate_prob)) for p in selected_pairs for c in crossover_alg(p)]
+        population = replacer_alg(population, children, B, selector3, selector4, **selector_params)
+
+        mutate_prob = next_mutate_prob(population, selector_params['t'], mutate_prob)
+        selector_params['t'] += 1
 
     return population
+
+
+def do_selection(population, s1, n1, s2, n2, params):
+    selected1 = s1(population, n1, **params)
+    selected2 = s2(population, n2, **params)
+    return [*selected1, *selected2]

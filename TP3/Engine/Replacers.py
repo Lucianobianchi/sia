@@ -36,5 +36,5 @@ strategies = {
     'select_total': _select_total
 }
 
-def replacers(name = 'select_parents'):
+def replacer(name = 'select_parents'):
     return strategies[name]

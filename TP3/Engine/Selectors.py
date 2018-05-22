@@ -1,7 +1,7 @@
 from random import random, sample
-from utils import choices, between_index
 from itertools import accumulate
 from math import exp
+from .utils import choices, between_index
 
 fit_getter = lambda i: i.fitness
 
