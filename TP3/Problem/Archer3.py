@@ -21,9 +21,7 @@ class Archer3:
     def __init__(self, genes):
         if len(genes) != self.gene_length:
             raise ValueError('Genes length should be {0}, received {1}'.format(self.gene_length, len(genes)))
-        # TODO: DUDA: si hacés los asserts estáticos no puedo acceder a las constantes de la clase
-        # Es necesario hacer los assert o en Python no es adecuado y hay que dejarlo de palabra?
-        # Assert de los tipos de items tambien?
+        # TODO: Assert de los tipos de items tambien?
         self.assert_genes_items(genes)
         self.assert_genes_height(genes)
         self._genes = genes
