@@ -1,4 +1,4 @@
-from ContinueController import ContinueController
+from CutConditionController import CutConditionController
 from Selectors import selector
 from Crossovers import crossover
 from Mutator import mutate_genes
@@ -6,7 +6,7 @@ from Replacers import replacer
 
 def search(population, config):
     t = 0
-    controller = ContinueController(config['should_continue'], config['cut_conditions'])
+    controller = CutConditionController(config['should_continue'], config['cut_conditions'])
     selector_alg = selector(config['selector'])
     select_count = config['select_count']
     crossover_alg = crossover(config['crossover'])
