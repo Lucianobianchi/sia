@@ -1,3 +1,4 @@
+from math import ceil
 from .CutConditionController import CutConditionController
 from .Selectors import selector
 from .Pairs import pairs
@@ -9,13 +10,16 @@ from .Replacers import replacer
 
 def search(population, config):
     controller = CutConditionController(config['should_continue'], config['cut_conditions'])
-    selector_params = {
-        't': 0,
-        'm': config['tournament_m'],
-        'schedule': config['boltzmann_schedule']
-    }
+    
+    selector_params = config['select_params']
+    selector_params['t'] = 0
+
+    replace_params = config['replace_params']
+    replace_params['t'] = 0
+
     selector1 = selector(config['selectors'][0])
     selector2 = selector(config['selectors'][1])
+    children_selector = selector('elite')
     pairs_alg = pairs(config['pairs'])
     crossover_alg = crossover(config['crossover'])
     mutate_prob = config['mutate_prob']
@@ -32,18 +36,18 @@ def search(population, config):
     n_selector1 = round(k * config['A'])
     n_selector2 = k - n_selector1
 
-    if k % 2 != 0:
-        k += 1
-
     while controller.should_continue(population):
         selected = do_selection(population, selector1, n_selector1, selector2, n_selector2, selector_params)
-        selected_pairs = pairs_alg(selected, k / 2)
+        selected_pairs = pairs_alg(selected, ceil(k / 2))
 
         children = [child_factory(mutate_genes(c, mutate_prob)) for p in selected_pairs for c in crossover_alg(p)]
-        population = replacer_alg(population, children, B, selector3, selector4, **selector_params)
+        children = children_selector(children, k)
+
+        population = replacer_alg(population, children, B, selector3, selector4, **replace_params)
 
         mutate_prob = next_mutate_prob(population, selector_params['t'], mutate_prob)
         selector_params['t'] += 1
+        replace_params['t'] += 1
 
     return population
 

@@ -8,8 +8,14 @@ config = {
     'selectors': ['tournament_prob', 'roulette', 'tournament_det', 'ranking'],
     'A': 0.2,
     'B': 0.4,
-    'tournament_m': 2,
-    'boltzmann_schedule': lambda t: t - 100, # TODO
+    'select_params': {
+        'm': 2,
+        'boltzmann_schedule': lambda t: t - 100     # TODO
+    },
+    'replace_params': {
+        'm': 2,
+        'boltzmann_schedule': lambda t: t - 100     # TODO
+    },
     'pairs': 'random',
     'crossover': 'anular',
     'replacer': 'select_parents',
@@ -26,4 +32,8 @@ config = {
 
 
 initial_population = generate_population(config['N'])
-print(search(initial_population, config))
+print('items loaded!')
+
+result = search(initial_population, config)
+
+print(sorted([i.fitness for i in result], reverse = True))

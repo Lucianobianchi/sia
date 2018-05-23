@@ -13,13 +13,10 @@ def _select_parents(parents, children, B, selector1, selector2, **kwargs):
 # Method 3
 def _select_total(parent, children, B, selector1, selector2, **kwargs):
     N = len(parents)
-    k = len(children)
-    parent_count = N - k
     total = [*parent, *children]
 
-    selected1 = _select_proportion(parent, parent_count, B, selector1, selector2, **kwargs)
-    selected2 = _select_proportion(total, k, B, selector1, selector2, **kwargs)
-    return [*selected1, *selected2]
+    selected = _select_proportion(total, N, B, selector1, selector2, **kwargs)
+    return selected
 
 def _select_proportion(group, select_count, B, selector1, selector2, **kwargs):
     if select_count == 0:
