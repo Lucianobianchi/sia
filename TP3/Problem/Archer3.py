@@ -93,3 +93,11 @@ class Archer3:
 
     def __repr__(self):
         return '{{fit: {0}, {1}}}'.format(self.fitness, self.genes)
+
+    def __eq__(self, other):
+        if not isinstance(self, other.__class__):
+            return False
+        for pair in zip(self.genes, other.genes):
+            if not pair[0] == pair[1]
+                return False
+        return True

@@ -3,6 +3,7 @@ from random import uniform
 class HeightGen:
     lower_bound = 1.3
     upper_bound = 2.0
+    epsilon = 0.01
 
     def __init__(self, h):
         if h < self.lower_bound or h > self.upper_bound:
@@ -28,3 +29,8 @@ class HeightGen:
 
     def __repr__(self):
         return 'Height: {0}'.format(self.h)
+
+    def __eq__(self, other):
+        if isinstance(self, other.__class__):
+            return abs(elf._h - other._h) < self.epsilon
+        return False

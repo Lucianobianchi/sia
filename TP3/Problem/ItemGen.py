@@ -57,3 +57,8 @@ class ItemGen:
 
     def __repr__(self):
         return '{0} [id: {1}]'.format(self.type, self.id)
+
+    def __eq__(self, other):
+        if isinstance(self, other.__class__):
+            return self._id == other._id and self._type == other._type
+        return False
