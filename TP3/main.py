@@ -1,3 +1,4 @@
+from MetricManager import MetricManager
 from Problem.Archer3 import generate_population, Archer3
 from Engine.GeneticAlgorithm import search
 
@@ -34,6 +35,11 @@ config = {
 initial_population = generate_population(config['N'])
 print('items loaded!')
 
-result = search(initial_population, config)
+metrics = MetricManager(realtime = True, refresher = 50) # realtime indica si se dibuja en tiempo real o no 
+                                                         # refresher, cada cuantas muestras se refresca (default 100)
+result = search(initial_population, config, metrics)
+
+# metrics.plot() -- Esto si se seteo realtime = False
 
 print(sorted([i.fitness for i in result], reverse = True))
+input()

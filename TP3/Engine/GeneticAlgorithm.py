@@ -8,7 +8,7 @@ from .Replacers import replacer
 
 # TODO: metricas, qué retorna
 
-def search(population, config):
+def search(population, config, metrics = None):
     controller = CutConditionController(config['should_continue'], config['cut_conditions'])
     
     selector_params = config['select_params']
@@ -37,6 +37,9 @@ def search(population, config):
     n_selector2 = k - n_selector1
 
     while controller.should_continue(population):
+        if(metrics is not None):
+            metrics.update(population)
+            
         selected = do_selection(population, selector1, n_selector1, selector2, n_selector2, selector_params)
         selected_pairs = pairs_alg(selected, ceil(k / 2))
 
