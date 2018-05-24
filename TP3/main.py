@@ -1,36 +1,20 @@
 from MetricManager import MetricManager
+import random
+import json
 from Problem.Archer3 import generate_population, Archer3
 from Engine.GeneticAlgorithm import search
 
-factory = lambda genes: Archer3(genes)
+config = json.load(open('config.json'))
 
-config = {
-    'N': 100,
-    'selectors': ['tournament_prob', 'roulette', 'tournament_det', 'ranking'],
-    'A': 0.2,
-    'B': 0.4,
-    'select_params': {
-        'm': 2,
-        'boltzmann_schedule': lambda t: t - 100     # TODO
-    },
-    'replace_params': {
-        'm': 2,
-        'boltzmann_schedule': lambda t: t - 100     # TODO
-    },
-    'pairs': 'random',
-    'crossover': 'anular',
-    'replacer': 'select_parents',
-    'mutate_prob': 0.01,
-    'next_mutate_prob': lambda p, t, prev_prob: prev_prob,         # uniform
-    'child_factory': factory,
-    'generation_gap': 0.8,
-    'should_continue': 'generations',
-    'cut_conditions': {
-        'max_generations': 3000,
-        'target_fitness': 200                # TODO
-    }
-}
+# TODO: levantar bien los boltzmann_schedule y next_mutate_prob
 
+config['next_mutate_prob'] = lambda p, t, prev_prob: prev_prob
+config['select_params']['boltzmann_schedule'] = lambda t: 100 - t
+config['replace_params']['boltzmann_schedule'] = lambda t: 100 - t
+config['child_factory'] = lambda genes: Archer3(genes)
+
+
+random.seed(config['seed'])
 
 initial_population = generate_population(config['N'])
 print('items loaded!')
