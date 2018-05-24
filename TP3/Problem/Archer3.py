@@ -1,5 +1,5 @@
-from HeightGen import HeightGen
-from ItemGen import ItemGen
+from .HeightGen import HeightGen
+from .ItemGen import ItemGen
 from random import randint, uniform
 from math import tanh
 

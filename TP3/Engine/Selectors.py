@@ -1,7 +1,7 @@
 from random import random, sample
-from utils import choices, between_index
 from itertools import accumulate
 from math import exp
+from .utils import choices, between_index
 
 fit_getter = lambda i: i.fitness
 
@@ -33,9 +33,9 @@ def _boltzmann_selector(group, select_count, **kwargs):
     schedule = kwargs['schedule']
     temp = schedule(t)
     exps = [exp(i.fitness / temp) for i in group]
-    avg = sum(exps) / len(group)
+    s = sum(exps)
     for i in range(len(group)):
-        exps[i] /= avg
+        exps[i] /= s
     return choices(group, pressure, select_count)
 
 def _tournament_det_selector(group, select_count, **kwargs):

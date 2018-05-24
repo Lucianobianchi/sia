@@ -1,9 +1,9 @@
 import unittest
-from Archer3 import Archer3
-from ItemGen import ItemGen
-from HeightGen import HeightGen
 from random import randint, uniform
 from unittest.mock import patch, call
+from .Archer3 import Archer3
+from .ItemGen import ItemGen
+from .HeightGen import HeightGen
 
 class TestSelectors(unittest.TestCase):
     def setUp(self):

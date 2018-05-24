@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, call
-from Crossovers import crossover
+from .Crossovers import crossover
 
 class Individual:
     def __init__(self, genes):

@@ -1,4 +1,4 @@
-from ItemReader import read_items
+from .ItemReader import read_items
 from random import randint
 
 # TODO: __eq__
