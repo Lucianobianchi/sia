@@ -1,12 +1,9 @@
+from utils import intersect
+
 class CutConditionController:
     @staticmethod
     def get_fittest(population):
         return max(population, key = lambda p: p.fitness)
-
-    # TODO meter en utils
-    @staticmethod
-    def intersect(list1, list2):
-        return [value for value in list1 if value in list2]
 
     def _generations(self, population):
         self.generations += 1
@@ -28,7 +25,7 @@ class CutConditionController:
     # individuals change their genetic structure) in max_structure_steps subsequent generations
     def _structure(self, population):
         intersection = intersect(self._last_population, population)
-        if abs(len(population) - len(intersection) > self.ctrl_params['population_change']):
+        if abs(len(population) - len(intersection)) > self.ctrl_params['population_change']:
             self._structure_steps = 0
             self._last_population = population
         else:
@@ -42,11 +39,10 @@ class CutConditionController:
     def should_continue(self, population):
         return self._cut_condition(self, population)
 
-
     controllers = {
         'generations': _generations,
-        'max_fitness': _max_fitness
-        'content:' _content
+        'max_fitness': _max_fitness,
+        'content': _content,
         'structure': _structure
     }
 
