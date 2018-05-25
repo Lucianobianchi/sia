@@ -12,14 +12,16 @@ class CutConditionController:
     # max fitness does not change significantly (according to content_pct_difference)
     # in max_content_steps subsequent generations
     def _content(self, population):
-        max_fit = get_fittest(population)
+        max_fit = self.get_fittest(population).fitness
+        print(self._content_steps)
+        print(max_fit)
         if self._last_fittest * (1 + self.ctrl_params['content_pct_difference']) < max_fit:
             self._content_steps = 0
             self._last_fittest = max_fit
+            return True
         else:
             self._content_steps += 1
             return self._content_steps != self.ctrl_params['max_content_steps']
-        return True
 
     # population does not change significantly (i.e. more than population_change
     # individuals change their genetic structure) in max_structure_steps subsequent generations
@@ -34,7 +36,7 @@ class CutConditionController:
         return True
 
     def _max_fitness(self, population):
-        return get_fittest(population) > self.ctrl_params['target_fitness']
+        return self.get_fittest(population).fitness < self.ctrl_params['target_fitness']
 
     def should_continue(self, population):
         return self._cut_condition(self, population)
