@@ -3,7 +3,7 @@ from .CutConditionController import CutConditionController
 from .Selectors import selector
 from .Pairs import pairs
 from .Crossovers import crossover
-from .Mutator import mutate_genes
+from .Mutator import Mutator
 from .Replacers import replacer
 
 # TODO: metricas, qué retorna
@@ -36,6 +36,8 @@ def search(population, config, metrics = None):
     n_selector1 = round(k * config['A'])
     n_selector2 = k - n_selector1
 
+    mutator = Mutator(mutate_prob, next_mutate_prob)
+
     while controller.should_continue(population):
         if(metrics is not None):
             metrics.update(population)
@@ -43,12 +45,12 @@ def search(population, config, metrics = None):
         selected = do_selection(population, selector1, n_selector1, selector2, n_selector2, selector_params)
         selected_pairs = pairs_alg(selected, ceil(k / 2))
 
-        children = [child_factory(mutate_genes(c, mutate_prob)) for p in selected_pairs for c in crossover_alg(p)]
+        children = [child_factory(mutator.mutate_genes(c)) for p in selected_pairs for c in crossover_alg(p)]
         children = children_selector(children, k)
 
         population = replacer_alg(population, children, B, selector3, selector4, **replace_params)
 
-        mutate_prob = next_mutate_prob(population, selector_params['t'], mutate_prob)
+        mutator.update_probability(population, selector_params['t'])
         selector_params['t'] += 1
         replace_params['t'] += 1
 
