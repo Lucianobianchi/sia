@@ -3,6 +3,7 @@ from statistics import mean, median
 
 class MetricManager:
     def __init__(self, realtime, refresher = 100):
+        self._populations = []
         self._max = []
         self._avg = []
         self._min = []
@@ -23,9 +24,10 @@ class MetricManager:
         self._min.append(min(fitnesses))
         self._avg.append(mean(fitnesses))
         self._median.append(median(fitnesses))
+        self._populations.append(list(population)) # Copy list
 
         if(self._realtime and self._refresh_counter % self._refresh_step == 0):
-            self.plot(limits = (0,101))
+            self.plot()
         
         self._refresh_counter += 1
         
@@ -53,16 +55,26 @@ class MetricManager:
 
     @property
     def medians(self):
-        return self._median
+        return list(self._median)
 
     @property
     def maximums(self):
-        return self._max
+        return list(self._max)
 
     @property
     def minimums(self):
-        return self._min
+        return list(self._min)
     
     @property
     def means(self):
-        return self._avg
+        return list(self._avg)
+
+
+    def generation_data(self, generation):
+        return {
+            'population': self._populations[generation],
+            'max': self._max[generation],
+            'min': self._min[generation],
+            'median': self._median[generation],
+            'mean': self._avg[generation]
+        }

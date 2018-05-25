@@ -45,8 +45,8 @@ class CutConditionController:
 
     controllers = {
         'generations': _generations,
-        'max_fitness': _max_fitness
-        'content:' _content
+        'max_fitness': _max_fitness,
+        'content:': _content,
         'structure': _structure
     }
 

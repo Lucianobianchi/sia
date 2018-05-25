@@ -98,6 +98,6 @@ class Archer3:
         if not isinstance(self, other.__class__):
             return False
         for pair in zip(self.genes, other.genes):
-            if not pair[0] == pair[1]
+            if not pair[0] == pair[1]:
                 return False
         return True
