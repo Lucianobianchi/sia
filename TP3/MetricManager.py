@@ -1,16 +1,15 @@
 import matplotlib.pyplot as plt
 from statistics import mean, median
-
 class MetricManager:
-    def __init__(self, realtime, refresher = 100):
-        self._populations = []
+    def __init__(self, realtime, refresher = 500):
+        self._fitnesses = []
         self._max = []
         self._avg = []
         self._min = []
         self._median = []
 
         self._realtime = realtime
-        self._refresh_counter = 0
+        self._refresh_counter = 1
         self._refresh_step = refresher
 
         if(realtime):
@@ -20,11 +19,11 @@ class MetricManager:
     
     def update(self, population):
         fitnesses = [x.fitness for x in population]
+        self._fitnesses.append(fitnesses)
         self._max.append(max(fitnesses))
         self._min.append(min(fitnesses))
         self._avg.append(mean(fitnesses))
         self._median.append(median(fitnesses))
-        self._populations.append(list(population)) # Copy list
 
         if(self._realtime and self._refresh_counter % self._refresh_step == 0):
             self.plot()
@@ -51,7 +50,8 @@ class MetricManager:
         plt.title("Median")
 
         plt.draw()
-        plt.pause(0.0001)
+        plt.pause(0.000001)
+
 
     @property
     def medians(self):
@@ -72,9 +72,20 @@ class MetricManager:
 
     def generation_data(self, generation):
         return {
-            'population': self._populations[generation],
+            'fitnesses': self._fitnesses[generation],
             'max': self._max[generation],
             'min': self._min[generation],
             'median': self._median[generation],
             'mean': self._avg[generation]
         }
+
+# Static functions for metrics
+    def boxplots(self, generations):
+        _, axs = plt.subplots(1, len(generations), sharey=True)
+        print(axs)
+        for i in range(len(generations)):
+            axs[i].boxplot(self.generation_data(i)['fitnesses'])
+            axs[i].set_title(f"{generations[i]}")
+        plt.pause(0.0000000001)
+        plt.draw()
+        
