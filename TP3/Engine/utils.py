@@ -1,5 +1,6 @@
 from random import random
 from itertools import accumulate
+from collections import Counter
 
 def choices(population, weights, k):
     if len(weights) != len(population):
@@ -23,5 +24,8 @@ def between_index(population, x):
 
     return low
 
-def intersect(list1, list2):
-    return [value for value in list1 if value in list2]
+def intersect_with_repeated(list1, list2):
+    list1_counter = Counter(list1)
+    list2_counter = Counter(list2)
+    intersection = list1_counter & list2_counter
+    return list(intersection.elements())

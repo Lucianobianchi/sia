@@ -1,4 +1,4 @@
-from utils import intersect
+from utils import intersect_with_repeated
 
 class CutConditionController:
     @staticmethod
@@ -13,8 +13,6 @@ class CutConditionController:
     # in max_content_steps subsequent generations
     def _content(self, population):
         max_fit = self.get_fittest(population).fitness
-        print(self._content_steps)
-        print(max_fit)
         if self._last_fittest * (1 + self.ctrl_params['content_pct_difference']) < max_fit:
             self._content_steps = 0
             self._last_fittest = max_fit
@@ -26,14 +24,18 @@ class CutConditionController:
     # population does not change significantly (i.e. more than population_change
     # individuals change their genetic structure) in max_structure_steps subsequent generations
     def _structure(self, population):
-        intersection = intersect(self._last_population, population)
-        if abs(len(population) - len(intersection)) > self.ctrl_params['population_change']:
+        if len(self._last_population) == 0:
+            self._last_population = list(population)
+            return True
+
+        intersection = intersect_with_repeated(self._last_population, population)
+        if abs(len(population) - len(intersection)) >= self.ctrl_params['population_change']:
             self._structure_steps = 0
-            self._last_population = population
+            self._last_population = list(population) # copy
+            return True
         else:
             self._structure_steps += 1
             return self._structure_steps != self.ctrl_params['max_structure_steps']
-        return True
 
     def _max_fitness(self, population):
         return self.get_fittest(population).fitness < self.ctrl_params['target_fitness']

@@ -62,3 +62,6 @@ class ItemGen:
         if isinstance(self, other.__class__):
             return self._id == other._id and self._type == other._type
         return False
+
+    def __hash__(self):
+        return hash(self.type, self.id)

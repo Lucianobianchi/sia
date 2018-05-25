@@ -101,3 +101,6 @@ class Archer3:
             if not pair[0] == pair[1]:
                 return False
         return True
+
+    def __hash__(self):
+        return hash(tuple(self._genes))

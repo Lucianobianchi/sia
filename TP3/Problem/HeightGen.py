@@ -34,3 +34,6 @@ class HeightGen:
         if isinstance(self, other.__class__):
             return abs(elf._h - other._h) < self.epsilon
         return False
+
+    def __hash__(self):
+        return hash(self._h)
