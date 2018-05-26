@@ -34,9 +34,9 @@ def _boltzmann_selector(group, select_count, **kwargs):
     temp = schedule(t)
     exps = [exp(i.fitness / temp) for i in group]
     s = sum(exps)
-    for i in range(len(group)):
+    for i in range(len(exps)):
         exps[i] /= s
-    return choices(group, pressure, select_count)
+    return choices(group, exps, select_count)
 
 def _tournament_det_selector(group, select_count, **kwargs):
     m = kwargs['m']
