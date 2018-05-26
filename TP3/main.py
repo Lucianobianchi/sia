@@ -8,7 +8,6 @@ from Problem.Archer3 import generate_population, Archer3
 print('Items loaded')
 
 while True:
-    input('Configure config.json and press any key to continue')
     config = json.load(open('config.json'))
 
     # TODO: levantar bien los boltzmann_schedule y next_mutate_prob
@@ -23,9 +22,10 @@ while True:
     initial_population = generate_population(config['N'])
 
     metrics = MetricManager(realtime = True, refresher = 200) # realtime indica si se dibuja en tiempo real o no 
-                                                             # refresher, cada cuantas muestras se refresca (default 100)
+                                                              # refresher, cada cuantas muestras se refresca (default 100)
     result = search(initial_population, config, metrics)
 
     # metrics.plot() -- Esto si se seteo realtime = False
 
     print(sorted([i.fitness for i in result], reverse = True))
+    input('Configure config.json and press any key to continue')
