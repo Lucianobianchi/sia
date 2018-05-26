@@ -1,8 +1,5 @@
 from random import randint, random
 
-# Considerar si realmente queremos que vaya de 0 a genes_count
-# porque abre la posibilidad de que no se crucen
-# cuando da 0 o genes_count
 def _one_point_crossover(pair):
     locus = randint(1, pair[0].genes_count - 1)
     p0 = pair[0].genes

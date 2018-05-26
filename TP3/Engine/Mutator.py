@@ -1,7 +1,6 @@
 from random import random
 
 class Mutator:
-
     def __init__(self, initial_probability, strategy = lambda p,t,x: x):
         self._mutate_prob = initial_probability
         self._probability_updater = strategy
@@ -18,5 +17,3 @@ class Mutator:
     @property
     def mutate_prob(self):
         return self._mutate_prob
-
-    

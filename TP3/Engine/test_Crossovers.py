@@ -66,6 +66,5 @@ class TestCrossovers(unittest.TestCase):
         self.assertEqual([10, 1, 12, 13, 4, 5, 16], c)
         self.assertEqual([0, 11, 2, 3, 14, 15, 6], d)
 
-
 if __name__ == '__main__':
     unittest.main()

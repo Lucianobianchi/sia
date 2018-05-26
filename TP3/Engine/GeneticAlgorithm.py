@@ -6,8 +6,6 @@ from .Crossovers import crossover
 from .Mutator import Mutator
 from .Replacers import replacer
 
-# TODO: metricas, qué retorna
-
 def search(population, config, metrics = None):
     controller = CutConditionController(config['should_continue'], config['cut_conditions'])
     
@@ -39,7 +37,7 @@ def search(population, config, metrics = None):
     mutator = Mutator(mutate_prob, next_mutate_prob)
 
     while controller.should_continue(population):
-        if(metrics is not None):
+        if metrics is not None:
             metrics.update(population)
             
         selected = do_selection(population, selector1, n_selector1, selector2, n_selector2, selector_params)
