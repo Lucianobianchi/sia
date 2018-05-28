@@ -12,8 +12,8 @@
     "pairs": "random",
     "crossover": "uniform",
     "replacer": "select_parents",
-    "mutate_prob": 0.3,
-    "uniform_mutate": false,
+    "mutate_prob": 0.05,
+    "uniform_mutate": true,
     "generation_gap": 0.8,
     "should_continue": "target_fitness",
     "cut_conditions": {

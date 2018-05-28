@@ -9,6 +9,7 @@ from Problem.Archer3 import generate_population, Archer3
 print('Items loaded')
 
 while True:
+    print('Searching...')
     config = json.load(open('config.json'))
 
     config['next_mutate_prob'] = lambda t: config['mutate_prob'] * exp(-0.001 * t) 
@@ -20,11 +21,18 @@ while True:
 
     initial_population = generate_population(config['N'])
 
-    metrics = MetricManager(realtime = True, refresher = 200) # realtime indica si se dibuja en tiempo real o no 
+    metrics = MetricManager(realtime = False, refresher = 200) # realtime indica si se dibuja en tiempo real o no 
                                                               # refresher, cada cuantas muestras se refresca (default 100)
     result = search(initial_population, config, metrics)
 
-    # metrics.plot() -- Esto si se seteo realtime = False
-
     print(sorted([i.fitness for i in result], reverse = True))
+
+    t = metrics.generations
+    data = metrics.generation_data(t) 
+    print(f'Generations: {t}')
+    del data['fitnesses']
+    print(data)
+
+    metrics.plot() # -- Esto si se seteo realtime = False
+
     input('Configure config.json and press any key to continue')

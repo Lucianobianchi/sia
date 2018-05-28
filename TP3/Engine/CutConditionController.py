@@ -38,7 +38,7 @@ class CutConditionController:
             self._structure_steps += 1
             return self._structure_steps != self.ctrl_params['max_structure_steps']
 
-    def _max_fitness(self, population):
+    def _target_fitness(self, population):
         return self.get_fittest(population).fitness < self.ctrl_params['target_fitness']
 
     def should_continue(self, population):
@@ -46,7 +46,7 @@ class CutConditionController:
 
     controllers = {
         'generations': _generations,
-        'max_fitness': _max_fitness,
+        'target_fitness': _target_fitness,
         'content': _content,
         'structure': _structure
     }
