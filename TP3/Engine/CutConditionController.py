@@ -1,4 +1,4 @@
-from utils import intersect_with_repeated
+from .utils import intersect_with_repeated
 
 class CutConditionController:
     @staticmethod

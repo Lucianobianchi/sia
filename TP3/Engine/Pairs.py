@@ -36,5 +36,3 @@ strategies = {
 
 def pairs(name):
     return strategies[name]
-
-pairs('roulette')

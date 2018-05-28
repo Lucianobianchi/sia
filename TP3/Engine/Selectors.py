@@ -27,16 +27,15 @@ def _acum_rel_fitness(group):
     acum_rel_fitness = list(accumulate([i.fitness / total_fitness for i in group]))
     return acum_rel_fitness
 
-# Revisar también si se lo usa tanto como para selección como reemplazo porq t aumenta siempre
 def _boltzmann_selector(group, select_count, **kwargs):
     t = kwargs['t']
     schedule = kwargs['schedule']
     temp = schedule(t)
     exps = [exp(i.fitness / temp) for i in group]
     s = sum(exps)
-    for i in range(len(group)):
+    for i in range(len(exps)):
         exps[i] /= s
-    return choices(group, pressure, select_count)
+    return choices(group, exps, select_count)
 
 def _tournament_det_selector(group, select_count, **kwargs):
     m = kwargs['m']

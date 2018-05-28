@@ -1,7 +1,6 @@
 from .ItemReader import read_items
 from random import randint
 
-# TODO: __eq__
 class ItemGen:
     items = {
         'boot': read_items('botas'),
@@ -12,7 +11,7 @@ class ItemGen:
     }
 
     def __init__(self, type, id):
-        item = self.items[type][id] # Se podría guardar solo el item en lugar de todos los atributos
+        item = self.items[type][id]
         self._type = type
         self._id = id
         self._str = item['str']
@@ -56,7 +55,7 @@ class ItemGen:
         return ItemGen(self.type, r)
 
     def __repr__(self):
-        return '{0} [id: {1}]'.format(self.type, self.id)
+        return f'{self.type} [id: {self.id}]'
 
     def __eq__(self, other):
         if isinstance(self, other.__class__):
@@ -64,4 +63,4 @@ class ItemGen:
         return False
 
     def __hash__(self):
-        return hash(self.type, self.id)
+        return hash((self.type, self.id))

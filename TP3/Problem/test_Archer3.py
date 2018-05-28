@@ -86,6 +86,5 @@ class TestSelectors(unittest.TestCase):
         self.assertEqual(10.826640354580046, archer1.fitness)
         self.assertEqual(10.90838559690097, archer2.fitness)
 
-
 if __name__ == '__main__':
     unittest.main()

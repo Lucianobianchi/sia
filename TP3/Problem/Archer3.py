@@ -20,28 +20,26 @@ class Archer3:
 
     def __init__(self, genes):
         if len(genes) != self.gene_length:
-            raise ValueError('Genes length should be {0}, received {1}'.format(self.gene_length, len(genes)))
-        # TODO: Assert de los tipos de items tambien?
+            raise ValueError(f'Genes length should be {self.gene_length}, received {genes}')
+
         self.assert_genes_items(genes)
         self.assert_genes_height(genes)
         self._genes = genes
         self._fitness = self.calculate_fitness()
 
     def calculate_fitness(self):
-        return randint(0, 10)
+        return 0.9 * self.attack + 0.1 * self.defense
 
     def assert_genes_items(self, genes):
         for i in range(0, self.items_length):
             g = genes[i]
             if not isinstance(g, ItemGen):
-                raise TypeError('Gene at index {0} should be of type ItemGen. Found {1}.'\
-                    .format(i, type(g).__name__))
+                raise TypeError(f'Gene at index {i} should be of type ItemGen. Found {type(g).__name__}.')
 
     def assert_genes_height(self, genes):
         g = genes[self.items_length]
         if not isinstance(g, HeightGen):
-            raise TypeError('Gene at index {0} should be of type HeightGen. Found {1}.' \
-                .format(self.items_length, type(g).__name__))
+            raise TypeError(f'Gene at index {self.items_length} should be of type HeightGen. Found {type(g).__name__}.')
 
     def _sum_item_property(self, property_getter):
         return sum(property_getter(self.genes[i]) for i in range(0, 5))
@@ -89,10 +87,10 @@ class Archer3:
 
     @property
     def fitness(self):
-        return 0.9 * self.attack + 0.1 * self.defense
+        return self._fitness
 
     def __repr__(self):
-        return '{{fit: {0}, {1}}}'.format(self.fitness, self.genes)
+        return f'{{fit: {self.fitness}, {self.genes}}}'
 
     def __eq__(self, other):
         if not isinstance(self, other.__class__):
