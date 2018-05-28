@@ -70,11 +70,9 @@ class MetricManager:
 
     @property
     def generations(self):
-        return len(self.means)
+        return len(self.means) - 1
     
-
     def generation_data(self, generation):
-        generation -= 1
         return {
             'fitnesses': self._fitnesses[generation],
             'max': self._max[generation],
