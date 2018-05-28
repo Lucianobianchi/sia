@@ -1,3 +1,4 @@
+from random import random
 from math import ceil
 from .CutConditionController import CutConditionController
 from .Selectors import selector
@@ -20,6 +21,7 @@ def search(population, config, metrics = None):
     children_selector = selector('elite')
     pairs_alg = pairs(config['pairs'])
     crossover_alg = crossover(config['crossover'])
+    cross_prob = config['cross_prob']
     mutate_prob = config['mutate_prob']
     next_mutate_prob = config['next_mutate_prob']
     child_factory = config['child_factory']
@@ -46,7 +48,9 @@ def search(population, config, metrics = None):
         selected = do_selection(population, selector1, n_selector1, selector2, n_selector2, selector_params)
         selected_pairs = pairs_alg(selected, ceil(k / 2))
 
-        children = [child_factory(mutator.mutate_genes(c)) for p in selected_pairs for c in crossover_alg(p)]
+        children = []
+
+        children = [child_factory(mutator.mutate_genes(g)) for p in selected_pairs for g in try_cross(p, crossover_alg, cross_prob)]
         children = children_selector(children, k)
 
         population = replacer_alg(population, children, B, selector3, selector4, **replace_params)
@@ -60,6 +64,10 @@ def search(population, config, metrics = None):
 
     return population
 
+def try_cross(pair, crossover_alg, cross_prob):
+    if random() < cross_prob:
+        return crossover_alg(pair)
+    return [pair[0].genes, pair[1].genes]
 
 def do_selection(population, s1, n1, s2, n2, params):
     selected1 = s1(population, n1, **params)

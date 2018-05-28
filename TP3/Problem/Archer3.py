@@ -1,15 +1,15 @@
 from .HeightGen import HeightGen
-from .ItemGen import ItemGen
+from .ItemGen import ItemGen, items
 from random import randint, uniform
 from math import tanh
 
 def generate_population(size):
     population = [ Archer3([
-        ItemGen('boot', randint(0, 9)),
-        ItemGen('weapon', randint(0, 9)),
-        ItemGen('helmet', randint(0, 9)),
-        ItemGen('glove', randint(0, 9)),
-        ItemGen('armor', randint(0, 9)),
+        ItemGen('boot', randint(0, len(items('boot')) - 1)),
+        ItemGen('weapon', randint(0, len(items('weapon')) - 1)),
+        ItemGen('helmet', randint(0, len(items('helmet')) - 1)),
+        ItemGen('glove', randint(0, len(items('glove')) - 1)),
+        ItemGen('armor', randint(0, len(items('armor')) - 1)),
         HeightGen(uniform(1.3, 2.0))
     ]) for i in range(0, size) ]
     return population

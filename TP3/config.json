@@ -1,8 +1,8 @@
 {
     "N": 700,
-    "selectors": ["boltzmann", "tournament_prob", "boltzmann", "tournament_prob"],
-    "A": 0.1,
-    "B": 0.1,
+    "selectors": ["elite", "roulette", "elite", "roulette"],
+    "A": 0.02,
+    "B": 0.02,
     "select_params": {
         "m": 2
     },
@@ -10,14 +10,15 @@
         "m": 2
     },
     "pairs": "random",
-    "crossover": "uniform",
+    "crossover": "one_point",
+    "cross_prob": 1.0,
     "replacer": "select_parents",
     "mutate_prob": 0.05,
     "uniform_mutate": true,
     "generation_gap": 0.8,
-    "should_continue": "target_fitness",
+    "should_continue": "generations",
     "cut_conditions": {
-        "max_generations": 10000,
+        "max_generations": 3000,
 
         "target_fitness": 35,
 

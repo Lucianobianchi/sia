@@ -1,17 +1,20 @@
 from .ItemReader import read_items
 from random import randint
 
-class ItemGen:
-    items = {
-        'boot': read_items('botas'),
-        'weapon': read_items('armas'),
-        'helmet': read_items('cascos'),
-        'glove': read_items('guantes'),
-        'armor': read_items('pecheras')
-    }
+items_collection = {
+    'boot': read_items('botas'),
+    'weapon': read_items('armas'),
+    'helmet': read_items('cascos'),
+    'glove': read_items('guantes'),
+    'armor': read_items('pecheras')
+}
 
+def items(type):
+    return items_collection[type]
+
+class ItemGen:
     def __init__(self, type, id):
-        item = self.items[type][id]
+        item = items(type)[id]
         self._type = type
         self._id = id
         self._str = item['str']
@@ -51,7 +54,7 @@ class ItemGen:
     def mutate(self):
         r = self.id
         while r == self.id:
-            r = randint(0, len(self.items[self.type]) - 1)
+            r = randint(0, len(items(self.type)) - 1)
         return ItemGen(self.type, r)
 
     def __repr__(self):
