@@ -10,17 +10,17 @@
         "m": 2
     },
     "pairs": "random",
-    "crossover": "anular",
+    "crossover": "one_point",
     "replacer": "select_parents",
-    "mutate_prob": 0.3,
-    "uniform_mutate": false,
+    "mutate_prob": 0.05,
+    "uniform_mutate": true,
     "generation_gap": 0.8,
-    "should_continue": "structure",
+    "should_continue": "target_fitness",
     "cut_conditions": {
-        "max_generations": 10000,
-        
-        "target_fitness": 200,
-        
+        "max_generations": 2500,
+
+        "target_fitness": 35,
+
         "content_pct_difference": 0.05,
         "max_content_steps": 40,
 

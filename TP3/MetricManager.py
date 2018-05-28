@@ -68,6 +68,11 @@ class MetricManager:
     def means(self):
         return list(self._avg)
 
+    @property
+    def generations(self):
+        return len(self.means)
+    
+
     def generation_data(self, generation):
         return {
             'fitnesses': self._fitnesses[generation],
