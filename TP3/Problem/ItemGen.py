@@ -63,4 +63,4 @@ class ItemGen:
         return False
 
     def __hash__(self):
-        return hash(self.type, self.id)
+        return hash((self.type, self.id))

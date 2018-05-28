@@ -1,7 +1,10 @@
 from random import random
 
 class Mutator:
-    def __init__(self, initial_probability, strategy = lambda p,t,x: x):
+    def __init__(self, initial_probability, strategy = None):
+        if strategy is None:
+            strategy = lambda t: initial_probability
+
         self._mutate_prob = initial_probability
         self._probability_updater = strategy
 
@@ -11,8 +14,8 @@ class Mutator:
                 genes[i] = gene.mutate()
         return genes
 
-    def update_probability(self, population, t):
-        self._mutate_prob = self._probability_updater(population, t, self.mutate_prob)
+    def update_probability(self, t):
+        self._mutate_prob = self._probability_updater(t)
         
     @property
     def mutate_prob(self):

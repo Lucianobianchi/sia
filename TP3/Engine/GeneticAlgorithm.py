@@ -34,7 +34,10 @@ def search(population, config, metrics = None):
     n_selector1 = round(k * config['A'])
     n_selector2 = k - n_selector1
 
-    mutator = Mutator(mutate_prob, next_mutate_prob)
+    if config['uniform_mutate']:
+        mutator = Mutator(mutate_prob)
+    else:
+        mutator = Mutator(mutate_prob, next_mutate_prob)
 
     while controller.should_continue(population):
         if metrics is not None:
@@ -48,7 +51,7 @@ def search(population, config, metrics = None):
 
         population = replacer_alg(population, children, B, selector3, selector4, **replace_params)
 
-        mutator.update_probability(population, selector_params['t'])
+        mutator.update_probability(selector_params['t'])
         selector_params['t'] += 1
         replace_params['t'] += 1
 

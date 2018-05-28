@@ -1,8 +1,8 @@
 {
-    "N": 100,
-    "selectors": ["elite", "ranking", "tournament_det", "ranking"],
-    "A": 0.1,
-    "B": 0.4,
+    "N": 700,
+    "selectors": ["elite", "roulette", "elite", "roulette"],
+    "A": 0.02,
+    "B": 0.02,
     "select_params": {
         "m": 2
     },
@@ -10,14 +10,22 @@
         "m": 2
     },
     "pairs": "random",
-    "crossover": "one_point",
+    "crossover": "anular",
     "replacer": "select_parents",
-    "mutate_prob": 0.08,
-    "generation_gap": 0.5,
-    "should_continue": "generations",
+    "mutate_prob": 0.3,
+    "uniform_mutate": false,
+    "generation_gap": 0.8,
+    "should_continue": "structure",
     "cut_conditions": {
         "max_generations": 10000,
-        "target_fitness": 200
+        
+        "target_fitness": 200,
+        
+        "content_pct_difference": 0.05,
+        "max_content_steps": 40,
+
+        "population_change": 50,
+        "max_structure_steps": 5
     },
     "seed": 1
 }

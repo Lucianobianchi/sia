@@ -1,4 +1,5 @@
 from MetricManager import MetricManager
+from math import exp
 import random
 import json
 from Engine.GeneticAlgorithm import search
@@ -10,11 +11,9 @@ print('Items loaded')
 while True:
     config = json.load(open('config.json'))
 
-    # TODO: levantar bien los boltzmann_schedule y next_mutate_prob
-
-    config['next_mutate_prob'] = lambda p, t, prev_prob: prev_prob
-    config['select_params']['schedule'] = lambda t: 100 - t
-    config['replace_params']['schedule'] = lambda t: 100 - t
+    config['next_mutate_prob'] = lambda t: config['mutate_prob'] * exp(-0.001 * t) 
+    config['select_params']['schedule'] = lambda t: max(0.01, 1000 - t * 0.1) 
+    config['replace_params']['schedule'] = config['select_params']['schedule']
     config['child_factory'] = lambda genes: Archer3(genes)
 
     random.seed(config['seed'])
