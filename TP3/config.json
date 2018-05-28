@@ -1,8 +1,8 @@
 {
     "N": 700,
-    "selectors": ["elite", "roulette", "elite", "roulette"],
-    "A": 0.02,
-    "B": 0.02,
+    "selectors": ["boltzmann", "tournament_prob", "boltzmann", "tournament_prob"],
+    "A": 0.1,
+    "B": 0.1,
     "select_params": {
         "m": 2
     },
@@ -10,21 +10,21 @@
         "m": 2
     },
     "pairs": "random",
-    "crossover": "one_point",
+    "crossover": "uniform",
     "replacer": "select_parents",
     "mutate_prob": 0.05,
     "uniform_mutate": true,
     "generation_gap": 0.8,
     "should_continue": "target_fitness",
     "cut_conditions": {
-        "max_generations": 2500,
+        "max_generations": 10000,
 
         "target_fitness": 35,
 
         "content_pct_difference": 0.05,
         "max_content_steps": 40,
 
-        "population_change": 50,
+        "population_pct_change": 0.3,
         "max_structure_steps": 5
     },
     "seed": 1
