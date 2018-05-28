@@ -28,8 +28,9 @@ class CutConditionController:
             self._last_population = list(population)
             return True
 
+        pop_change = round(len(population) * self.ctrl_params['population_pct_change'])
         intersection = intersect_with_repeated(self._last_population, population)
-        if abs(len(population) - len(intersection)) >= self.ctrl_params['population_change']:
+        if abs(len(population) - len(intersection)) >= pop_change:
             self._structure_steps = 0
             self._last_population = list(population) # copy
             return True

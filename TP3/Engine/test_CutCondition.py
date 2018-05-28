@@ -39,7 +39,6 @@ class Individual:
     def __repr__(self):
         return str(self._genes)
 
-# TODO: ver como se hace mockeando Individual
 def set_population_fitness(population, fit):
     for ind in population:
         ind.fitness = fit
