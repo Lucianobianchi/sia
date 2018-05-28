@@ -55,6 +55,9 @@ def search(population, config, metrics = None):
         selector_params['t'] += 1
         replace_params['t'] += 1
 
+    if metrics is not None:
+        metrics.update(population)
+
     return population
 
 
