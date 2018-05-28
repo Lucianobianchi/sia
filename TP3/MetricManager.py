@@ -74,6 +74,7 @@ class MetricManager:
     
 
     def generation_data(self, generation):
+        generation -= 1
         return {
             'fitnesses': self._fitnesses[generation],
             'max': self._max[generation],

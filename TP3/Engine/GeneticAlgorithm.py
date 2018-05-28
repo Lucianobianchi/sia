@@ -39,10 +39,10 @@ def search(population, config, metrics = None):
     else:
         mutator = Mutator(mutate_prob, next_mutate_prob)
 
-    while controller.should_continue(population):
-        if metrics is not None:
-            metrics.update(population)
-            
+    if metrics is not None:
+        metrics.update(population)
+
+    while controller.should_continue(population):            
         selected = do_selection(population, selector1, n_selector1, selector2, n_selector2, selector_params)
         selected_pairs = pairs_alg(selected, ceil(k / 2))
 
@@ -55,8 +55,8 @@ def search(population, config, metrics = None):
         selector_params['t'] += 1
         replace_params['t'] += 1
 
-    if metrics is not None:
-        metrics.update(population)
+        if metrics is not None:
+            metrics.update(population)
 
     return population
 
