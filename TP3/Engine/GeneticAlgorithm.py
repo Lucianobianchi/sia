@@ -67,7 +67,7 @@ def search(population, config, metrics = None):
 def try_cross(pair, crossover_alg, cross_prob):
     if random() < cross_prob:
         return crossover_alg(pair)
-    return [pair[0].genes, pair[1].genes]
+    return (pair[0].genes, pair[1].genes)
 
 def do_selection(population, s1, n1, s2, n2, params):
     selected1 = s1(population, n1, **params)

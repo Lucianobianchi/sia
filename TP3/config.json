@@ -1,4 +1,5 @@
 {
+    "soldier": "archer3",
     "N": 700,
     "selectors": ["elite", "roulette", "elite", "roulette"],
     "A": 0.02,
@@ -10,13 +11,13 @@
         "m": 2
     },
     "pairs": "random",
-    "crossover": "one_point",
+    "crossover": "anular",
     "cross_prob": 1.0,
     "replacer": "select_parents",
     "mutate_prob": 0.05,
     "uniform_mutate": true,
     "generation_gap": 0.8,
-    "should_continue": "generations",
+    "should_continue": "target_fitness",
     "cut_conditions": {
         "max_generations": 3000,
 

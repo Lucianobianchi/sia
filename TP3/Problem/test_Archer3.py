@@ -1,7 +1,6 @@
 import unittest
 from random import randint, uniform
-from unittest.mock import patch, call
-from .Archer3 import Archer3
+from .Archer import factory
 from .ItemGen import ItemGen
 from .HeightGen import HeightGen
 
@@ -17,13 +16,13 @@ class TestSelectors(unittest.TestCase):
         ]
 
     def test_create(self):
-        archer = Archer3(self.right_genes)
+        archer = factory(3)(self.right_genes)
         self.assertEqual(self.right_genes, archer.genes)
 
     def test_wrong_length(self):
         long_genes = self.right_genes + [HeightGen(uniform(1.3, 2.0))]
         with self.assertRaises(ValueError):
-            archer = Archer3(long_genes)
+            archer = factory(3)(long_genes)
 
     def test_all_items_genes(self):
         allItems = [
@@ -36,7 +35,7 @@ class TestSelectors(unittest.TestCase):
         ]
 
         with self.assertRaises(TypeError):
-            archer = Archer3(allItems)
+            archer = factory(3)(allItems)
 
     def test_two_height_genes(self):
         two_heights = [
@@ -49,7 +48,7 @@ class TestSelectors(unittest.TestCase):
         ]
 
         with self.assertRaises(TypeError):
-            archer = Archer3(two_heights)
+            archer = factory(3)(two_heights)
 
     def test_wrong_order_genes(self):
         wrong_order = [
@@ -62,7 +61,7 @@ class TestSelectors(unittest.TestCase):
         ]
 
         with self.assertRaises(TypeError):
-            archer = Archer3(wrong_order)
+            archer = factory(3)(wrong_order)
 
     def test_fitness(self):
         genes1 = [
@@ -81,8 +80,8 @@ class TestSelectors(unittest.TestCase):
             ItemGen('armor', 4),
             HeightGen(1.55)
         ]
-        archer1 = Archer3(genes1)
-        archer2 = Archer3(genes2)
+        archer1 = factory(3)(genes1)
+        archer2 = factory(3)(genes2)
         self.assertEqual(10.826640354580046, archer1.fitness)
         self.assertEqual(10.90838559690097, archer2.fitness)
 
