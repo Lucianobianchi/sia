@@ -23,12 +23,6 @@ def _roulette_pairs(group, k):
             pairs.append(p)
     return pairs
 
-# agarrar 2 diferentes totalmente random con reemplazo
-
-# agarrar los N mejores y cruzarlos con todos
-
-# 
-
 strategies = {
     'random': _random_pairs,
     'roulette': _roulette_pairs

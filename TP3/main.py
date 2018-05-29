@@ -32,7 +32,7 @@ while True:
     config = json.load(open('config.json'))
 
     config['next_mutate_prob'] = lambda t: config['mutate_prob'] * exp(-0.001 * t) 
-    config['select_params']['schedule'] = lambda t: max(0.01, 1000 - t * 0.1) 
+    config['select_params']['schedule'] = lambda t: max(0.1, 1000 - t * 0.1) 
     config['replace_params']['schedule'] = config['select_params']['schedule']
     config['child_factory'] = factories[config['soldier'].lower()]
 
@@ -40,8 +40,8 @@ while True:
 
     initial_population = generate_population(config['child_factory'], config['N'])
 
-    metrics = MetricManager(realtime = False, refresher = 200) # realtime indica si se dibuja en tiempo real o no 
-                                                              # refresher, cada cuantas muestras se refresca (default 100)
+    metrics = MetricManager(realtime = config['realtime'], refresher = config['refresher']) # realtime indica si se dibuja en tiempo real o no 
+                                                                                            # refresher, cada cuantas muestras se refresca (default 100)
     result = search(initial_population, config, metrics)
 
     print(sorted([i.fitness for i in result], reverse = True))
