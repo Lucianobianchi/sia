@@ -31,7 +31,11 @@ while True:
     print('Searching...')
     config = json.load(open('config.json'))
 
-    config['next_mutate_prob'] = lambda t: config['mutate_prob'] * exp(-0.001 * t) 
+    if config['increasing_mutation']:
+        config['next_mutate_prob'] = lambda t: config['mutate_prob'] * (1 - exp(-0.001 * t))
+    else:
+        config['next_mutate_prob'] = lambda t: exp(-0.001 * t) * config['mutate_prob']
+
     config['select_params']['schedule'] = lambda t: max(0.1, 1000 - t * 0.1) 
     config['replace_params']['schedule'] = config['select_params']['schedule']
     config['child_factory'] = factories[config['soldier'].lower()]

@@ -16,6 +16,7 @@
     "replacer": "select_parents",
     "mutate_prob": 0.05,
     "uniform_mutate": true,
+    "increasing_mutation": true,
     "generation_gap": 0.8,
     "should_continue": "generations",
     "cut_conditions": {
