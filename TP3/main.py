@@ -54,4 +54,4 @@ while True:
 
     metrics.plot() # -- Esto si se seteo realtime = False
 
-    input('Configure config.json and press any key to continue')
+    input('Configure config.json, close the plot and press any key to continue')

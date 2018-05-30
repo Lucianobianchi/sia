@@ -24,11 +24,13 @@ Inside the Items directory the test (10 items) items may be found. They may be r
 
 ## How to run
 
+Set the desired params in `config.json` and:
+
 ```
 python3 main.py
 ```
 
-If python3 fails, try with python or python3.6 depending on your installation.
+If python3 fails, try with python or python3.6 depending on your installation. When the search finishes it is possible to edit `config.json` and run the search again with the new params, avoiding having to load the items all over again.
 
 ## Config
 
@@ -58,3 +60,9 @@ Selection methods: (elite \| random \| roulette \| universal \| boltzmann \| tou
 * **seed**: random seed.
 * **realtime**: plot realtime (true \| false)
 * **refresher**: period of generations for plotting if plotting realtime true.
+
+## Code Organization
+
+Inside the Engine directory implementations for each stage of the algorithm may be found and the core flow may be found in `Engine/GeneticAlgorithm.py`.
+
+Inside the Problem directory implementations for each soldier may be found. The core class corresponds to `Soldier.py` which receives the multipliers corresponding to each soldier type. Important to notice that the mutate functions from `ItemGen.py` and `HeightGen.py` are immutable.
