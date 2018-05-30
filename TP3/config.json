@@ -1,9 +1,9 @@
 {
     "soldier": "archer3",
     "N": 700,
-    "selectors": ["elite", "roulette", "elite", "roulette"],
-    "A": 0.02,
-    "B": 0.02,
+    "selectors": ["boltzmann", "roulette", "boltzmann", "roulette"],
+    "A": 0.40,
+    "B": 0.20,
     "select_params": {
         "m": 2
     },
@@ -16,8 +16,9 @@
     "replacer": "select_parents",
     "mutate_prob": 0.05,
     "uniform_mutate": true,
+    "increasing_mutation": true,
     "generation_gap": 0.8,
-    "should_continue": "target_fitness",
+    "should_continue": "generations",
     "cut_conditions": {
         "max_generations": 3000,
 
@@ -29,5 +30,7 @@
         "population_pct_change": 0.3,
         "max_structure_steps": 5
     },
-    "seed": 1
+    "seed": 1,
+    "realtime": true,
+    "refresher": 200
 }
