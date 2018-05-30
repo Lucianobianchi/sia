@@ -46,8 +46,9 @@ Selection methods: (elite \| random \| roulette \| universal \| boltzmann \| tou
 * **crossover**: (one_point \| two_point \| anular \| uniform)
 * **cross\_prob**: probability of crossing each selected pair
 * **replacer**: (select_parents \| select_total). Note select\_parents corresponds to replacement method 2 and select\_total to method 3. If generation gap is 1.0, method 2 would behave as method 1.
-* **mutate\_prob**: mutation probability. If the mutation probability is NOT uniform, this corresponds to the initial mutation probability.
+* **mutate\_prob**: mutation probability. If the mutation probability is NOT uniform, this corresponds to the initial mutation probability or the maximum mutation probability, depending on **increasing\_mutation**.
 * **uniform\_mutate**: (true \| false). If true mutation probability does not change.
+* **increasing\_mutation**: (true \| false). If true, mutation probability scales up from 0 to a maximum of **mutate\_prob**. If false it scales down from **mutate\_prob** to 0.
 * **generation\_gap**: generation gap.
 * **should\_continue**: cut condition. (generations \| target_fitness \| content \| structure)
 * **cut\_conditions**: params for each cut condition.
